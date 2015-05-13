@@ -3,7 +3,7 @@
 module map {
     'use strict';
 
-    var map = angular.module('map', ['ngRoute'])
+    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps'])
         .controller('rootController', RootController)
         .controller('introController', IntroController)
         .controller('homeController', HomeController)
@@ -25,4 +25,5 @@ module map {
             ).
             otherwise({ redirectTo: '/' });
     }]);
+
 }

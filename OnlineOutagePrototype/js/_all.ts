@@ -1,6 +1,7 @@
 ﻿/// <reference path='libs/jquery/jquery.d.ts' />
 /// <reference path='libs/angular/angular.d.ts' />
 /// <reference path='libs/angular/angular-route.d.ts' />
+/// <reference path='libs/gmaps/google.maps.d.ts' />
 /// <reference path='directives/custom-radio.ts' />
 /// <reference path='directives/custom-selectbox.ts' />
 /// <reference path='directives/google-place.ts' />

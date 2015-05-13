@@ -21,12 +21,18 @@
 	background-color: #f5f5f5;
 }
 
-.map-canvas { height: 400px; }
+.map-canvas { height: 400px; position: relative;}
 
 /* Fix for using bootstrap... */
 .gmnoprint img { max-width: none; }
 #map img { max-width: none; }
-
+.angular-google-map-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
 /*-------------------   Select Box  ------------------------------*/
 .sbHolder { 	-webkit-border-radius: 2px; 
 	border-radius: 2px; 
