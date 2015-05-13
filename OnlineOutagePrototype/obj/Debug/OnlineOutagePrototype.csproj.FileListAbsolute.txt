@@ -1,0 +1,12 @@
+D:\Projects\OnlineOutagePrototype\OnlineOutagePrototype\bin\OnlineOutagePrototype.dll.config
+D:\Projects\OnlineOutagePrototype\OnlineOutagePrototype\bin\OnlineOutagePrototype.dll
+D:\Projects\OnlineOutagePrototype\OnlineOutagePrototype\bin\OnlineOutagePrototype.pdb
+D:\Projects\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.csprojResolveAssemblyReference.cache
+D:\Projects\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.dll
+D:\Projects\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.pdb
+D:\Projects\Prototype\OnlineOutagePrototype\OnlineOutagePrototype\bin\OnlineOutagePrototype.dll.config
+D:\Projects\Prototype\OnlineOutagePrototype\OnlineOutagePrototype\bin\OnlineOutagePrototype.dll
+D:\Projects\Prototype\OnlineOutagePrototype\OnlineOutagePrototype\bin\OnlineOutagePrototype.pdb
+D:\Projects\Prototype\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.csprojResolveAssemblyReference.cache
+D:\Projects\Prototype\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.dll
+D:\Projects\Prototype\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.pdb
