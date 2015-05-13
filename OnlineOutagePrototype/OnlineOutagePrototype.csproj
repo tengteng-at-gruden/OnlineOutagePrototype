@@ -19,7 +19,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="default.aspx" />
-    <Content Include="index.html" />
     <Content Include="js\app.js" />
     <Content Include="js\_all.js" />
     <Content Include="node_modules\angular\angular-route.js" />
