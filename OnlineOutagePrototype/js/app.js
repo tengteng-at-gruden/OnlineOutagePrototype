@@ -143,7 +143,7 @@ var map;
 (function (_map) {
     'use strict';
     var map = angular.module('map', ['ngRoute']).controller('rootController', _map.RootController).controller('introController', _map.IntroController).controller('homeController', _map.HomeController).controller('formController', _map.FormController);
-    map.config(['routeProvider', function routes($routeProvider) {
+    map.config(['$routeProvider', function routes($routeProvider) {
         $routeProvider.when('/map', {
             templateUrl: '../views/home.html',
             controller: 'homeController'

@@ -10,7 +10,7 @@ module map {
         .controller('formController', FormController)
     ;
 
-    map.config(['routeProvider', function routes($routeProvider: ng.route.IRouteProvider) {
+    map.config(['$routeProvider', function routes($routeProvider: ng.route.IRouteProvider) {
         $routeProvider.when('/map',
             {
                 templateUrl: '../views/home.html',
