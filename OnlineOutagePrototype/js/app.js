@@ -3,6 +3,27 @@ var map;
 (function (map) {
     'use strict';
     /**
+     * Directive that executes an expression when the element it is applied to loses focus.
+     */
+    function customRadio() {
+        return {
+            link: function ($scope, element, attributes) {
+                element.bind('blur', function () {
+                    $scope.$apply(attributes.todoBlur);
+                });
+                $scope.$on('$destroy', function () {
+                    element.unbind('blur');
+                });
+            }
+        };
+    }
+    map.customRadio = customRadio;
+})(map || (map = {}));
+/// <reference path='../_all.ts' />
+var map;
+(function (map) {
+    'use strict';
+    /**
      * Services that persists and retrieves TODOs from localStorage.
      */
     var SharedData = (function () {
@@ -169,26 +190,5 @@ var map;
             controller: 'formController'
         }).otherwise({ redirectTo: '/' });
     }]);
-})(map || (map = {}));
-/// <reference path='../_all.ts' />
-var map;
-(function (map) {
-    'use strict';
-    /**
-     * Directive that executes an expression when the element it is applied to loses focus.
-     */
-    function customRadio() {
-        return {
-            link: function ($scope, element, attributes) {
-                element.bind('blur', function () {
-                    $scope.$apply(attributes.todoBlur);
-                });
-                $scope.$on('$destroy', function () {
-                    element.unbind('blur');
-                });
-            }
-        };
-    }
-    map.customRadio = customRadio;
 })(map || (map = {}));
 //# sourceMappingURL=app.js.map

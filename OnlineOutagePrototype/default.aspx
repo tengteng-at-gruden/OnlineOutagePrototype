@@ -1,18 +1,12 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="default.aspx.cs" Inherits="OnlineOutagePrototype._default" %>
-
+<%@ Import Namespace="System.Web.Optimization" %>
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="utf-8" />
     <title>Online Outage</title>
-    <link rel="stylesheet" type="text/css" href="Styles/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="Styles/app.css">
-    <script src="node_modules/angular/angular.js"></script>
-    <script src="node_modules/angular/angular-route.js"></script>
-    <script src="http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
-    <script src="http://rawgit.com/angular-ui/angular-google-maps/2.0.X/dist/angular-google-maps.js"></script>
+    <%: Styles.Render("~/styles/app") %>
 </head>
 <body  ng-app="map" ng-controller="rootController">
   <form id="aspdotnet_form" name="testform">
@@ -57,12 +51,10 @@
     </div>
   </form>
 
-  <script type="text/javascript">
-    var mySettings = {
-      defaultLati: -33.867487,
-      defaultLongi: 151.20699
-    };
-  </script>
-  <script src="js/app.js"></script>
+    <%: Scripts.Render("~/bundles/angular") %>
+    <script src="http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
+    <script src="http://rawgit.com/angular-ui/angular-google-maps/2.0.X/dist/angular-google-maps.js"></script>
+    <%: Scripts.Render("~/bundles/app") %>
 </body>
 </html>
