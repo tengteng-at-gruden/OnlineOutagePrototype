@@ -1,11 +1,13 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="default.aspx.cs" Inherits="OnlineOutagePrototype._default" %>
 
-<html lang="en">
-<head>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
     <meta charset="utf-8" />
     <title>Online Outage</title>
-    <link rel="stylesheet" type="text/css" href="node_modules/common/bootstrap/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="node_modules/common/app/app.css">
+    <link rel="stylesheet" type="text/css" href="Styles/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="Styles/app.css">
     <script src="node_modules/angular/angular.js"></script>
     <script src="node_modules/angular/angular-route.js"></script>
     <script src="http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>

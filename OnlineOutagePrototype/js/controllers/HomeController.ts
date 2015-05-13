@@ -32,9 +32,7 @@ module map {
                 defaultLongi: 151.20699
             };
             $scope.chosenPlace = '';
-            $scope.chosenPoleNumber = '';
             $scope.isLoading = false;
-            $scope.poles = {};
 
             $scope.marker = {};
             $scope.markerAddress = '';
@@ -60,7 +58,16 @@ module map {
             
         }
 
-    
+        //SearchAddress($scope) {
+        //    var result = sharedData.getLocationOrViewport();
+        //    if (result.type == 'viewport') {
+        //        $scope.myMap.fitBounds(result.value);
+        //        $scope.myMap.setZoom(18);
+        //    } else if (result.type == 'location') {
+        //        $scope.myMap.setCenter(result.value);
+        //        $scope.myMap.setZoom(18);
+        //    }
+        //}
 
     }
 

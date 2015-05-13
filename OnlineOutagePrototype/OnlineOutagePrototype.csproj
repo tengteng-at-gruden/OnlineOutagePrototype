@@ -18,13 +18,18 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="default.aspx" />
     <Content Include="index.html" />
     <Content Include="js\app.js" />
     <Content Include="js\_all.js" />
     <Content Include="node_modules\angular\angular-route.js" />
     <Content Include="node_modules\angular\angular.js" />
-    <Content Include="node_modules\common\app\app.css" />
-    <Content Include="node_modules\common\bootstrap\bootstrap.css" />
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Styles\app.css" />
+    <Content Include="Styles\bootstrap.css" />
     <Content Include="views\form.html" />
     <Content Include="views\home.html" />
     <Content Include="views\infobox.html" />
@@ -45,23 +50,49 @@
     <TypeScriptCompile Include="js\directives\validate-not-allowed-characters.ts" />
     <TypeScriptCompile Include="js\interfaces\IMapScope.ts" />
     <TypeScriptCompile Include="js\interfaces\IMapStorage.ts" />
-    <TypeScriptCompile Include="js\libs\angular\angular-route.d.ts" />
-    <TypeScriptCompile Include="js\libs\angular\angular.d.ts" />
-    <TypeScriptCompile Include="js\libs\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="js\services\poleData.ts" />
     <TypeScriptCompile Include="js\services\sharedData.ts" />
     <TypeScriptCompile Include="js\_all.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-resource.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\google.maps.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="js\app.js.map" />
-    <Content Include="js\models\TodoItem.js.map" />
     <Content Include="js\_all.js.map" />
+    <Content Include="packages.config" />
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <Content Include="Scripts\angular.min.js.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
     <None Include="web.Release.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="js\models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>

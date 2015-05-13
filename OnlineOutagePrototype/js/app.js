@@ -5,12 +5,12 @@ var map;
     /**
      * Services that persists and retrieves TODOs from localStorage.
      */
-    var PoleData = (function () {
-        function PoleData() {
+    var SharedData = (function () {
+        function SharedData() {
         }
-        return PoleData;
+        return SharedData;
     })();
-    map.PoleData = PoleData;
+    map.SharedData = SharedData;
 })(map || (map = {}));
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
@@ -106,9 +106,7 @@ var map;
                 defaultLongi: 151.20699
             };
             $scope.chosenPlace = '';
-            $scope.chosenPoleNumber = '';
             $scope.isLoading = false;
-            $scope.poles = {};
             $scope.marker = {};
             $scope.markerAddress = '';
             $scope.markerStatue = '';
