@@ -143,6 +143,15 @@ var map;
 (function (_map) {
     'use strict';
     var map = angular.module('map', ['uiGmapgoogle-maps']).controller('rootController', _map.RootController).controller('introController', _map.IntroController).controller('homeController', _map.HomeController).controller('formController', _map.FormController);
+    angular.module('map', ['ngRoute']).config(['routeProvider', function ($routeProvider) {
+        $routeProvider.when('/map', {
+            templateUrl: '../views/home.html',
+            controller: 'homeController'
+        }).when('/report', {
+            templateUrl: '../views/form.html',
+            controller: 'formController'
+        }).otherwise({ redirectTo: '/' });
+    }]);
 })(map || (map = {}));
 /// <reference path='../_all.ts' />
 var map;
