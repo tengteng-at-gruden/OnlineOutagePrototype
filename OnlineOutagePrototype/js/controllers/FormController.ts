@@ -10,6 +10,32 @@ module map {
      */
     export class FormController {
 
+        // $inject annotation.
+        // It provides $injector with information about dependencies to be injected into constructor
+        // it is better to have it close to the constructor, because the parameters must match in count and type.
+        // See http://docs.angularjs.org/guide/di
+        public static $inject = [
+            '$scope',
+            '$location',
+            '$anchorScroll',
+            '$rootScope'
+        ];
+
+        constructor(
+            private $scope: IMapScope,
+            private $location: ng.ILocationService,
+            private $anchorScroll: ng.IAnchorScrollService,
+            private $rootScope: ng.IRootScopeService
+            ) {
+            $scope.formVm = this;
+        }
+        chosenPlace: string = '';
+        chosenEquipment: string = '';
+        chkValue: boolean = false;
+        radValue: string = 'radio1';
+        refInfo: string = '';
+        email: string = '';
+        mRadValue: boolean = true;
     }
 
 }

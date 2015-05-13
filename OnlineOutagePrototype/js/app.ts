@@ -20,7 +20,8 @@ module map {
             when('/report',
             {
                 templateUrl: '../views/form.html',
-                controller: 'formController'
+                controller: 'formController',
+                controllerAs: "vm"
             }
             ).
             otherwise({ redirectTo: '/' });

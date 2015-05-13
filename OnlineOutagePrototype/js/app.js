@@ -132,8 +132,30 @@ var map;
      * - exposes the model to the template and provides event handlers
      */
     var FormController = (function () {
-        function FormController() {
+        function FormController($scope, $location, $anchorScroll, $rootScope) {
+            this.$scope = $scope;
+            this.$location = $location;
+            this.$anchorScroll = $anchorScroll;
+            this.$rootScope = $rootScope;
+            this.chosenPlace = '';
+            this.chosenEquipment = '';
+            this.chkValue = false;
+            this.radValue = 'radio1';
+            this.refInfo = '';
+            this.email = '';
+            this.mRadValue = true;
+            $scope.formVm = this;
         }
+        // $inject annotation.
+        // It provides $injector with information about dependencies to be injected into constructor
+        // it is better to have it close to the constructor, because the parameters must match in count and type.
+        // See http://docs.angularjs.org/guide/di
+        FormController.$inject = [
+            '$scope',
+            '$location',
+            '$anchorScroll',
+            '$rootScope'
+        ];
         return FormController;
     })();
     map.FormController = FormController;
@@ -149,7 +171,8 @@ var map;
             controller: 'homeController'
         }).when('/report', {
             templateUrl: '../views/form.html',
-            controller: 'formController'
+            controller: 'formController',
+            controllerAs: "vm"
         }).otherwise({ redirectTo: '/' });
     }]);
 })(map || (map = {}));

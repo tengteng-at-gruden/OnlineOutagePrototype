@@ -10,3 +10,9 @@ D:\Projects\Prototype\OnlineOutagePrototype\OnlineOutagePrototype\bin\OnlineOuta
 D:\Projects\Prototype\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.csprojResolveAssemblyReference.cache
 D:\Projects\Prototype\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.dll
 D:\Projects\Prototype\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.pdb
+D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\bin\OnlineOutagePrototype.dll.config
+D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\bin\OnlineOutagePrototype.dll
+D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\bin\OnlineOutagePrototype.pdb
+D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.csprojResolveAssemblyReference.cache
+D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.dll
+D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.pdb
