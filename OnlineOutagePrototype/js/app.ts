@@ -3,14 +3,14 @@
 module map {
     'use strict';
 
-    var map = angular.module('map', ['uiGmapgoogle-maps'])
+    var map = angular.module('map', ['ngRoute'])
         .controller('rootController', RootController)
         .controller('introController', IntroController)
         .controller('homeController', HomeController)
         .controller('formController', FormController)
     ;
 
-    angular.module('map', ['ngRoute']).config(['routeProvider', function ($routeProvider:ng.route.IRouteProvider) {
+    map.config(['routeProvider', function routes($routeProvider: ng.route.IRouteProvider) {
         $routeProvider.when('/map',
             {
                 templateUrl: '../views/home.html',
