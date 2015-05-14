@@ -29,6 +29,7 @@ module map {
             ) {
             $scope.formVm = this;
         }
+
         chosenPlace: string = '';
         chosenEquipment: string = '';
         chkValue: boolean = false;
@@ -36,6 +37,16 @@ module map {
         refInfo: string = '';
         email: string = '';
         mRadValue: boolean = true;
+
+        submitForm() {
+            console.log(this.$scope.testform.$valid);
+
+            var old = this.$location.hash();
+            this.$location.hash('emailField');
+            this.$anchorScroll();
+            //reset to old to keep any additional routing logic from kicking in
+            this.$location.hash(old);
+        }
     }
 
 }

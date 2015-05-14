@@ -4,8 +4,9 @@ module map {
 	export interface IMapScope extends ng.IScope {
         showIntro: boolean;
         showHomeComponent: boolean;
-		location: ng.ILocationService;
+        location: ng.ILocationService;
         introVm: IntroController;
         formVm: FormController;
+        testform: ng.IFormController;
 	}
 }

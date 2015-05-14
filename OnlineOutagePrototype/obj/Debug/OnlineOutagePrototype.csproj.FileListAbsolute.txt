@@ -16,3 +16,11 @@ D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\bin\OnlineOutagePrototype.
 D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.csprojResolveAssemblyReference.cache
 D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.dll
 D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\obj\Debug\OnlineOutagePrototype.pdb
+D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\bin\Antlr3.Runtime.dll
+D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\bin\Microsoft.Web.Infrastructure.dll
+D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\bin\Newtonsoft.Json.dll
+D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\bin\System.Web.Optimization.dll
+D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\bin\WebGrease.dll
+D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\bin\Antlr3.Runtime.pdb
+D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\bin\Newtonsoft.Json.xml
+D:\GitHub\OnlineOutagePrototype\OnlineOutagePrototype\bin\System.Web.Optimization.xml

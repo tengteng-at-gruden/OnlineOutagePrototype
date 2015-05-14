@@ -4,14 +4,14 @@
 <p>{{markerAddress}}</p>
 
 <div class="controlContainer">
-	<select name="ddlEquipment" id="ddlEquipment" class="ddl" ng-model="vm.chosenEquipment" customSelectbox>
-		<option value="">-- Select --</option>
-		<option value="Large substation/building">Large substation/building</option>
-		<option value="Kiosk/Small substation">Kiosk/Small substation</option>
-		<option value="Turret/Pillar box">Turret/Pillar box</option>
-		<option value="Power pole">Power pole</option>
-		<option value="Cable pit">Cable pit</option>
-	</select>
+  <select name="ddlEquipment" id="ddlEquipment" class="ddl" ng-model="vm.chosenEquipment" customselectbox>
+    <option value="">-- Select --</option>
+    <option value="Large substation/building">Large substation/building</option>
+    <option value="Kiosk/Small substation">Kiosk/Small substation</option>
+    <option value="Turret/Pillar box">Turret/Pillar box</option>
+    <option value="Power pole">Power pole</option>
+    <option value="Cable pit">Cable pit</option>
+  </select>
 </div>
 <p>You have selected {{vm.chosenEquipment}}</p>
 
@@ -21,31 +21,31 @@
 
 
 <div>
-	<label>Checkbox:</label><input type="checkbox" name="" ng-model="vm.chkValue" icheck><br>
-	checked: {{vm.chkValue}}<br>
-	<label>Radio buttons:</label>
+  <label>Checkbox:</label><input type="checkbox" name="" ng-model="vm.chkValue" icheck><br>
+  checked: {{vm.chkValue}}<br>
+  <label>Radio buttons:</label>
   <input type="radio" name="iCheck" ng-model="vm.radValue" value="radio1" icheck>
   <input type="radio" name="iCheck" ng-model="vm.radValue" value="radio2" icheck>
-	radio value: {{vm.radValue}}
-  <input type="radio" name="demo1" id="mobileRadio" ng-model="vm.mRadValue" value="true" data-not-selected="false" mobileradiobutton>
-	mobile radio value: {{vm.mRadValue}}<br>
-	<br>
-	<div ng-switch on="mRadValue">
-		<a ng-switch-when="false" class="switch-off" ng-click="$parent.mRadValue=true"></a>
-		<a ng-switch-when="true" class="switch-off switch-on" ng-click="$parent.mRadValue=false"></a>
-	</div>
+  radio value: {{vm.radValue}}
+  <input type="radio" name="demo1" id="mobileRadio" ng-model="vm.mRadValue" data-not-selected="false" mobileradiobutton>
+  mobile radio value: {{vm.mRadValue}}<br>
+  <br>
+  <div ng-switch on="mRadValue">
+    <a ng-switch-when="false" class="switch-off" ng-click="$parent.mRadValue=true"></a>
+    <a ng-switch-when="true" class="switch-off switch-on" ng-click="$parent.mRadValue=false"></a>
+  </div>
 </div>
 
 <div>
-	<textarea id="relevantInformation" style="width:400px;height:100px;" placeholder="e.g. More than one light on pole, details of the fault, different address" 
-	ng-model="vm.refInfo" placeholderforall></textarea>
-	Text: {{vm.refInfo}}
+  <textarea id="relevantInformation" style="width:400px;height:100px;" placeholder="e.g. More than one light on pole, details of the fault, different address"
+            ng-model="vm.refInfo" placeholderforall></textarea>
+  Text: {{vm.refInfo}}
 </div>
 
 <h3>e-mail</h3>
-{{vm.email}}<br/>
-<input id="emailField" name="email" placeholder="email" ng-model="vm.email" notallowedcharacters="">
-<span ng-show='testform.email.$error.required'>This e-mail is required!</span>
+{{vm.email}}<br />
+<input id="emailField" name="email" placeholder="email" type="email" ng-model="vm.email" notallowedcharacters="" required="true">
+<span ng-show='testform.email.$error.required && testform.email.$dirty'>This e-mail is required!</span>
 <br>is form valid: {{testform.$valid}}
 <br>email errors: {{testform.email.$error | json}}
 
@@ -61,19 +61,5 @@
 <br>
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
-<input type="button" value="Submit Data" ng-click="submitForm()"/>
+<input type="button" value="Submit Data" ng-click="vm.submitForm()" />

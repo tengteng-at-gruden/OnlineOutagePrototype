@@ -3,27 +3,6 @@ var map;
 (function (map) {
     'use strict';
     /**
-     * Directive that executes an expression when the element it is applied to loses focus.
-     */
-    function customRadio() {
-        return {
-            link: function ($scope, element, attributes) {
-                element.bind('blur', function () {
-                    $scope.$apply(attributes.todoBlur);
-                });
-                $scope.$on('$destroy', function () {
-                    element.unbind('blur');
-                });
-            }
-        };
-    }
-    map.customRadio = customRadio;
-})(map || (map = {}));
-/// <reference path='../_all.ts' />
-var map;
-(function (map) {
-    'use strict';
-    /**
      * Services that persists and retrieves TODOs from localStorage.
      */
     var SharedData = (function () {
@@ -184,6 +163,14 @@ var map;
             this.mRadValue = true;
             $scope.formVm = this;
         }
+        FormController.prototype.submitForm = function () {
+            console.log(this.$scope.testform.$valid);
+            var old = this.$location.hash();
+            this.$location.hash('emailField');
+            this.$anchorScroll();
+            //reset to old to keep any additional routing logic from kicking in
+            this.$location.hash(old);
+        };
         // $inject annotation.
         // It provides $injector with information about dependencies to be injected into constructor
         // it is better to have it close to the constructor, because the parameters must match in count and type.
@@ -213,5 +200,26 @@ var map;
             controllerAs: "vm"
         }).otherwise({ redirectTo: '/' });
     }]);
+})(map || (map = {}));
+/// <reference path='../_all.ts' />
+var map;
+(function (map) {
+    'use strict';
+    /**
+     * Directive that executes an expression when the element it is applied to loses focus.
+     */
+    function customRadio() {
+        return {
+            link: function ($scope, element, attributes) {
+                element.bind('blur', function () {
+                    $scope.$apply(attributes.todoBlur);
+                });
+                $scope.$on('$destroy', function () {
+                    element.unbind('blur');
+                });
+            }
+        };
+    }
+    map.customRadio = customRadio;
 })(map || (map = {}));
 //# sourceMappingURL=app.js.map
