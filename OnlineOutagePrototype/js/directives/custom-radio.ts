@@ -3,15 +3,26 @@
 module map {
     'use strict';
 
-    /**
-     * Directive that executes an expression when the element it is applied to loses focus.
-     */
     export function customRadio(): ng.IDirective {
         return {
-            link: ($scope: ng.IScope, element: JQuery, attributes: any) => {
-                element.bind('blur', () => { $scope.$apply(attributes.todoBlur); });
-                $scope.$on('$destroy', () => { element.unbind('blur'); });
+            restrict: 'A',
+            require: 'ngModel',
+
+            link($scope: IMapScope, $element: JQuery, attrs: any, model) {
+                var value = attrs['value'];
+                var noValue = $($element).data('not-selected');
+                $scope.$watch('vm.mRadValue', () => {
+                    if ($($element).attr('type') === 'radio' && attrs['ngModel']) {
+                        return $scope.$apply(() => {
+                            if ($($element).attr('checked')) {
+                                return model.$setViewValue(value);
+                            } else {
+                                return model.$setViewValue(noValue);
+                            }
+                        });
+                    }
+                });
             }
-        };
+        }
     }
 }

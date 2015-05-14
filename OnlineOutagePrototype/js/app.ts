@@ -30,4 +30,6 @@ module map {
     map.provider("sharedData", SharedData).config((sharedDataProvider: SharedData) => {
         sharedDataProvider.$get();
     });
+
+    map.directive('mobileradiobutton', (): ng.IDirective => customRadio);
 }

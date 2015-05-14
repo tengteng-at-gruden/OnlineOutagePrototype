@@ -231,22 +231,30 @@ var map;
     map.provider("sharedData", _map.SharedData).config(function (sharedDataProvider) {
         sharedDataProvider.$get();
     });
+    map.directive('mobileradiobutton', function () { return _map.customRadio; });
 })(map || (map = {}));
 /// <reference path='../_all.ts' />
 var map;
 (function (map) {
     'use strict';
-    /**
-     * Directive that executes an expression when the element it is applied to loses focus.
-     */
     function customRadio() {
         return {
-            link: function ($scope, element, attributes) {
-                element.bind('blur', function () {
-                    $scope.$apply(attributes.todoBlur);
-                });
-                $scope.$on('$destroy', function () {
-                    element.unbind('blur');
+            restrict: 'A',
+            require: 'ngModel',
+            link: function ($scope, $element, attrs, model) {
+                var value = attrs['value'];
+                var noValue = $($element).data('not-selected');
+                $scope.$watch('vm.mRadValue', function () {
+                    if ($($element).attr('type') === 'radio' && attrs['ngModel']) {
+                        return $scope.$apply(function () {
+                            if ($($element).attr('checked')) {
+                                return model.$setViewValue(value);
+                            }
+                            else {
+                                return model.$setViewValue(noValue);
+                            }
+                        });
+                    }
                 });
             }
         };
