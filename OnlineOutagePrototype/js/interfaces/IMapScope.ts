@@ -5,7 +5,7 @@ module map {
         newTodo: string;
         showIntro: boolean;
         showHomeComponent: boolean;
-		location: ng.ILocationService;
-		introVm: IntroController;
+        location: ng.ILocationService;
+        introVm: IntroController;
 	}
 }

@@ -1,11 +1,11 @@
 <h1>Homepage</h1>
 <div ng-show="isLoading">Please wait, loading streetlights</div>
-<section id="map" class="map-canvas">
+<section id="map">
   <!--div id="myMap" ui-options="mapOptions" class="map-canvas" ui-event="{'map-zoom_changed': 'zoomChanged(myMap.getZoom())'}"></div-->
-  <ui-gmap-google-map center="map.center" zoom="map.zoom" options="mapOptions"></ui-gmap-google-map>
+  <div id="myMap" class="map-canvas"></div>
 </section>
 <div class="container" style="padding:10px 0;">
 	<!-- Somehow placeholder is working for google autocomplete in IE8 -->
 	<input id="addressSearchBox" type="text" class="input-block-level" placeholder="e.g. 500 George Street Sydney NSW 2000" ng-model="chosenPlace" googleplace>
-	<button class="btn btn-small btn-primary" type="button" ng-click="searchAddress()">Address Search</button>
+  <button class="btn btn-small btn-primary" type="button" ng-click="homeVm.searchAddress()">Address Search</button>
 </div>

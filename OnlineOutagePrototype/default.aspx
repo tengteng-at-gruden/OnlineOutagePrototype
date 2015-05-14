@@ -53,8 +53,6 @@
 
     <%: Scripts.Render("~/bundles/angular") %>
     <script src="http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
-    <script src="http://rawgit.com/angular-ui/angular-google-maps/2.0.X/dist/angular-google-maps.js"></script>
     <%: Scripts.Render("~/bundles/app") %>
 </body>
 </html>

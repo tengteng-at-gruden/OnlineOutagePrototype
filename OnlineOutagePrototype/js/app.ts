@@ -3,11 +3,12 @@
 module map {
     'use strict';
 
-    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps'])
+    var map = angular.module('map', ['ngRoute'])
         .controller('rootController', RootController)
         .controller('introController', IntroController)
         .controller('homeController', HomeController)
         .controller('formController', FormController)
+        .directive('googleplace', GooglePlace)
     ;
 
     map.config(['$routeProvider', function routes($routeProvider: ng.route.IRouteProvider) {
@@ -25,5 +26,4 @@ module map {
             ).
             otherwise({ redirectTo: '/' });
     }]);
-
 }
