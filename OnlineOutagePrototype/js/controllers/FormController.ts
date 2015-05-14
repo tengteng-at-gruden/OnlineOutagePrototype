@@ -18,18 +18,22 @@ module map {
             '$scope',
             '$location',
             '$anchorScroll',
-            '$rootScope'
+            '$rootScope',
+            'sharedData'
         ];
 
         constructor(
             private $scope: IMapScope,
             private $location: ng.ILocationService,
             private $anchorScroll: ng.IAnchorScrollService,
-            private $rootScope: ng.IRootScopeService
+            private $rootScope: ng.IRootScopeService,
+            private sharedData: ISharedData
             ) {
             $scope.formVm = this;
         }
 
+        marker = this.sharedData.currentMarker;
+        markerAddress: string = this.sharedData.currentAddress;
         chosenPlace: string = '';
         chosenEquipment: string = '';
         chkValue: boolean = false;

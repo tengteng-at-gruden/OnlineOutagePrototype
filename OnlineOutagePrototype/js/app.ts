@@ -27,4 +27,7 @@ module map {
             otherwise({ redirectTo: '/' });
     }]);
 
+    map.provider("sharedData", SharedData).config((sharedDataProvider: SharedData) => {
+        sharedDataProvider.$get();
+    });
 }

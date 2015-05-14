@@ -1,19 +1,43 @@
 /// <reference path='../_all.ts' />
+/// <reference path='../_all.ts' />
+/// <reference path='../_all.ts' />
+/// <reference path='../_all.ts' />
 var map;
 (function (map) {
     'use strict';
-    /**
-     * Services that persists and retrieves TODOs from localStorage.
-     */
     var SharedData = (function () {
         function SharedData() {
+            this.currentLocation = {};
+            this.currentAddress = '';
+            this.currentMarker = {};
+            this.currentViewport = {};
         }
+        SharedData.prototype.$get = function () {
+            return this;
+        };
+        SharedData.prototype.setCurrentLocation = function (value) {
+            this.currentLocation = value;
+            this.currentViewport = {};
+        };
+        SharedData.prototype.setCurrentViewport = function (value) {
+            this.currentViewport = value;
+            this.currentLocation = {};
+        };
+        SharedData.prototype.getLocationOrViewport = function () {
+            if (!$.isEmptyObject(this.currentViewport)) {
+                return { type: 'viewport', value: this.currentViewport };
+            }
+            else if (!$.isEmptyObject(this.currentLocation)) {
+                return { type: 'location', value: this.currentLocation };
+            }
+            else {
+                return { type: 'none', value: {} };
+            }
+        };
         return SharedData;
     })();
     map.SharedData = SharedData;
 })(map || (map = {}));
-/// <reference path='../_all.ts' />
-/// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
 var map;
 (function (map) {
@@ -149,11 +173,14 @@ var map;
      * - exposes the model to the template and provides event handlers
      */
     var FormController = (function () {
-        function FormController($scope, $location, $anchorScroll, $rootScope) {
+        function FormController($scope, $location, $anchorScroll, $rootScope, sharedData) {
             this.$scope = $scope;
             this.$location = $location;
             this.$anchorScroll = $anchorScroll;
             this.$rootScope = $rootScope;
+            this.sharedData = sharedData;
+            this.marker = this.sharedData.currentMarker;
+            this.markerAddress = this.sharedData.currentAddress;
             this.chosenPlace = '';
             this.chosenEquipment = '';
             this.chkValue = false;
@@ -179,7 +206,8 @@ var map;
             '$scope',
             '$location',
             '$anchorScroll',
-            '$rootScope'
+            '$rootScope',
+            'sharedData'
         ];
         return FormController;
     })();
@@ -200,6 +228,9 @@ var map;
             controllerAs: "vm"
         }).otherwise({ redirectTo: '/' });
     }]);
+    map.provider("sharedData", _map.SharedData).config(function (sharedDataProvider) {
+        sharedDataProvider.$get();
+    });
 })(map || (map = {}));
 /// <reference path='../_all.ts' />
 var map;

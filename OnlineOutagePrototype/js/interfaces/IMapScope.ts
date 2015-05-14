@@ -8,5 +8,10 @@ module map {
         introVm: IntroController;
         formVm: FormController;
         testform: ng.IFormController;
+
+        marker: {};
+        markers: {};
+        markerAddress: string;
+        markerStatue: string;
 	}
 }
