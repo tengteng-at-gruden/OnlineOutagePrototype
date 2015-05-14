@@ -16,28 +16,58 @@ module map {
         // See http://docs.angularjs.org/guide/di
         public static $inject = [
             '$scope',
-            '$location'
+            '$location',
+            '$compile'
         ];
 
         // dependencies are injected via AngularJS $injector
         // controller's name is registered in Application.ts and specified from ng-controller attribute in index.html
         constructor(
             private $scope,
-            private $location: ng.ILocationService
+            private $location: ng.ILocationService,
+            private $compile
             ) {
+            var mySettings = {
+                defaultLati: -33.867487,
+                defaultLongi: 151.20699
+            };
+            $scope.chosenPlace = '';
+            $scope.isLoading = false;
 
-            $scope.map = { center: { latitude: 51.219053, longitude: 4.404418 }, zoom: 14 };
-            $scope.options = { scrollwheel: false };
+            $scope.marker = {};
+            $scope.markerAddress = '';
+            $scope.markerStatue = '';
 
-            // 'vm' stands for 'view model'. We're adding a reference to the controller to the scope
-            // for its methods to be accessible from view / HTML
+            var infoWindowArray = [];
+            var infoBoxArray = [];
+            var markersArray = [];
+            var geocoder = new google.maps.Geocoder();
 
-            // watching for events/changes in scope, which are caused by view/user input
-            // if you subscribe to scope or event with lifetime longer than this controller, make sure you unsubscribe.
-
-            if ($location.path() === '') $location.path('/');
-            $scope.location = $location;
+            //var content = '<div id="infowindow_content" ng-include src="\'/views/infowindow.html\'"></div>';
+            var content = '<div id="infowindow_content" ng-include src="\'/views/infobox.html\'"></div>';
+            var compiled = $compile(content)($scope); 
+            
+            $scope.map = { center: { latitude: mySettings.defaultLati, longitude: mySettings.defaultLongi }, zoom: 14 };
+            $scope.mapOptions = {
+				mapTypeId: google.maps.MapTypeId.ROADMAP,
+				disableDoubleClickZoom: true,  
+				zoomControlOptions: {  style: google.maps.ZoomControlStyle.SMALL }, 
+				streetViewControl: false, 
+				mapTypeControl: false
+			};
+            
         }
+
+        //SearchAddress($scope) {
+        //    var result = sharedData.getLocationOrViewport();
+        //    if (result.type == 'viewport') {
+        //        $scope.myMap.fitBounds(result.value);
+        //        $scope.myMap.setZoom(18);
+        //    } else if (result.type == 'location') {
+        //        $scope.myMap.setCenter(result.value);
+        //        $scope.myMap.setZoom(18);
+        //    }
+        //}
 
     }
 
