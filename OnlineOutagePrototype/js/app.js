@@ -176,7 +176,7 @@ var map;
             this.geocoder = new google.maps.Geocoder();
             //var content = '<div id="infowindow_content" ng-include src="\'/views/infowindow.html\'"></div>';
             var content = '<div id="infowindow_content" ng-include src="\'/views/infobox.html\'"></div>';
-            var compiled = $compile(content)($scope);
+            this.compiled = $compile(content)($scope);
             var mapOptions = {
                 center: new google.maps.LatLng(mySettings.defaultLati, mySettings.defaultLongi),
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -300,19 +300,20 @@ var map;
             });
         };
         HomeController.prototype.clickMarker = function (marker, infobox) {
+            var $this = this;
             this.geocoder.geocode({ 'latLng': marker.getPosition() }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     if (results[0]) {
                         // hacking: sometime ng-include is not working for second time
-                        if (!this.compiled[0].nextSibling) {
-                            this.compiled = this.$compile(this.content)(this.$scope);
+                        if (!$this.compiled[0].nextSibling) {
+                            $this.compiled = $this.$compile($this.content)($this.$scope);
                         }
-                        this.$scope.marker = marker;
-                        this.$scope.markerAddress = results[0].formatted_address;
-                        this.$scope.$apply();
-                        infobox.setContent(this.compiled[0].nextSibling.innerHTML);
+                        $this.$scope.marker = marker;
+                        $this.$scope.markerAddress = results[0].formatted_address;
+                        $this.$scope.$apply();
+                        infobox.setContent($this.compiled[0].nextSibling.innerHTML);
                         //resetInfoBoxes();
-                        infobox.open(this.$scope.myMap, marker);
+                        infobox.open($this.$scope.map, marker);
                         //close button hover state change
                         google.maps.event.addListener(infobox, 'domready', function () {
                             //Have to put this within the domready or else it can't find the div element (it's null until the InfoBox is opened)
