@@ -68,8 +68,6 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="js\app.js.map" />
-    <Content Include="js\_all.js.map" />
     <Content Include="packages.config" />
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\angular.min.js.map" />
