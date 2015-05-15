@@ -6,7 +6,7 @@
             restrict: 'A',
             require: 'ngModel',
 
-            link: (scope: IMapScope, element: Element, attrs: any, model) => {
+            link: (scope, element, attrs, model) => {
                 var value = attrs['value'];
                 var noValue = $(element).data('not-selected');
 

@@ -50,7 +50,8 @@
       </div>
     </div>
   </form>
-
+  
+    <%: Scripts.Render("~/bundles/jquery") %>
     <%: Scripts.Render("~/bundles/angular") %>
     <script src="http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
