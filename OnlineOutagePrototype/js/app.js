@@ -42,6 +42,119 @@ var map;
     }
     map.CustomSelectBox = CustomSelectBox;
 })(map || (map = {}));
+var map;
+(function (map) {
+    'use strict';
+    function ICheck() {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function (scope, element, attrs, model) {
+                var value;
+                value = attrs['value'];
+                scope.$watch(attrs['ngModel'], function (newValue) {
+                    $(element).iCheck('update');
+                });
+                return $(element).iCheck({
+                    checkboxClass: 'icheckbox_minimal-grey',
+                    radioClass: 'iradio_minimal-grey',
+                    hoverClass: 'none',
+                }).on('ifChanged', function (event) {
+                    if ($(element).attr('type') === 'checkbox' && attrs['ngModel']) {
+                        scope.$apply(function () {
+                            return model.$setViewValue(event.target.checked);
+                        });
+                    }
+                    if ($(element).attr('type') === 'radio' && attrs['ngModel']) {
+                        return scope.$apply(function () {
+                            return model.$setViewValue(value);
+                        });
+                    }
+                });
+            }
+        };
+    }
+    map.ICheck = ICheck;
+})(map || (map = {}));
+var map;
+(function (map) {
+    'use strict';
+    function PlaceholderForAll() {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function (scope, element, attrs, model) {
+                var value;
+                var placehold = function () {
+                    element.val(attrs.placeholder);
+                    element.addClass('placeholder');
+                };
+                var unplacehold = function () {
+                    element.val('');
+                    element.removeClass('placeholder');
+                };
+                // detect modern browsers
+                var dummy = document.createElement('input');
+                if (dummy.placeholder != undefined) {
+                    return;
+                }
+                scope.$watch(attrs.ngModel, function (val) {
+                    value = val || '';
+                });
+                element.bind('focus', function () {
+                    if (value == '')
+                        unplacehold();
+                });
+                element.bind('blur', function () {
+                    if (element.val() == '')
+                        placehold();
+                });
+                model.$formatters.unshift(function (val) {
+                    if (!val) {
+                        placehold();
+                        value = '';
+                        return attrs.placeholder;
+                    }
+                    return val;
+                });
+            }
+        };
+    }
+    map.PlaceholderForAll = PlaceholderForAll;
+})(map || (map = {}));
+var map;
+(function (map) {
+    'use strict';
+    function NotAllowedCharacters() {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function (scope, element, attrs, model) {
+                var notAllowedCharacters = ["<", ">", "{", "}", "(", ")", "[", "]", "'", "\""];
+                function validate() {
+                    var newValue = model.$viewValue;
+                    for (var i = 0; i < notAllowedCharacters.length; i++) {
+                        if (newValue.indexOf(notAllowedCharacters[i]) === -1) {
+                            model.$setValidity('notAllowedCharacters', true);
+                            $(element).siblings('.not-allowed-message').remove();
+                        }
+                        else {
+                            model.$setValidity('notAllowedCharacters', false);
+                            if ($(element).siblings('.not-allowed-message').length == 0) {
+                                $(element).after("<span class='not-allowed-message'>The text fields should not allow braces or quotes &lt;&gt;(){}[]&quot'</span>");
+                            }
+                            break;
+                        }
+                    }
+                }
+                scope.$watch(function () {
+                    return model.$viewValue;
+                }, validate);
+            }
+        };
+    }
+    map.NotAllowedCharacters = NotAllowedCharacters;
+})(map || (map = {}));
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
@@ -260,7 +373,7 @@ var map;
 var map;
 (function (_map) {
     'use strict';
-    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps']).controller('rootController', _map.RootController).controller('introController', _map.IntroController).controller('homeController', _map.HomeController).controller('formController', _map.FormController).directive('customradio', _map.CustomRadio).directive('customselectbox', _map.CustomSelectBox);
+    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps']).controller('rootController', _map.RootController).controller('introController', _map.IntroController).controller('homeController', _map.HomeController).controller('formController', _map.FormController).directive('customradio', _map.CustomRadio).directive('customselectbox', _map.CustomSelectBox).directive('icheck', _map.ICheck).directive('placeholderforall', _map.PlaceholderForAll).directive('notallowedcharacters', _map.NotAllowedCharacters);
     map.config(['$routeProvider', function routes($routeProvider) {
         $routeProvider.when('/map', {
             templateUrl: '../views/home.html',

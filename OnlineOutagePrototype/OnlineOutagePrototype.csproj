@@ -36,6 +36,10 @@
     <Content Include="Scripts\angular-route.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\icheck\jquery.icheck.min.js" />
+    <Content Include="Scripts\icheck\minimal\grey%402x.png" />
+    <Content Include="Scripts\icheck\minimal\grey.css" />
+    <Content Include="Scripts\icheck\minimal\grey.png" />
     <Content Include="Scripts\jquery-1.7.2.min.js" />
     <Content Include="Scripts\jquery.radiobutton.2.0.js" />
     <Content Include="Scripts\jquery.selectbox.0.2.min.js" />
