@@ -28,6 +28,20 @@ var map;
     }
     map.CustomRadio = CustomRadio;
 })(map || (map = {}));
+var map;
+(function (map) {
+    'use strict';
+    function CustomSelectBox() {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function (scope, element, attrs, model) {
+                $(element).selectbox();
+            }
+        };
+    }
+    map.CustomSelectBox = CustomSelectBox;
+})(map || (map = {}));
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
@@ -246,7 +260,7 @@ var map;
 var map;
 (function (_map) {
     'use strict';
-    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps']).controller('rootController', _map.RootController).controller('introController', _map.IntroController).controller('homeController', _map.HomeController).controller('formController', _map.FormController).directive('customradio', _map.CustomRadio);
+    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps']).controller('rootController', _map.RootController).controller('introController', _map.IntroController).controller('homeController', _map.HomeController).controller('formController', _map.FormController).directive('customradio', _map.CustomRadio).directive('customselectbox', _map.CustomSelectBox);
     map.config(['$routeProvider', function routes($routeProvider) {
         $routeProvider.when('/map', {
             templateUrl: '../views/home.html',

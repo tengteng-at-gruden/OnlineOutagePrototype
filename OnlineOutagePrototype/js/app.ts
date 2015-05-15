@@ -9,6 +9,7 @@ module map {
         .controller('homeController', HomeController)
         .controller('formController', FormController)
         .directive('customradio', CustomRadio)
+        .directive('customselectbox', CustomSelectBox)
     ;
 
     map.config(['$routeProvider', function routes($routeProvider: ng.route.IRouteProvider) {
