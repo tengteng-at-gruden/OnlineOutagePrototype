@@ -77,18 +77,19 @@ module map {
                 'region': 'aus'
             };
            
-           this.geocoder.geocode(
-               geocodeRequest,
-               function (results, status) {
-                   if (status == google.maps.GeocoderStatus.OK) {
-                       var loc = results[0].geometry.location;        
-                       $scope.map.setCenter(loc);
-                       $scope.map.setZoom(18);
-                       $this.showMarkers();
-                   } else {
-                       alert("No result Found");
-                   }
-            });
+           //this.geocoder.geocode(
+           //    geocodeRequest,
+           //    function (results, status) {
+           //        if (status == google.maps.GeocoderStatus.OK) {
+           //            var loc = results[0].geometry.location;        
+           //            $scope.map.setCenter(loc);
+                       
+           //        } else {
+           //            alert("No result Found");
+           //        }
+           //    });
+            $scope.map.setZoom(18);
+            $this.showMarkers();
         }
 
         showMarkers() {
@@ -106,14 +107,9 @@ module map {
 
                 // retrieve poles from Ausgrid service
                 poleData.getPoles({ box: viewbox }).then(function (result) {
-                    if (result.d.IsSuccess) {
-                        $this.resetMarkers();
-
-                        if (result.d.Data == null) {
-                            alert("No Result");
-                        } else {
-                            $this.setMarkers(result.d.Data);
-                        }
+                    if (result.d) {
+                        $this.setMarkers(result.d);
+                        $this.$scope.isLoading = false;                    
                     }
                 }, function (error) {
 
@@ -125,7 +121,7 @@ module map {
 
         }
 
-        setMarkers(assets) {
+        setMarkers(assets: any) {
             var $this = this;
 
             var imageURL = '/images/Status_Sprites.png';
@@ -140,22 +136,22 @@ module map {
             var nonausgridHoverImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(67, 23));
 
             var count = 0;
-
-            $.each(assets, function (index, asset) {
-                if (asset.lat) {
-                    var location = new google.maps.LatLng(asset.lat, asset.lng);
+            for (var index in assets) {
+                if (assets[index].lat) {
+                    
+                    var location = new google.maps.LatLng(assets[index].lat, assets[index].lng);
 
                     var image = workingImage;
                     var hoverImage = workingHoverImage;
-                    if (asset.Status == 'reported') {
+                    if (assets[index].Status == 'reported') {
                         image = reportedImage;
                         hoverImage = reportedHoverImage;
                     }
-                    else if (asset.Status == 'held') {
+                    else if (assets[index].Status == 'held') {
                         image = heldImage;
                         hoverImage = heldHoverImage;
                     }
-                    else if (asset.Status == 'nonausgrid') {
+                    else if (assets[index].Status == 'nonausgrid') {
                         image = nonausgridImage;
                         hoverImage = nonausgridHoverImage;
                     }
@@ -164,16 +160,16 @@ module map {
                         position: location,
                         map: $this.$scope.map,
                         icon: image,
-                        title: asset.AssetNo,
-                        customStatus: asset.Status,
-                        webID: asset.WebID,
+                        title: assets[index].AssetNo,
+                        customStatus: assets[index].Status,
+                        webID: assets[index].WebID,
                     });
 
                     this.markersArray.push(marker);
-
+                    
                     this.attachInfoBox(marker);   
                 }
-            });
+            }
         }
 
         attachInfoBox(marker) {

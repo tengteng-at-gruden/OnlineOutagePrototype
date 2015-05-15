@@ -20,7 +20,7 @@ module map {
         }
         getPoles(container: any) {
             var promise = this.$http
-                .post(this.baseUrl + 'poles.json', container)
+                .get(this.baseUrl + 'poles.json', container)
                 .then(function (response) {
                     console.log(response);
                     return response.data;

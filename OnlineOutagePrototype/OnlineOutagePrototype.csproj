@@ -21,6 +21,15 @@
   <ItemGroup>
     <Content Include="default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="images\blue.png" />
+    <Content Include="images\close-hover.png" />
+    <Content Include="images\close.png" />
+    <Content Include="images\dropDownArrow.png" />
+    <Content Include="images\green.png" />
+    <Content Include="images\pink.PNG" />
+    <Content Include="images\red.png" />
+    <Content Include="images\Status_Sprites.png" />
+    <Content Include="images\switches.png" />
     <Content Include="js\app.js" />
     <Content Include="js\_all.js" />
     <Content Include="Scripts\angular-route.js" />
