@@ -22,7 +22,7 @@ module map {
         constructor(
             private $scope: IHomeScope,
             private $location: ng.ILocationService,
-            private $compile,
+            private $compile: ng.ICompileService,
             private $http: ng.IHttpService
             ) {
             var mySettings = {
@@ -45,9 +45,8 @@ module map {
             this.markersArray = [];
             this.geocoder = new google.maps.Geocoder();
 
-            //var content = '<div id="infowindow_content" ng-include src="\'/views/infowindow.html\'"></div>';
-            var content = '<div id="infowindow_content" ng-include src="\'/views/infobox.html\'"></div>';
-            this.compiled = $compile(content)($scope); 
+            this.content = '<div id="infowindow_content" ng-include src="\'/views/infobox.html\'"></div>';
+            this.compiled = $compile(this.content)($scope); 
 
             var mapOptions = {
                 center: new google.maps.LatLng(mySettings.defaultLati, mySettings.defaultLongi),
@@ -67,7 +66,6 @@ module map {
         }
 
         searchAddress() {
-
             var $scope = this.$scope;
             var $this = this;
             var geocodeRequest = {
@@ -196,8 +194,12 @@ module map {
                 $this.clickMarker(marker, ib)
             });
         }
-
+        ToggleItem(item: JQuery) {
+            item.toggle("slow");
+        }
         clickMarker(marker, infobox) {
+            $("#outageInfo").toggle();
+            this.resetInfoBoxes();
             var $this = this;
             this.geocoder.geocode({ 'latLng': marker.getPosition() }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
@@ -216,21 +218,6 @@ module map {
                         //resetInfoBoxes();
                         infobox.open($this.$scope.map, marker);
 
-                        //close button hover state change
-                        google.maps.event.addListener(infobox, 'domready', function () {
-                            //Have to put this within the domready or else it can't find the div element (it's null until the InfoBox is opened)
-
-                            $(infobox.div_).find('img[src="/images/close.png"]').hover(
-                                function () {
-                                    //This is called when the mouse enters the element
-                                    $(this).attr('src', '/images/close-hover.png');
-                                },
-                                function () {
-                                    //This is called when the mouse leaves the element
-                                    $(this).attr('src', '/images/close.png');
-                                }
-                                );
-                        });
                     }
                 }
             });
