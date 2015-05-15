@@ -42,6 +42,7 @@ module map {
         email: string = '';
         mRadValue: boolean = true;
 
+
         submitForm() {
             console.log(this.$scope.testform.$valid);
 

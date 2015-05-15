@@ -8,6 +8,7 @@ module map {
         .controller('introController', IntroController)
         .controller('homeController', HomeController)
         .controller('formController', FormController)
+        .directive('customRadio', CustomRadio)
     ;
 
     map.config(['$routeProvider', function routes($routeProvider: ng.route.IRouteProvider) {
@@ -30,6 +31,4 @@ module map {
     map.provider("sharedData", SharedData).config((sharedDataProvider: SharedData) => {
         sharedDataProvider.$get();
     });
-
-    map.directive('mobileradiobutton', (): ng.IDirective => customRadio);
 }

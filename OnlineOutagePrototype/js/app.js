@@ -1,4 +1,33 @@
-/// <reference path='../_all.ts' />
+var map;
+(function (map) {
+    'use strict';
+    function CustomRadio() {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function (scope, element, attrs, model) {
+                var value = attrs['value'];
+                var noValue = $(element).data('not-selected');
+                $(element).radiobutton({
+                    className: 'switch-off',
+                    checkedClass: 'switch-on'
+                }).on('change', function (event) {
+                    if ($(element).attr('type') === 'radio' && attrs['ngModel']) {
+                        return scope.$apply(function () {
+                            if ($(element).attr('checked')) {
+                                return model.$setViewValue(value);
+                            }
+                            else {
+                                return model.$setViewValue(noValue);
+                            }
+                        });
+                    }
+                });
+            }
+        };
+    }
+    map.CustomRadio = CustomRadio;
+})(map || (map = {}));
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
@@ -217,7 +246,7 @@ var map;
 var map;
 (function (_map) {
     'use strict';
-    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps']).controller('rootController', _map.RootController).controller('introController', _map.IntroController).controller('homeController', _map.HomeController).controller('formController', _map.FormController);
+    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps']).controller('rootController', _map.RootController).controller('introController', _map.IntroController).controller('homeController', _map.HomeController).controller('formController', _map.FormController).directive('customRadio', _map.CustomRadio);
     map.config(['$routeProvider', function routes($routeProvider) {
         $routeProvider.when('/map', {
             templateUrl: '../views/home.html',
@@ -231,37 +260,6 @@ var map;
     map.provider("sharedData", _map.SharedData).config(function (sharedDataProvider) {
         sharedDataProvider.$get();
     });
-    map.directive('mobileradiobutton', function () { return _map.customRadio; });
 })(map || (map = {}));
 /// <reference path='../_all.ts' />
-var map;
-(function (map) {
-    'use strict';
-    function customRadio() {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function ($scope, $element, attrs, model) {
-                alert('aaa');
-                //var value = attrs['value'];
-                //var noValue = $($element).data('not-selected');
-                //$($element).mobileradiobutton({
-                //    className: 'switch-off',
-                //    checkedClass: 'switch-on'
-                //}).on('change', () => {
-                //    if ($($element).attr('type') === 'radio' && attrs['ngModel']) {
-                //        return $scope.$apply(() => {
-                //            if ($($element).attr('checked')) {
-                //                return model.$setViewValue(value);
-                //            } else {
-                //                return model.$setViewValue(noValue);
-                //            }
-                //        });
-                //    }
-                //});
-            }
-        };
-    }
-    map.customRadio = customRadio;
-})(map || (map = {}));
 //# sourceMappingURL=app.js.map
