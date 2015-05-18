@@ -7,7 +7,7 @@ module map {
      */
     export function GooglePlace(): ng.IDirective {
         return {
-            link: (scope: IHomeScope, element: Element, attributes: any, homeVM: HomeController) => {
+            link: (scope: IHomeScope, element: Element, attributes: any) => {
                 var options = {
                     types: ['geocode'],
                     componentRestrictions: { country: 'au' }
