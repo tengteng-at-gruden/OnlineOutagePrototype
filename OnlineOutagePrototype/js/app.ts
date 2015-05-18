@@ -9,10 +9,10 @@ module map {
         .controller('homeController', HomeController)
         .controller('formController', FormController)
         .directive('customradio', CustomRadio.Factory())
-        .directive('customselectbox', CustomSelectBox)
-        .directive('icheck', ICheck)
-        .directive('placeholderforall', PlaceholderForAll)
-        .directive('notallowedcharacters', NotAllowedCharacters)
+        .directive('customselectbox', CustomSelectBox.Factory())
+        .directive('icheck', ICheck.Factory())
+        .directive('placeholderforall', PlaceholderForAll.Factory())
+        .directive('notallowedcharacters', NotAllowedCharacters.Factory())
     ;
 
     map.config(['$routeProvider', function routes($routeProvider: ng.route.IRouteProvider) {

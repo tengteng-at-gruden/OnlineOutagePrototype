@@ -1,12 +1,16 @@
 ﻿module map {
     'use strict';
 
-    export function NotAllowedCharacters(): ng.IDirective {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
+    export class NotAllowedCharacters {
+        public link: (scope, element, attrs, model) => void;
+        public restrict: string;
+        public require: string;
 
-            link: (scope, element, attrs, model) => {
+        constructor() {
+            this.restrict = 'A';
+            this.require = 'ngModel';
+
+            this.link = (scope, element, attrs, model) => {
                 var notAllowedCharacters = ["<", ">", "{", "}", "(", ")", "[", "]", "'", "\""];
 
                 function validate() {
@@ -26,10 +30,16 @@
                     }
                 }
 
-                scope.$watch(function () {
-                    return model.$viewValue;
-                }, validate);
-            }
-        };
+                scope.$watch(() => model.$viewValue, validate);
+            };
+        }
+
+        public static Factory() {
+            var directive = () => {
+                return new NotAllowedCharacters();
+            };
+
+            return directive;
+        }
     }
 } 

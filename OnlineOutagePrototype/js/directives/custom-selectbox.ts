@@ -1,14 +1,26 @@
 ﻿module map {
     'use strict';
 
-    export function CustomSelectBox(): ng.IDirective {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
+    export class CustomSelectBox {
+        public link: (scope, element, attrs, model) => void;
+        public restrict: string;
+        public require: string;
 
-            link: (scope, element, attrs, model) => {
+        constructor() {
+            this.restrict = 'A';
+            this.require = 'ngModel';
+
+            this.link = (scope, element, attrs, model) => {
                 $(element).selectbox();
-            }
-        };
+            };
+        }
+
+        public static Factory() {
+            var directive = () => {
+                return new CustomSelectBox();
+            };
+
+            return directive;
+        }
     }
 }

@@ -1,19 +1,23 @@
 ﻿module map {
     'use strict';
 
-    export function PlaceholderForAll(): ng.IDirective {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
+    export class PlaceholderForAll {
+        public link: (scope, element, attrs, model) => void;
+        public restrict: string;
+        public require: string;
 
-            link: function (scope, element, attrs, model) {
+        constructor() {
+            this.restrict = 'A';
+            this.require = 'ngModel';
+
+            this.link = (scope, element, attrs, model) => {
                 var value;
 
-                var placehold = function () {
+                var placehold = () => {
                     element.val(attrs.placeholder);
                     element.addClass('placeholder');
                 };
-                var unplacehold = function () {
+                var unplacehold = () => {
                     element.val('');
                     element.removeClass('placeholder');
                 };
@@ -24,19 +28,19 @@
                     return;
                 }
 
-                scope.$watch(attrs.ngModel, function (val) {
+                scope.$watch(attrs.ngModel, val => {
                     value = val || '';
                 });
 
-                element.bind('focus', function () {
+                element.bind('focus', () => {
                     if (value == '') unplacehold();
                 });
 
-                element.bind('blur', function () {
+                element.bind('blur', () => {
                     if (element.val() == '') placehold();
                 });
 
-                model.$formatters.unshift(function (val) {
+                model.$formatters.unshift(val => {
                     if (!val) {
                         placehold();
                         value = '';
@@ -44,7 +48,15 @@
                     }
                     return val;
                 });
-            }
-        };
+            };
+        }
+
+        public static Factory() {
+            var directive = () => {
+                return new PlaceholderForAll();
+            };
+
+            return directive;
+        }
     }
 }

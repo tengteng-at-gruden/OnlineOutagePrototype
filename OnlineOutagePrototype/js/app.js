@@ -38,25 +38,32 @@ var map;
 var map;
 (function (map) {
     'use strict';
-    function CustomSelectBox() {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function (scope, element, attrs, model) {
+    var CustomSelectBox = (function () {
+        function CustomSelectBox() {
+            this.restrict = 'A';
+            this.require = 'ngModel';
+            this.link = function (scope, element, attrs, model) {
                 $(element).selectbox();
-            }
+            };
+        }
+        CustomSelectBox.Factory = function () {
+            var directive = function () {
+                return new CustomSelectBox();
+            };
+            return directive;
         };
-    }
+        return CustomSelectBox;
+    })();
     map.CustomSelectBox = CustomSelectBox;
 })(map || (map = {}));
 var map;
 (function (map) {
     'use strict';
-    function ICheck() {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function (scope, element, attrs, model) {
+    var ICheck = (function () {
+        function ICheck() {
+            this.restrict = 'A';
+            this.require = 'ngModel';
+            this.link = function (scope, element, attrs, model) {
                 var value;
                 value = attrs['value'];
                 scope.$watch(attrs['ngModel'], function (newValue) {
@@ -65,32 +72,35 @@ var map;
                 return $(element).iCheck({
                     checkboxClass: 'icheckbox_minimal-grey',
                     radioClass: 'iradio_minimal-grey',
-                    hoverClass: 'none',
+                    hoverClass: 'none'
                 }).on('ifChanged', function (event) {
                     if ($(element).attr('type') === 'checkbox' && attrs['ngModel']) {
-                        scope.$apply(function () {
-                            return model.$setViewValue(event.target.checked);
-                        });
+                        scope.$apply(function () { return model.$setViewValue(event.target.checked); });
                     }
                     if ($(element).attr('type') === 'radio' && attrs['ngModel']) {
-                        return scope.$apply(function () {
-                            return model.$setViewValue(value);
-                        });
+                        return scope.$apply(function () { return model.$setViewValue(value); });
                     }
                 });
-            }
+            };
+        }
+        ICheck.Factory = function () {
+            var directive = function () {
+                return new ICheck();
+            };
+            return directive;
         };
-    }
+        return ICheck;
+    })();
     map.ICheck = ICheck;
 })(map || (map = {}));
 var map;
 (function (map) {
     'use strict';
-    function PlaceholderForAll() {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function (scope, element, attrs, model) {
+    var PlaceholderForAll = (function () {
+        function PlaceholderForAll() {
+            this.restrict = 'A';
+            this.require = 'ngModel';
+            this.link = function (scope, element, attrs, model) {
                 var value;
                 var placehold = function () {
                     element.val(attrs.placeholder);
@@ -124,19 +134,26 @@ var map;
                     }
                     return val;
                 });
-            }
+            };
+        }
+        PlaceholderForAll.Factory = function () {
+            var directive = function () {
+                return new PlaceholderForAll();
+            };
+            return directive;
         };
-    }
+        return PlaceholderForAll;
+    })();
     map.PlaceholderForAll = PlaceholderForAll;
 })(map || (map = {}));
 var map;
 (function (map) {
     'use strict';
-    function NotAllowedCharacters() {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function (scope, element, attrs, model) {
+    var NotAllowedCharacters = (function () {
+        function NotAllowedCharacters() {
+            this.restrict = 'A';
+            this.require = 'ngModel';
+            this.link = function (scope, element, attrs, model) {
                 var notAllowedCharacters = ["<", ">", "{", "}", "(", ")", "[", "]", "'", "\""];
                 function validate() {
                     var newValue = model.$viewValue;
@@ -154,12 +171,17 @@ var map;
                         }
                     }
                 }
-                scope.$watch(function () {
-                    return model.$viewValue;
-                }, validate);
-            }
+                scope.$watch(function () { return model.$viewValue; }, validate);
+            };
+        }
+        NotAllowedCharacters.Factory = function () {
+            var directive = function () {
+                return new NotAllowedCharacters();
+            };
+            return directive;
         };
-    }
+        return NotAllowedCharacters;
+    })();
     map.NotAllowedCharacters = NotAllowedCharacters;
 })(map || (map = {}));
 /// <reference path='../_all.ts' />
@@ -380,7 +402,7 @@ var map;
 var map;
 (function (_map) {
     'use strict';
-    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps']).controller('rootController', _map.RootController).controller('introController', _map.IntroController).controller('homeController', _map.HomeController).controller('formController', _map.FormController).directive('customradio', _map.CustomRadio.Factory()).directive('customselectbox', _map.CustomSelectBox).directive('icheck', _map.ICheck).directive('placeholderforall', _map.PlaceholderForAll).directive('notallowedcharacters', _map.NotAllowedCharacters);
+    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps']).controller('rootController', _map.RootController).controller('introController', _map.IntroController).controller('homeController', _map.HomeController).controller('formController', _map.FormController).directive('customradio', _map.CustomRadio.Factory()).directive('customselectbox', _map.CustomSelectBox.Factory()).directive('icheck', _map.ICheck.Factory()).directive('placeholderforall', _map.PlaceholderForAll.Factory()).directive('notallowedcharacters', _map.NotAllowedCharacters.Factory());
     map.config(['$routeProvider', function routes($routeProvider) {
         $routeProvider.when('/map', {
             templateUrl: '../views/home.html',
