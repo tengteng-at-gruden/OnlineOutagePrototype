@@ -3,12 +3,16 @@
 module map {
     'use strict';
 
-    var map = angular.module('map', ['ngRoute'])
+    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps'])
         .controller('rootController', RootController)
         .controller('introController', IntroController)
         .controller('homeController', HomeController)
         .controller('formController', FormController)
-        .directive('googleplace', GooglePlace)
+        .directive('customradio', CustomRadio.Factory())
+        .directive('customselectbox', CustomSelectBox.Factory())
+        .directive('icheck', ICheck.Factory())
+        .directive('placeholderforall', PlaceholderForAll.Factory())
+        .directive('notallowedcharacters', NotAllowedCharacters.Factory())
     ;
 
     map.config(['$routeProvider', function routes($routeProvider: ng.route.IRouteProvider) {
@@ -21,9 +25,14 @@ module map {
             when('/report',
             {
                 templateUrl: '../views/form.html',
-                controller: 'formController'
+                controller: 'formController',
+                controllerAs: "vm"
             }
             ).
             otherwise({ redirectTo: '/' });
     }]);
+
+    map.provider("sharedData", SharedData).config((sharedDataProvider: SharedData) => {
+        sharedDataProvider.$get();
+    });
 }

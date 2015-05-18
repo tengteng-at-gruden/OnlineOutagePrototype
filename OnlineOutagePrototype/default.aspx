@@ -39,8 +39,7 @@
 
       <div class="row-fluid" ng-cloak ng-show="showHomeComponent">
         <div class="span4">
-          <input type="radio" id="unplaned" /><label>Unplaned</label> 
-          <input type="radio" id="planed" /><label>Planed</label> 
+          <p>Home Text...</p>
         </div>
       </div>
     </div>
@@ -51,10 +50,12 @@
       </div>
     </div>
   </form>
-
+  
     <%: Scripts.Render("~/bundles/jquery") %>
     <%: Scripts.Render("~/bundles/angular") %>
     <script src="http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
+    <script src="http://rawgit.com/angular-ui/angular-google-maps/2.0.X/dist/angular-google-maps.js"></script>
     <%: Scripts.Render("~/bundles/app") %>
 </body>
 </html>

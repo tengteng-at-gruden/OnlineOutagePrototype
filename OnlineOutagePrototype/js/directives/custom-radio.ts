@@ -1,17 +1,42 @@
-﻿/// <reference path='../_all.ts' />
-
-module map {
+﻿module map {
     'use strict';
 
-    /**
-     * Directive that executes an expression when the element it is applied to loses focus.
-     */
-    export function customRadio(): ng.IDirective {
-        return {
-            link: ($scope: ng.IScope, element: JQuery, attributes: any) => {
-                element.bind('blur', () => { $scope.$apply(attributes.todoBlur); });
-                $scope.$on('$destroy', () => { element.unbind('blur'); });
-            }
-        };
+    export class CustomRadio {
+        public link: (scope, element, attrs, model) => void;
+        public restrict: string;
+        public require: string;
+
+        constructor() {
+            this.restrict = 'A';
+            this.require = 'ngModel';
+
+            this.link = (scope, element, attrs, model) => {
+                var value = attrs['value'];
+                var noValue = $(element).data('not-selected');
+
+                $(element).radiobutton({
+                    className: 'switch-off',
+                    checkedClass: 'switch-on'
+                }).on('change', event => {
+                    if ($(element).attr('type') === 'radio' && attrs['ngModel']) {
+                        return scope.$apply(() => {
+                            if ($(element).attr('checked')) {
+                                return model.$setViewValue(value);
+                            } else {
+                                return model.$setViewValue(noValue);
+                            }
+                        });
+                    }
+                });
+            };
+        }
+
+        public static Factory() {
+            var directive = () => {
+                return new CustomRadio();
+            };
+
+            return directive;
+        }
     }
 }

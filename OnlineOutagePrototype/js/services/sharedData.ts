@@ -3,27 +3,22 @@
 module map {
     'use strict';
 
-    /**
-     * Services that persists and retrieves TODOs from localStorage.
-     */
-    export class SharedData {
+    export class SharedData implements ISharedData {
 
-        private currentLocation = {};
-        private currentViewport = {};
-        private currentMarker = {};
-        private currentAddress = {};
+        currentLocation = {};
+        currentAddress = '';
+        currentMarker = {};
+        currentViewport = {};
 
-        constructor(currentLocation: any, currentViewport: any, currentMarker: any, currentAddress: any) {
-            this.currentLocation = currentLocation;
-            this.currentViewport = currentViewport;
-            this.currentMarker = currentMarker;
-            this.currentAddress = currentAddress;
+        public $get(): ISharedData {
+            return this;
         }
-        setCurrentLocation(value: any) {
+
+        setCurrentLocation(value) {
             this.currentLocation = value;
             this.currentViewport = {};
         }
-        setCurrentViewport(value: any) {
+        setCurrentViewport(value) {
             this.currentViewport = value;
             this.currentLocation = {};
         }
