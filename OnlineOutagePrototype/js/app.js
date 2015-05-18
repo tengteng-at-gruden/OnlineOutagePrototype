@@ -6,7 +6,7 @@ var map;
      */
     function GooglePlace() {
         return {
-            link: function (scope, element, attributes) {
+            link: function (scope, element, attributes, homeVM) {
                 var options = {
                     types: ['geocode'],
                     componentRestrictions: { country: 'au' }
@@ -18,14 +18,15 @@ var map;
                     if (!place.geometry) {
                         return;
                     }
-                    if (place.geometry.viewport) {
-                        scope.map.fitBounds(place.geometry.viewport);
-                        scope.map.setZoom(18);
-                    }
-                    else {
-                        scope.map.setCenter(place.geometry.location);
-                        scope.map.setZoom(18);
-                    }
+                    //if (place.geometry.viewport) {
+                    //    scope.map.fitBounds(place.geometry.viewport);
+                    //    scope.map.setZoom(18);
+                    //    homeVM.showMarkers();
+                    //} else {
+                    //    scope.map.setCenter(place.geometry.location);
+                    //    scope.map.setZoom(18);
+                    //    homeVM.showMarkers();
+                    //}            
                 });
             }
         };
@@ -156,6 +157,7 @@ var map;
             this.$location = $location;
             this.$compile = $compile;
             this.$http = $http;
+            $("#outageInfo").hide();
             var mySettings = {
                 defaultLati: -33.867487,
                 defaultLongi: 151.20699,
@@ -190,7 +192,7 @@ var map;
         }
         HomeController.prototype.searchAddress = function () {
             var $scope = this.$scope;
-            var $this = this;
+            var thisScope = this;
             var geocodeRequest = {
                 'address': $scope.chosenPlace,
                 'bounds': new google.maps.LatLngBounds(new google.maps.LatLng(-27.664069, 154.35791), new google.maps.LatLng(-44.197959, 137.175293)),
@@ -208,10 +210,10 @@ var map;
             //        }
             //    });
             $scope.map.setZoom(18);
-            $this.showMarkers();
+            thisScope.showMarkers();
         };
         HomeController.prototype.showMarkers = function () {
-            var $this = this;
+            var thisScope = this;
             var poleData = new map.PoleData(this.$http);
             var zoom = this.$scope.map.getZoom();
             if (zoom > 17) {
@@ -225,19 +227,19 @@ var map;
                 // retrieve poles from Ausgrid service
                 poleData.getPoles({ box: viewbox }).then(function (result) {
                     if (result.d) {
-                        $this.setMarkers(result.d);
-                        $this.$scope.isLoading = false;
+                        thisScope.setMarkers(result.d);
+                        thisScope.$scope.isLoading = false;
                     }
                 }, function (error) {
                 });
             }
             else {
-                $this.resetMarkers();
-                $this.resetInfoBoxes();
+                thisScope.resetMarkers();
+                thisScope.resetInfoBoxes();
             }
         };
         HomeController.prototype.setMarkers = function (assets) {
-            var $this = this;
+            var thisScope = this;
             var imageURL = '/images/Status_Sprites.png';
             var workingImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(1, 1));
             var reportedImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(23, 1));
@@ -267,7 +269,7 @@ var map;
                     }
                     var marker = new google.maps.Marker({
                         position: location,
-                        map: $this.$scope.map,
+                        map: thisScope.$scope.map,
                         icon: image,
                         title: assets[index].AssetNo,
                         customStatus: assets[index].Status,
@@ -279,7 +281,7 @@ var map;
             }
         };
         HomeController.prototype.attachInfoBox = function (marker) {
-            var $this = this;
+            var thisScope = this;
             var myOptions = {
                 disableAutoPan: false,
                 pixelOffset: new google.maps.Size(-140, 0),
@@ -295,32 +297,33 @@ var map;
             this.infoBoxArray.push(ib);
             //add click handler
             google.maps.event.addListener(marker, 'click', function () {
-                $this.clickMarker(marker, ib);
+                thisScope.clickMarker(marker, ib);
             });
         };
         HomeController.prototype.ToggleItem = function (item) {
             item.toggle("slow");
         };
         HomeController.prototype.clickMarker = function (marker, infobox) {
-            $("#outageInfo").toggle();
+            $("#outageInfo").slideToggle("slow");
             this.resetInfoBoxes();
-            var $this = this;
-            this.geocoder.geocode({ 'latLng': marker.getPosition() }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    if (results[0]) {
-                        // hacking: sometime ng-include is not working for second time
-                        if (!$this.compiled[0].nextSibling) {
-                            $this.compiled = $this.$compile($this.content)($this.$scope);
-                        }
-                        $this.$scope.marker = marker;
-                        $this.$scope.markerAddress = results[0].formatted_address;
-                        $this.$scope.$apply();
-                        infobox.setContent($this.compiled[0].nextSibling.innerHTML);
-                        //resetInfoBoxes();
-                        infobox.open($this.$scope.map, marker);
-                    }
-                }
-            });
+            this.$scope.map.setCenter(marker.getPosition());
+            var thisScope = this;
+            //this.geocoder.geocode({ 'LatLng': marker.getPosition() }, function (results, status) {
+            //    if (status == google.maps.GeocoderStatus.OK) {
+            //        if (results[0]) {
+            //            // hacking: sometime ng-include is not working for second time
+            //            if (!thisScope.compiled[0].nextsibling) {
+            //                thisScope.compiled = thisScope.$compile(thisScope.content)(thisScope.$scope);
+            //            }
+            //            thisScope.$scope.marker = marker;
+            //            thisScope.$scope.markerAddress = results[0].formatted_address;
+            //            thisScope.$scope.$apply();
+            //            infobox.setcontent(thisScope.compiled[0].nextsibling.innerhtml);
+            //            //resetinfoboxes();
+            //            infobox.open(thisScope.$scope.map, marker);
+            //        }
+            //    }
+            //});
         };
         //clear all current markers
         HomeController.prototype.resetMarkers = function () {
@@ -337,6 +340,9 @@ var map;
                     this.infoBoxArray[i].close();
                 }
             }
+        };
+        HomeController.prototype.closeWindow = function () {
+            $("#outageInfo").slideToggle("slow");
         };
         HomeController.prototype.reportAsset = function () {
             this.$location.path('/report');

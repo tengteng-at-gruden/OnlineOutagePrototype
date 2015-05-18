@@ -181,3 +181,22 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
 }
+
+#map {
+    position: relative;
+}
+#outageInfo {
+    position: absolute;
+    bottom: 0;
+    background-color: #fff;
+    width: 100%;
+}
+.close-tag {
+    display: inline-block;
+    text-align: right;
+    width: 100%;
+    margin-bottom: 50px;
+}
+.right {
+    float: right;
+}

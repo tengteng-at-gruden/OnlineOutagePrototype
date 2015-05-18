@@ -5,7 +5,7 @@ module map {
 
     export class HomeController {
 
-        private geocoder: any;
+        private geocoder: google.maps.Geocoder;
         private infoWindowArray: any;
         private infoBoxArray: any;
         private markersArray: any;
@@ -25,6 +25,7 @@ module map {
             private $compile: ng.ICompileService,
             private $http: ng.IHttpService
             ) {
+            $("#outageInfo").hide();
             var mySettings = {
                 defaultLati: -33.867487,
                 defaultLongi: 151.20699,
@@ -67,7 +68,7 @@ module map {
 
         searchAddress() {
             var $scope = this.$scope;
-            var $this = this;
+            var thisScope = this;
             var geocodeRequest = {
                 'address': $scope.chosenPlace,
                 'bounds': new google.maps.LatLngBounds(
@@ -89,11 +90,11 @@ module map {
            //        }
            //    });
             $scope.map.setZoom(18);
-            $this.showMarkers();
+            thisScope.showMarkers();
         }
 
         showMarkers() {
-            var $this = this;
+            var thisScope = this;
             var poleData = new PoleData(this.$http);
             var zoom = this.$scope.map.getZoom();
             if (zoom > 17) {
@@ -108,21 +109,21 @@ module map {
                 // retrieve poles from Ausgrid service
                 poleData.getPoles({ box: viewbox }).then(function (result) {
                     if (result.d) {
-                        $this.setMarkers(result.d);
-                        $this.$scope.isLoading = false;                    
+                        thisScope.setMarkers(result.d);
+                        thisScope.$scope.isLoading = false;                    
                     }
                 }, function (error) {
 
                     });
                 } else {
-                    $this.resetMarkers();
-                    $this.resetInfoBoxes();
+                    thisScope.resetMarkers();
+                    thisScope.resetInfoBoxes();
                 }   
 
         }
 
         setMarkers(assets: any) {
-            var $this = this;
+            var thisScope = this;
 
             var imageURL = '/images/Status_Sprites.png';
             var workingImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(1, 1));
@@ -158,7 +159,7 @@ module map {
 
                     var marker = new google.maps.Marker({
                         position: location,
-                        map: $this.$scope.map,
+                        map: thisScope.$scope.map,
                         icon: image,
                         title: assets[index].AssetNo,
                         customStatus: assets[index].Status,
@@ -173,7 +174,7 @@ module map {
         }
 
         attachInfoBox(marker) {
-            var $this = this;
+            var thisScope = this;
             var myOptions = {
                 disableAutoPan: false
                 , pixelOffset: new google.maps.Size(-140, 0)
@@ -191,36 +192,37 @@ module map {
             this.infoBoxArray.push(ib);
             //add click handler
             google.maps.event.addListener(marker, 'click', function () {
-                $this.clickMarker(marker, ib)
+                thisScope.clickMarker(marker, ib)
             });
         }
         ToggleItem(item: JQuery) {
             item.toggle("slow");
         }
-        clickMarker(marker, infobox) {
-            $("#outageInfo").toggle();
+        clickMarker(marker:google.maps.Marker, infobox) {
+            $("#outageInfo").slideToggle("slow");
             this.resetInfoBoxes();
-            var $this = this;
-            this.geocoder.geocode({ 'latLng': marker.getPosition() }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    if (results[0]) {
-                        // hacking: sometime ng-include is not working for second time
-                        if (!$this.compiled[0].nextSibling) {
-                            $this.compiled = $this.$compile($this.content)($this.$scope);
-                        }
+            this.$scope.map.setCenter(marker.getPosition());
+            var thisScope = this;
+            //this.geocoder.geocode({ 'LatLng': marker.getPosition() }, function (results, status) {
+            //    if (status == google.maps.GeocoderStatus.OK) {
+            //        if (results[0]) {
+            //            // hacking: sometime ng-include is not working for second time
+            //            if (!thisScope.compiled[0].nextsibling) {
+            //                thisScope.compiled = thisScope.$compile(thisScope.content)(thisScope.$scope);
+            //            }
 
-                        $this.$scope.marker = marker;
-                        $this.$scope.markerAddress = results[0].formatted_address;
+            //            thisScope.$scope.marker = marker;
+            //            thisScope.$scope.markerAddress = results[0].formatted_address;
 
-                        $this.$scope.$apply();
-                        infobox.setContent($this.compiled[0].nextSibling.innerHTML);
+            //            thisScope.$scope.$apply();
+            //            infobox.setcontent(thisScope.compiled[0].nextsibling.innerhtml);
 
-                        //resetInfoBoxes();
-                        infobox.open($this.$scope.map, marker);
+            //            //resetinfoboxes();
+            //            infobox.open(thisScope.$scope.map, marker);
 
-                    }
-                }
-            });
+            //        }
+            //    }
+            //});
         }
 
         //clear all current markers
@@ -238,6 +240,9 @@ module map {
                     this.infoBoxArray[i].close();
                 }
             }
+        }
+        closeWindow() {
+            $("#outageInfo").slideToggle("slow");
         }
         reportAsset() {
             this.$location.path('/report');

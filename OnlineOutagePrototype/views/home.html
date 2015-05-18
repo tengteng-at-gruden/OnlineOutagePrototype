@@ -10,13 +10,21 @@
 <section id="map">
   <!--div id="myMap" ui-options="mapOptions" class="map-canvas" ui-event="{'map-zoom_changed': 'zoomChanged(myMap.getZoom())'}"></div-->
   <div id="myMap" class="map-canvas"></div>
-</section>
-<div id="outageInfo">
-  <p>start time: 12:30</p>
-  <p>Estimated Restore Time:14:30</p>
-  <p>Status: Reported</p>
-  <p>Areas Affected: Stanmore</p>
-  <p>Numbers of customer affected: 200(approx)</p>
+  <div id="outageInfo">
+    <div class="left">
+      <p>start time: 12:30</p>
+      <p>Estimated Restore Time:14:30</p>
+      <p>Status: Reported</p>
+      <p>Areas Affected: Stanmore</p>
+      <p>Numbers of customer affected: 200(approx)</p>
 
-  <button class="btn btn-small btn-primary" type="button" ng-click="homeVm.reportAsset()">Report Outage</button><br />
-</div>
+      <button class="btn btn-small btn-primary" type="button" ng-click="homeVm.reportAsset()">Report Outage</button><br />
+    </div>
+    <div class="right">
+      <a class="close-tag" ng-click="homeVm.closeWindow()">close</a>
+      <p>facebook <a href="#">my facebook home page</a></p>
+      <p>twitter <a href="#">my twitter home page</a></p>
+    </div>
+  </div>
+</section>
+
