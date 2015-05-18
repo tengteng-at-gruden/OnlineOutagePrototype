@@ -222,6 +222,7 @@ var map;
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
+/// <reference path='../_all.ts' />
 var map;
 (function (map) {
     'use strict';
@@ -633,5 +634,4 @@ var map;
         sharedDataProvider.$get();
     });
 })(map || (map = {}));
-/// <reference path='../_all.ts' />
 //# sourceMappingURL=app.js.map
