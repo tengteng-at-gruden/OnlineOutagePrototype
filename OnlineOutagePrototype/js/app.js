@@ -1,11 +1,11 @@
 var map;
 (function (map) {
     'use strict';
-    function CustomRadio() {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function (scope, element, attrs, model) {
+    var CustomRadio = (function () {
+        function CustomRadio() {
+            this.restrict = 'A';
+            this.require = 'ngModel';
+            this.link = function (scope, element, attrs, model) {
                 var value = attrs['value'];
                 var noValue = $(element).data('not-selected');
                 $(element).radiobutton({
@@ -23,9 +23,16 @@ var map;
                         });
                     }
                 });
-            }
+            };
+        }
+        CustomRadio.Factory = function () {
+            var directive = function () {
+                return new CustomRadio();
+            };
+            return directive;
         };
-    }
+        return CustomRadio;
+    })();
     map.CustomRadio = CustomRadio;
 })(map || (map = {}));
 var map;
@@ -373,7 +380,7 @@ var map;
 var map;
 (function (_map) {
     'use strict';
-    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps']).controller('rootController', _map.RootController).controller('introController', _map.IntroController).controller('homeController', _map.HomeController).controller('formController', _map.FormController).directive('customradio', _map.CustomRadio).directive('customselectbox', _map.CustomSelectBox).directive('icheck', _map.ICheck).directive('placeholderforall', _map.PlaceholderForAll).directive('notallowedcharacters', _map.NotAllowedCharacters);
+    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps']).controller('rootController', _map.RootController).controller('introController', _map.IntroController).controller('homeController', _map.HomeController).controller('formController', _map.FormController).directive('customradio', _map.CustomRadio.Factory()).directive('customselectbox', _map.CustomSelectBox).directive('icheck', _map.ICheck).directive('placeholderforall', _map.PlaceholderForAll).directive('notallowedcharacters', _map.NotAllowedCharacters);
     map.config(['$routeProvider', function routes($routeProvider) {
         $routeProvider.when('/map', {
             templateUrl: '../views/home.html',

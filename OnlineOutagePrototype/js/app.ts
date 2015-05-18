@@ -8,7 +8,7 @@ module map {
         .controller('introController', IntroController)
         .controller('homeController', HomeController)
         .controller('formController', FormController)
-        .directive('customradio', CustomRadio)
+        .directive('customradio', CustomRadio.Factory())
         .directive('customselectbox', CustomSelectBox)
         .directive('icheck', ICheck)
         .directive('placeholderforall', PlaceholderForAll)
