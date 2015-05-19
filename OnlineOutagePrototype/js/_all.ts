@@ -1,4 +1,7 @@
 ﻿/// <reference path='../scripts/typings/jquery/jquery.d.ts' />
+/// <reference path='../scripts/typings/jquery/jquery.selectbox.d.ts' />
+/// <reference path='../scripts/typings/jquery/jquery.radiobutton.d.ts' />
+/// <reference path='../scripts/typings/icheck/icheck.d.ts' />
 /// <reference path='../scripts/typings/angularjs/angular.d.ts' />
 /// <reference path='../scripts/typings/angularjs/angular-route.d.ts' />
 /// <reference path='../scripts/typings/google.maps.d.ts' />

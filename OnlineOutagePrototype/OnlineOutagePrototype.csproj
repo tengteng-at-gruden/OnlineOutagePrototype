@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.1</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -30,7 +30,6 @@
     <Content Include="images\red.png" />
     <Content Include="images\Status_Sprites.png" />
     <Content Include="images\switches.png" />
-    <Content Include="js\app.js" />
     <Content Include="js\_all.js" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
@@ -73,10 +72,12 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\google.maps.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\icheck\icheck.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.radiobutton.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.selectbox.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="js\app.js.map" />
     <Content Include="js\_all.js.map" />
     <Content Include="packages.config" />
     <Content Include="Scripts\angular-route.min.js.map" />

@@ -8,21 +8,20 @@ var map;
             this.link = function (scope, element, attrs, model) {
                 var value = attrs['value'];
                 var noValue = $(element).data('not-selected');
-                $(element).radiobutton({
-                    className: 'switch-off',
-                    checkedClass: 'switch-on'
-                }).on('change', function (event) {
-                    if ($(element).attr('type') === 'radio' && attrs['ngModel']) {
-                        return scope.$apply(function () {
-                            if ($(element).attr('checked')) {
-                                return model.$setViewValue(value);
-                            }
-                            else {
-                                return model.$setViewValue(noValue);
-                            }
-                        });
-                    }
-                });
+                //$(element).radiobutton({
+                //    className: 'switch-off',
+                //    checkedClass: 'switch-on'
+                //}).on('change', event => {
+                //    if ($(element).attr('type') === 'radio' && attrs['ngModel']) {
+                //        return scope.$apply(() => {
+                //            if ($(element).attr('checked')) {
+                //                return model.$setViewValue(value);
+                //            } else {
+                //                return model.$setViewValue(noValue);
+                //            }
+                //        });
+                //    }
+                //});
             };
         }
         CustomRadio.Factory = function () {
@@ -43,7 +42,7 @@ var map;
             this.restrict = 'A';
             this.require = 'ngModel';
             this.link = function (scope, element, attrs, model) {
-                $(element).selectbox();
+                //$(element).selectbox();
             };
         }
         CustomSelectBox.Factory = function () {
@@ -110,7 +109,6 @@ var map;
                     hoverClass: 'none'
                 }).on('ifChanged', function (event) {
                     if ($(element).attr('type') === 'checkbox' && attrs['ngModel']) {
-                        scope.$apply(function () { return model.$setViewValue(event.target.checked); });
                     }
                     if ($(element).attr('type') === 'radio' && attrs['ngModel']) {
                         return scope.$apply(function () { return model.$setViewValue(value); });
@@ -234,7 +232,9 @@ var map;
             this.baseUrl = '/data/';
         }
         PoleData.prototype.getPoles = function (container) {
-            var promise = this.$http.get(this.baseUrl + 'poles.json', container).then(function (response) {
+            var promise = this.$http
+                .get(this.baseUrl + 'poles.json', container)
+                .then(function (response) {
                 return response.data;
             });
             return promise;
@@ -385,7 +385,7 @@ var map;
             this.geocoder = new google.maps.Geocoder();
             this.content = '<div id="infowindow_content" ng-include src="\'/views/infobox.html\'"></div>';
             this.compiled = $compile(this.content)($scope);
-            var mapOptions = {
+            var opts = {
                 center: new google.maps.LatLng(mySettings.defaultLati, mySettings.defaultLongi),
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 disableDoubleClickZoom: true,
@@ -394,7 +394,7 @@ var map;
                 mapTypeControl: false,
                 bounds: new google.maps.LatLngBounds(new google.maps.LatLng(mySettings.NSW_SW_lat, mySettings.NSW_SW_lng), new google.maps.LatLng(mySettings.NSW_NE_lat, mySettings.NSW_NE_lng))
             };
-            $scope.map = new google.maps.Map(document.getElementById('myMap'), mapOptions);
+            $scope.map = new google.maps.Map(document.getElementById('myMap'), opts);
             $scope.map.setZoom(14);
         }
         HomeController.prototype.searchAddress = function () {
@@ -616,22 +616,57 @@ var map;
 })(map || (map = {}));
 /// <reference path='_all.ts' />
 var map;
-(function (_map) {
+(function (map_1) {
     'use strict';
-    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps']).controller('rootController', _map.RootController).controller('introController', _map.IntroController).controller('homeController', _map.HomeController).controller('formController', _map.FormController).directive('googleplace', _map.GooglePlace).directive('customradio', _map.CustomRadio.Factory()).directive('customselectbox', _map.CustomSelectBox.Factory()).directive('icheck', _map.ICheck.Factory()).directive('placeholderforall', _map.PlaceholderForAll.Factory()).directive('notallowedcharacters', _map.NotAllowedCharacters.Factory());
+    var map = angular.module('map', ['ngRoute'])
+        .controller('rootController', map_1.RootController)
+        .controller('introController', map_1.IntroController)
+        .controller('homeController', map_1.HomeController)
+        .controller('formController', map_1.FormController)
+        .directive('googleplace', map_1.GooglePlace)
+        .directive('customradio', map_1.CustomRadio.Factory())
+        .directive('customselectbox', map_1.CustomSelectBox.Factory())
+        .directive('icheck', map_1.ICheck.Factory())
+        .directive('placeholderforall', map_1.PlaceholderForAll.Factory())
+        .directive('notallowedcharacters', map_1.NotAllowedCharacters.Factory());
     map.config(['$routeProvider', function routes($routeProvider) {
-        $routeProvider.when('/map', {
-            templateUrl: '../views/home.html',
-            controller: 'homeController'
-        }).when('/report', {
-            templateUrl: '../views/form.html',
-            controller: 'formController',
-            controllerAs: "vm"
-        }).otherwise({ redirectTo: '/' });
-    }]);
-    map.provider("sharedData", _map.SharedData).config(function (sharedDataProvider) {
-        sharedDataProvider.$get();
-    });
+            $routeProvider.when('/map', {
+                templateUrl: '../views/home.html',
+                controller: 'homeController'
+            }).
+                when('/report', {
+                templateUrl: '../views/form.html',
+                controller: 'formController',
+                controllerAs: "vm"
+            }).
+                otherwise({ redirectTo: '/' });
+        }]);
+    map.provider("sharedData", map_1.SharedData).config(['sharedDataProvider', function shared(sharedDataProvider) {
+            sharedDataProvider.$get();
+        }]);
 })(map || (map = {}));
+/// <reference path='../scripts/typings/jquery/jquery.d.ts' />
+/// <reference path='../scripts/typings/jquery/jquery.selectbox.d.ts' />
+/// <reference path='../scripts/typings/icheck/icheck.d.ts' />
+/// <reference path='../scripts/typings/angularjs/angular.d.ts' />
+/// <reference path='../scripts/typings/angularjs/angular-route.d.ts' />
+/// <reference path='../scripts/typings/google.maps.d.ts' />
+/// <reference path='directives/custom-radio.ts' />
+/// <reference path='directives/custom-selectbox.ts' />
+/// <reference path='directives/google-place.ts' />
+/// <reference path='directives/icheck.ts' />
+/// <reference path='directives/placeholder-for-all.ts' />
+/// <reference path='directives/validate-not-allowed-characters.ts' />
+/// <reference path='interfaces/IHomeScope.ts' />
+/// <reference path='interfaces/IMapScope.ts' />
+/// <reference path='interfaces/IMapStorage.ts' />
+/// <reference path='interfaces/ISharedData.ts' />
+/// <reference path='services/poleData.ts' />
+/// <reference path='services/sharedData.ts' />
+/// <reference path='controllers/RootController.ts' />
+/// <reference path='controllers/IntroController.ts' />
+/// <reference path='controllers/HomeController.ts' />
+/// <reference path='controllers/FormController.ts' />
+/// <reference path='app.ts' /> 
 /// <reference path='../_all.ts' />
 //# sourceMappingURL=app.js.map

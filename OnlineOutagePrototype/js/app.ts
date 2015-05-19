@@ -3,7 +3,7 @@
 module map {
     'use strict';
 
-    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps'])
+    var map = angular.module('map', ['ngRoute'])
         .controller('rootController', RootController)
         .controller('introController', IntroController)
         .controller('homeController', HomeController)
@@ -33,7 +33,7 @@ module map {
             otherwise({ redirectTo: '/' });
     }]);
 
-    map.provider("sharedData", SharedData).config((sharedDataProvider: SharedData) => {
+    map.provider("sharedData", SharedData).config(['sharedDataProvider', function shared(sharedDataProvider: SharedData){
         sharedDataProvider.$get();
-    });
+    }]);
 }

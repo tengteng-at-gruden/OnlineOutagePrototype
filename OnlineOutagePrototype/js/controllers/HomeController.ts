@@ -34,6 +34,7 @@ module map {
                 NSW_SW_lat : -44.197959,
                 NSW_SW_lng : 137.175293,
             };
+            
             $scope.chosenPlace = '';
             $scope.isLoading = false;
             $scope.homeVm = this;
@@ -49,7 +50,7 @@ module map {
             this.content = '<div id="infowindow_content" ng-include src="\'/views/infobox.html\'"></div>';
             this.compiled = $compile(this.content)($scope); 
 
-            var mapOptions = {
+            var opts: google.maps.MapOptions = {
                 center: new google.maps.LatLng(mySettings.defaultLati, mySettings.defaultLongi),
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 disableDoubleClickZoom: true,
@@ -61,7 +62,7 @@ module map {
                     new google.maps.LatLng(mySettings.NSW_NE_lat, mySettings.NSW_NE_lng))
             };
 
-            $scope.map = new google.maps.Map(document.getElementById('myMap'), mapOptions);
+            $scope.map = new google.maps.Map(document.getElementById('myMap'), opts);
 
             $scope.map.setZoom(14);
         }
