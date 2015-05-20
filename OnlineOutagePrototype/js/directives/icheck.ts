@@ -24,7 +24,7 @@
                     hoverClass: 'none'
                 }).on('ifChanged', event => {
                     if ($(element).attr('type') === 'checkbox' && attrs['ngModel']) {
-                        scope.$apply(() => model.$setViewValue(event.target.checked));
+                        scope.$apply(() => model.$setViewValue((event.target)[0].checked));
                     }
                     if ($(element).attr('type') === 'radio' && attrs['ngModel']) {
                         return scope.$apply(() => model.$setViewValue(value));

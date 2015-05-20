@@ -8,20 +8,21 @@ var map;
             this.link = function (scope, element, attrs, model) {
                 var value = attrs['value'];
                 var noValue = $(element).data('not-selected');
-                //$(element).radiobutton({
-                //    className: 'switch-off',
-                //    checkedClass: 'switch-on'
-                //}).on('change', event => {
-                //    if ($(element).attr('type') === 'radio' && attrs['ngModel']) {
-                //        return scope.$apply(() => {
-                //            if ($(element).attr('checked')) {
-                //                return model.$setViewValue(value);
-                //            } else {
-                //                return model.$setViewValue(noValue);
-                //            }
-                //        });
-                //    }
-                //});
+                $(element).radiobutton({
+                    className: 'switch-off',
+                    checkedClass: 'switch-on'
+                }).on('change', function (event) {
+                    if ($(element).attr('type') === 'radio' && attrs['ngModel']) {
+                        return scope.$apply(function () {
+                            if ($(element).attr('checked')) {
+                                return model.$setViewValue(value);
+                            }
+                            else {
+                                return model.$setViewValue(noValue);
+                            }
+                        });
+                    }
+                });
             };
         }
         CustomRadio.Factory = function () {
@@ -42,7 +43,7 @@ var map;
             this.restrict = 'A';
             this.require = 'ngModel';
             this.link = function (scope, element, attrs, model) {
-                //$(element).selectbox();
+                $(element).selectbox();
             };
         }
         CustomSelectBox.Factory = function () {
@@ -109,6 +110,7 @@ var map;
                     hoverClass: 'none'
                 }).on('ifChanged', function (event) {
                     if ($(element).attr('type') === 'checkbox' && attrs['ngModel']) {
+                        scope.$apply(function () { return model.$setViewValue((event.target)[0].checked); });
                     }
                     if ($(element).attr('type') === 'radio' && attrs['ngModel']) {
                         return scope.$apply(function () { return model.$setViewValue(value); });
@@ -406,16 +408,6 @@ var map;
                 'location': $scope.map.getCenter(),
                 'region': 'aus'
             };
-            //this.geocoder.geocode(
-            //    geocodeRequest,
-            //    function (results, status) {
-            //        if (status == google.maps.GeocoderStatus.OK) {
-            //            var loc = results[0].geometry.location;        
-            //            $scope.map.setCenter(loc);
-            //        } else {
-            //            alert("No result Found");
-            //        }
-            //    });
             $scope.map.setZoom(18);
             thisScope.showMarkers();
         };
@@ -515,22 +507,6 @@ var map;
             this.resetInfoBoxes();
             this.$scope.map.setCenter(marker.getPosition());
             var thisScope = this;
-            //this.geocoder.geocode({ 'LatLng': marker.getPosition() }, function (results, status) {
-            //    if (status == google.maps.GeocoderStatus.OK) {
-            //        if (results[0]) {
-            //            // hacking: sometime ng-include is not working for second time
-            //            if (!thisScope.compiled[0].nextsibling) {
-            //                thisScope.compiled = thisScope.$compile(thisScope.content)(thisScope.$scope);
-            //            }
-            //            thisScope.$scope.marker = marker;
-            //            thisScope.$scope.markerAddress = results[0].formatted_address;
-            //            thisScope.$scope.$apply();
-            //            infobox.setcontent(thisScope.compiled[0].nextsibling.innerhtml);
-            //            //resetinfoboxes();
-            //            infobox.open(thisScope.$scope.map, marker);
-            //        }
-            //    }
-            //});
         };
         //clear all current markers
         HomeController.prototype.resetMarkers = function () {
@@ -647,6 +623,7 @@ var map;
 })(map || (map = {}));
 /// <reference path='../scripts/typings/jquery/jquery.d.ts' />
 /// <reference path='../scripts/typings/jquery/jquery.selectbox.d.ts' />
+/// <reference path='../scripts/typings/jquery/jquery.radiobutton.d.ts' />
 /// <reference path='../scripts/typings/icheck/icheck.d.ts' />
 /// <reference path='../scripts/typings/angularjs/angular.d.ts' />
 /// <reference path='../scripts/typings/angularjs/angular-route.d.ts' />

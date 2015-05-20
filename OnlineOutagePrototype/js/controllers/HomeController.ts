@@ -78,18 +78,7 @@ module map {
                 'location': $scope.map.getCenter(),
                 'region': 'aus'
             };
-           
-           //this.geocoder.geocode(
-           //    geocodeRequest,
-           //    function (results, status) {
-           //        if (status == google.maps.GeocoderStatus.OK) {
-           //            var loc = results[0].geometry.location;        
-           //            $scope.map.setCenter(loc);
-                       
-           //        } else {
-           //            alert("No result Found");
-           //        }
-           //    });
+    
             $scope.map.setZoom(18);
             thisScope.showMarkers();
         }
@@ -204,26 +193,6 @@ module map {
             this.resetInfoBoxes();
             this.$scope.map.setCenter(marker.getPosition());
             var thisScope = this;
-            //this.geocoder.geocode({ 'LatLng': marker.getPosition() }, function (results, status) {
-            //    if (status == google.maps.GeocoderStatus.OK) {
-            //        if (results[0]) {
-            //            // hacking: sometime ng-include is not working for second time
-            //            if (!thisScope.compiled[0].nextsibling) {
-            //                thisScope.compiled = thisScope.$compile(thisScope.content)(thisScope.$scope);
-            //            }
-
-            //            thisScope.$scope.marker = marker;
-            //            thisScope.$scope.markerAddress = results[0].formatted_address;
-
-            //            thisScope.$scope.$apply();
-            //            infobox.setcontent(thisScope.compiled[0].nextsibling.innerhtml);
-
-            //            //resetinfoboxes();
-            //            infobox.open(thisScope.$scope.map, marker);
-
-            //        }
-            //    }
-            //});
         }
 
         //clear all current markers
