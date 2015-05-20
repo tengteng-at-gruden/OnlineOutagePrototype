@@ -14,6 +14,7 @@ module map {
         .directive('icheck', ICheck.Factory())
         .directive('placeholderforall', PlaceholderForAll.Factory())
         .directive('notallowedcharacters', NotAllowedCharacters.Factory())
+        .service('poleData', PoleData)
     ;
 
     map.config(['$routeProvider', function routes($routeProvider: ng.route.IRouteProvider) {

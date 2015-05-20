@@ -23,7 +23,7 @@ module map {
         ];
 
         constructor(
-            private $scope: IMapScope,
+            private $scope: IRootScope,
             private $location: ng.ILocationService,
             private $anchorScroll: ng.IAnchorScrollService,
             private $rootScope: ng.IRootScopeService,

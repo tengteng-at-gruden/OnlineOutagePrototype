@@ -9,21 +9,23 @@ module map {
         private infoWindowArray: any;
         private infoBoxArray: any;
         private markersArray: any;
-        private content: any;
+        private content: string;
         private compiled: any;
 
         public static $inject = [
             '$scope',
             '$location',
             '$compile',
-            '$http'
+            '$http',
+            'poleData'
         ];
 
         constructor(
             private $scope: IHomeScope,
             private $location: ng.ILocationService,
             private $compile: ng.ICompileService,
-            private $http: ng.IHttpService
+            private $http: ng.IHttpService,
+            private poleData: IPoleData
             ) {
             $("#outageInfo").hide();
             var mySettings = {
@@ -85,7 +87,6 @@ module map {
 
         showMarkers() {
             var thisScope = this;
-            var poleData = new PoleData(this.$http);
             var zoom = this.$scope.map.getZoom();
             if (zoom > 17) {
                 var bounds = this.$scope.map.getBounds();
@@ -97,7 +98,7 @@ module map {
                 };
 
                 // retrieve poles from Ausgrid service
-                poleData.getPoles({ box: viewbox }).then(function (result) {
+                this.poleData.getPoles({ box: viewbox }).then(function (result) {
                     if (result.d) {
                         thisScope.setMarkers(result.d);
                         thisScope.$scope.isLoading = false;                    

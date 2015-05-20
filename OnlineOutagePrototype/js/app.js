@@ -361,11 +361,12 @@ var map;
 (function (map) {
     'use strict';
     var HomeController = (function () {
-        function HomeController($scope, $location, $compile, $http) {
+        function HomeController($scope, $location, $compile, $http, poleData) {
             this.$scope = $scope;
             this.$location = $location;
             this.$compile = $compile;
             this.$http = $http;
+            this.poleData = poleData;
             $("#outageInfo").hide();
             var mySettings = {
                 defaultLati: -33.867487,
@@ -413,7 +414,6 @@ var map;
         };
         HomeController.prototype.showMarkers = function () {
             var thisScope = this;
-            var poleData = new map.PoleData(this.$http);
             var zoom = this.$scope.map.getZoom();
             if (zoom > 17) {
                 var bounds = this.$scope.map.getBounds();
@@ -424,7 +424,7 @@ var map;
                     "topright": { "lat": ne.lat(), "lng": ne.lng() }
                 };
                 // retrieve poles from Ausgrid service
-                poleData.getPoles({ box: viewbox }).then(function (result) {
+                this.poleData.getPoles({ box: viewbox }).then(function (result) {
                     if (result.d) {
                         thisScope.setMarkers(result.d);
                         thisScope.$scope.isLoading = false;
@@ -534,7 +534,8 @@ var map;
             '$scope',
             '$location',
             '$compile',
-            '$http'
+            '$http',
+            'poleData'
         ];
         return HomeController;
     })();
@@ -604,7 +605,8 @@ var map;
         .directive('customselectbox', map_1.CustomSelectBox.Factory())
         .directive('icheck', map_1.ICheck.Factory())
         .directive('placeholderforall', map_1.PlaceholderForAll.Factory())
-        .directive('notallowedcharacters', map_1.NotAllowedCharacters.Factory());
+        .directive('notallowedcharacters', map_1.NotAllowedCharacters.Factory())
+        .service('poleData', map_1.PoleData);
     map.config(['$routeProvider', function routes($routeProvider) {
             $routeProvider.when('/map', {
                 templateUrl: '../views/home.html',
@@ -635,8 +637,8 @@ var map;
 /// <reference path='directives/placeholder-for-all.ts' />
 /// <reference path='directives/validate-not-allowed-characters.ts' />
 /// <reference path='interfaces/IHomeScope.ts' />
-/// <reference path='interfaces/IMapScope.ts' />
-/// <reference path='interfaces/IMapStorage.ts' />
+/// <reference path='interfaces/IRootScope.ts' />
+/// <reference path='interfaces/IPoleData.ts' />
 /// <reference path='interfaces/ISharedData.ts' />
 /// <reference path='services/poleData.ts' />
 /// <reference path='services/sharedData.ts' />

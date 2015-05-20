@@ -6,7 +6,7 @@ module map {
     /**
      * Services that persists and retrieves TODOs from localStorage.
      */
-    export class PoleData {
+    export class PoleData implements IPoleData {
 
         private baseUrl;
 
