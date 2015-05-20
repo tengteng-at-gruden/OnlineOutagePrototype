@@ -3,9 +3,6 @@
 module map {
     'use strict';
 
-    /**
-     * Services that persists and retrieves TODOs from localStorage.
-     */
     export class PoleData implements IPoleData {
 
         private baseUrl;

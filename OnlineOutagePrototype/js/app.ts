@@ -15,6 +15,7 @@ module map {
         .directive('placeholderforall', PlaceholderForAll.Factory())
         .directive('notallowedcharacters', NotAllowedCharacters.Factory())
         .service('poleData', PoleData)
+        .service('mapStorage', MapStorage)
     ;
 
     map.config(['$routeProvider', function routes($routeProvider: ng.route.IRouteProvider) {
