@@ -293,6 +293,36 @@ var map;
             this.infoBoxArray = [];
             this.markersArray = [];
         }
+        MapStorage.prototype.initializeMap = function ($scope, $compile) {
+            $("#outageInfo").hide();
+            var mySettings = {
+                defaultLati: -33.867487,
+                defaultLongi: 151.20699,
+                NSW_NE_lat: -27.664069,
+                NSW_NE_lng: 154.35791,
+                NSW_SW_lat: -44.197959,
+                NSW_SW_lng: 137.175293,
+            };
+            $scope.chosenPlace = '';
+            $scope.isLoading = false;
+            $scope.marker = {};
+            $scope.markerAddress = '';
+            $scope.markerStatue = '';
+            this.geocoder = new google.maps.Geocoder();
+            this.content = '<div id="infowindow_content" ng-include src="\'/views/infobox.html\'"></div>';
+            this.compiled = $compile(this.content)($scope);
+            var opts = {
+                center: new google.maps.LatLng(mySettings.defaultLati, mySettings.defaultLongi),
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                disableDoubleClickZoom: true,
+                zoomControlOptions: { style: google.maps.ZoomControlStyle.SMALL },
+                streetViewControl: false,
+                mapTypeControl: false,
+                bounds: new google.maps.LatLngBounds(new google.maps.LatLng(mySettings.NSW_SW_lat, mySettings.NSW_SW_lng), new google.maps.LatLng(mySettings.NSW_NE_lat, mySettings.NSW_NE_lng))
+            };
+            $scope.map = new google.maps.Map(document.getElementById('myMap'), opts);
+            $scope.map.setZoom(14);
+        };
         MapStorage.prototype.showMarkers = function ($scope) {
             var thisScope = this;
             var zoom = $scope.map.getZoom();
@@ -473,42 +503,14 @@ var map;
 (function (map) {
     'use strict';
     var HomeController = (function () {
-        function HomeController($scope, $location, $compile, $http, poleData, mapStorage) {
+        function HomeController($scope, $location, $compile, $http, mapStorage) {
             this.$scope = $scope;
             this.$location = $location;
             this.$compile = $compile;
             this.$http = $http;
-            this.poleData = poleData;
             this.mapStorage = mapStorage;
-            $("#outageInfo").hide();
-            var mySettings = {
-                defaultLati: -33.867487,
-                defaultLongi: 151.20699,
-                NSW_NE_lat: -27.664069,
-                NSW_NE_lng: 154.35791,
-                NSW_SW_lat: -44.197959,
-                NSW_SW_lng: 137.175293,
-            };
-            $scope.chosenPlace = '';
-            $scope.isLoading = false;
             $scope.homeVm = this;
-            $scope.marker = {};
-            $scope.markerAddress = '';
-            $scope.markerStatue = '';
-            this.geocoder = new google.maps.Geocoder();
-            this.content = '<div id="infowindow_content" ng-include src="\'/views/infobox.html\'"></div>';
-            this.compiled = $compile(this.content)($scope);
-            var opts = {
-                center: new google.maps.LatLng(mySettings.defaultLati, mySettings.defaultLongi),
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                disableDoubleClickZoom: true,
-                zoomControlOptions: { style: google.maps.ZoomControlStyle.SMALL },
-                streetViewControl: false,
-                mapTypeControl: false,
-                bounds: new google.maps.LatLngBounds(new google.maps.LatLng(mySettings.NSW_SW_lat, mySettings.NSW_SW_lng), new google.maps.LatLng(mySettings.NSW_NE_lat, mySettings.NSW_NE_lng))
-            };
-            $scope.map = new google.maps.Map(document.getElementById('myMap'), opts);
-            $scope.map.setZoom(14);
+            this.mapStorage.initializeMap($scope, $compile);
         }
         HomeController.prototype.searchAddress = function () {
             this.$scope.map.setZoom(18);
@@ -528,7 +530,6 @@ var map;
             '$location',
             '$compile',
             '$http',
-            'poleData',
             'mapStorage'
         ];
         return HomeController;
