@@ -45,6 +45,7 @@
     <Content Include="Scripts\jquery.selectbox.0.2.min.js" />
     <Content Include="Styles\app.css" />
     <Content Include="Styles\bootstrap.css" />
+    <Content Include="Styles\grey.png" />
     <Content Include="views\form.html" />
     <Content Include="views\home.html" />
     <Content Include="views\infobox.html" />
