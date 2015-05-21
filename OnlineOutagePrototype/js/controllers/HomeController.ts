@@ -5,16 +5,13 @@ module map {
 
     export class HomeController {
 
-        private geocoder: google.maps.Geocoder;
-        private content: string;
-        private compiled: any;
-
         public static $inject = [
             '$scope',
             '$location',
             '$compile',
             '$http',
-            'mapStorage'
+            'mapStorage',
+            'mapLazyLoad'
         ];
 
         constructor(
@@ -22,12 +19,16 @@ module map {
             private $location: ng.ILocationService,
             private $compile: ng.ICompileService,
             private $http: ng.IHttpService,
-            private mapStorage: IMapStorage
+            private mapStorage: IMapStorage,
+            private mapLazyLoad: IMapLazyLoad
             ) {
              
             $scope.homeVm = this;
 
-            this.mapStorage.initializeMap($scope, $compile);
+            //this.mapLazyLoad.asynGoogleMap().then(function () {
+                this.mapStorage.initializeMap($scope, $compile);
+            //});
+            
         }
 
         searchAddress() {

@@ -65,10 +65,12 @@
     <TypeScriptCompile Include="js\directives\placeholder-for-all.ts" />
     <TypeScriptCompile Include="js\directives\validate-not-allowed-characters.ts" />
     <TypeScriptCompile Include="js\interfaces\IHomeScope.ts" />
+    <TypeScriptCompile Include="js\interfaces\IMapLazyLoad.ts" />
     <TypeScriptCompile Include="js\interfaces\IMapStorage.ts" />
     <TypeScriptCompile Include="js\interfaces\IPoleData.ts" />
     <TypeScriptCompile Include="js\interfaces\IRootScope.ts" />
     <TypeScriptCompile Include="js\interfaces\ISharedData.ts" />
+    <TypeScriptCompile Include="js\services\MapLazyLoad.ts" />
     <TypeScriptCompile Include="js\services\MapStorage.ts" />
     <TypeScriptCompile Include="js\services\PoleData.ts" />
     <TypeScriptCompile Include="js\services\sharedData.ts" />

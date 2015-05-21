@@ -232,6 +232,7 @@ var map;
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
+/// <reference path='../_all.ts' />
 var map;
 (function (map) {
     'use strict';
@@ -440,6 +441,38 @@ var map;
 var map;
 (function (map) {
     'use strict';
+    var MapLazyLoad = (function () {
+        function MapLazyLoad($q, $window) {
+            this.$q = $q;
+            this.$window = $window;
+        }
+        MapLazyLoad.prototype.asynGoogleMap = function () {
+            var asyncUrl = 'http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&callback=', mapsDefer = this.$q.defer();
+            this.$window['googleMapsInitialized'] = function () {
+                mapsDefer.resolve; // removed ()
+                //alert("load success");
+            };
+            this.asyncLoad(asyncUrl, 'googleMapsInitialized');
+            return mapsDefer.promise;
+        };
+        MapLazyLoad.prototype.asyncLoad = function (asyncUrl, callbackName) {
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = asyncUrl + callbackName;
+            document.body.appendChild(script);
+        };
+        MapLazyLoad.$inject = [
+            '$q',
+            '$window'
+        ];
+        return MapLazyLoad;
+    })();
+    map.MapLazyLoad = MapLazyLoad;
+})(map || (map = {}));
+/// <reference path='../_all.ts' />
+var map;
+(function (map) {
+    'use strict';
     /**
      * The main controller for the app. The controller:
      * - retrieves and persists the model via the todoStorage service
@@ -512,14 +545,17 @@ var map;
 (function (map) {
     'use strict';
     var HomeController = (function () {
-        function HomeController($scope, $location, $compile, $http, mapStorage) {
+        function HomeController($scope, $location, $compile, $http, mapStorage, mapLazyLoad) {
             this.$scope = $scope;
             this.$location = $location;
             this.$compile = $compile;
             this.$http = $http;
             this.mapStorage = mapStorage;
+            this.mapLazyLoad = mapLazyLoad;
             $scope.homeVm = this;
+            //this.mapLazyLoad.asynGoogleMap().then(function () {
             this.mapStorage.initializeMap($scope, $compile);
+            //});
         }
         HomeController.prototype.searchAddress = function () {
             this.$scope.map.setZoom(18);
@@ -539,7 +575,8 @@ var map;
             '$location',
             '$compile',
             '$http',
-            'mapStorage'
+            'mapStorage',
+            'mapLazyLoad'
         ];
         return HomeController;
     })();
@@ -611,7 +648,8 @@ var map;
         .directive('placeholderforall', map_1.PlaceholderForAll.Factory())
         .directive('notallowedcharacters', map_1.NotAllowedCharacters.Factory())
         .service('poleData', map_1.PoleData)
-        .service('mapStorage', map_1.MapStorage);
+        .service('mapStorage', map_1.MapStorage)
+        .service('mapLazyLoad', map_1.MapLazyLoad);
     map.config(['$routeProvider', function routes($routeProvider) {
             $routeProvider.when('/map', {
                 templateUrl: '../views/home.html',
@@ -646,9 +684,11 @@ var map;
 /// <reference path='interfaces/IPoleData.ts' />
 /// <reference path='interfaces/ISharedData.ts' />
 /// <reference path='interfaces/IMapStorage.ts' />
+/// <reference path='interfaces/IMapLazyLoad.ts' />
 /// <reference path='services/poleData.ts' />
 /// <reference path='services/sharedData.ts' />
 /// <reference path='services/MapStorage.ts' />
+/// <reference path='services/MapLazyLoad.ts' />
 /// <reference path='controllers/RootController.ts' />
 /// <reference path='controllers/IntroController.ts' />
 /// <reference path='controllers/HomeController.ts' />
