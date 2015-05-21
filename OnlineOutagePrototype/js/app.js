@@ -119,7 +119,7 @@ var map;
                     hoverClass: 'none'
                 }).on('ifChanged', function (event) {
                     if ($(element).attr('type') === 'checkbox' && attrs['ngModel']) {
-                        scope.$apply(function () { return model.$setViewValue((event.target)[0].checked); });
+                        scope.$apply(function () { return model.$setViewValue(event.target.checked); });
                     }
                     if ($(element).attr('type') === 'radio' && attrs['ngModel']) {
                         return scope.$apply(function () { return model.$setViewValue(value); });
