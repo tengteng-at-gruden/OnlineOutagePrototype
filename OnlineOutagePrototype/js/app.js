@@ -110,7 +110,7 @@ var map;
                     hoverClass: 'none'
                 }).on('ifChanged', function (event) {
                     if ($(element).attr('type') === 'checkbox' && attrs['ngModel']) {
-                        scope.$apply(function () { return model.$setViewValue(event.target.checked); });
+                        scope.$apply(function () { return model.$setViewValue((event.target)[0].checked); });
                     }
                     if ($(element).attr('type') === 'radio' && attrs['ngModel']) {
                         return scope.$apply(function () { return model.$setViewValue(value); });
@@ -226,16 +226,15 @@ var map;
 var map;
 (function (map) {
     'use strict';
-    /**
-     * Services that persists and retrieves TODOs from localStorage.
-     */
     var PoleData = (function () {
         function PoleData($http) {
             this.$http = $http;
             this.baseUrl = '/data/';
         }
         PoleData.prototype.getPoles = function (container) {
-            var promise = this.$http.get(this.baseUrl + 'poles.json', container).then(function (response) {
+            var promise = this.$http
+                .get(this.baseUrl + 'poles.json', container)
+                .then(function (response) {
                 return response.data;
             });
             return promise;
@@ -283,6 +282,150 @@ var map;
         return SharedData;
     })();
     map.SharedData = SharedData;
+})(map || (map = {}));
+/// <reference path='../_all.ts' />
+var map;
+(function (map) {
+    'use strict';
+    var MapStorage = (function () {
+        function MapStorage(poleData) {
+            this.poleData = poleData;
+            this.infoBoxArray = [];
+            this.markersArray = [];
+        }
+        MapStorage.prototype.initializeMap = function ($scope, $compile) {
+            $("#outageInfo").hide();
+            var mySettings = {
+                defaultLati: -33.867487,
+                defaultLongi: 151.20699,
+                NSW_NE_lat: -27.664069,
+                NSW_NE_lng: 154.35791,
+                NSW_SW_lat: -44.197959,
+                NSW_SW_lng: 137.175293,
+            };
+            $scope.chosenPlace = '';
+            $scope.isLoading = false;
+            $scope.marker = {};
+            $scope.markerAddress = '';
+            $scope.markerStatue = '';
+            this.geocoder = new google.maps.Geocoder();
+            this.content = '<div id="infowindow_content" ng-include src="\'/views/infobox.html\'"></div>';
+            this.compiled = $compile(this.content)($scope);
+            var opts = {
+                center: new google.maps.LatLng(mySettings.defaultLati, mySettings.defaultLongi),
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                disableDoubleClickZoom: true,
+                zoomControlOptions: { style: google.maps.ZoomControlStyle.SMALL },
+                streetViewControl: false,
+                mapTypeControl: false,
+                bounds: new google.maps.LatLngBounds(new google.maps.LatLng(mySettings.NSW_SW_lat, mySettings.NSW_SW_lng), new google.maps.LatLng(mySettings.NSW_NE_lat, mySettings.NSW_NE_lng))
+            };
+            $scope.map = new google.maps.Map(document.getElementById('myMap'), opts);
+            $scope.map.setZoom(14);
+        };
+        MapStorage.prototype.showMarkers = function ($scope) {
+            var thisScope = this;
+            var zoom = $scope.map.getZoom();
+            if (zoom > 17) {
+                var bounds = $scope.map.getBounds();
+                var ne = bounds.getNorthEast();
+                var sw = bounds.getSouthWest();
+                var viewbox = {
+                    "bottomleft": { "lat": sw.lat(), "lng": sw.lng() },
+                    "topright": { "lat": ne.lat(), "lng": ne.lng() }
+                };
+                // retrieve poles from Ausgrid service
+                this.poleData.getPoles({ box: viewbox }).then(function (result) {
+                    if (result.d) {
+                        thisScope.setMarkers(result.d, $scope);
+                        $scope.isLoading = false;
+                    }
+                }, function (error) {
+                });
+            }
+            else {
+                this.resetMarkers();
+            }
+        };
+        MapStorage.prototype.setMarkers = function (assets, $scope) {
+            var imageURL = '/images/Status_Sprites.png';
+            var workingImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(1, 1));
+            var reportedImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(23, 1));
+            var heldImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(45, 1));
+            var nonausgridImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(67, 1));
+            var workingHoverImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(1, 23));
+            var reportedHoverImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(23, 23));
+            var heldHoverImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(45, 23));
+            var nonausgridHoverImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(67, 23));
+            for (var index in assets) {
+                if (assets[index].lat) {
+                    var location = new google.maps.LatLng(assets[index].lat, assets[index].lng);
+                    var image = workingImage;
+                    var hoverImage = workingHoverImage;
+                    if (assets[index].Status == 'reported') {
+                        image = reportedImage;
+                        hoverImage = reportedHoverImage;
+                    }
+                    else if (assets[index].Status == 'held') {
+                        image = heldImage;
+                        hoverImage = heldHoverImage;
+                    }
+                    else if (assets[index].Status == 'nonausgrid') {
+                        image = nonausgridImage;
+                        hoverImage = nonausgridHoverImage;
+                    }
+                    var marker = new google.maps.Marker({
+                        position: location,
+                        map: $scope.map,
+                        icon: image,
+                        title: assets[index].AssetNo,
+                        customStatus: assets[index].Status,
+                        webID: assets[index].WebID,
+                    });
+                    this.markersArray.push(marker);
+                    this.attachInfoBox(marker, $scope);
+                }
+            }
+        };
+        MapStorage.prototype.attachInfoBox = function (marker, $scope) {
+            var thisScope = this;
+            var myOptions = {
+                disableAutoPan: false,
+                pixelOffset: new google.maps.Size(-140, 0),
+                zIndex: null,
+                closeBoxMargin: "10px 2px 2px 2px",
+                closeBoxURL: "/images/close.png",
+                infoBoxClearance: new google.maps.Size(1, 1),
+                isHidden: false,
+                pane: "floatPane",
+                enableEventPropagation: false
+            };
+            var ib = new google.maps.InfoWindow(myOptions);
+            this.infoBoxArray.push(ib);
+            //add click handler
+            google.maps.event.addListener(marker, 'click', function () {
+                thisScope.clickMarker(marker, $scope);
+            });
+        };
+        MapStorage.prototype.clickMarker = function (marker, $scope) {
+            $("#outageInfo").slideToggle("slow");
+            $scope.map.setCenter(marker.getPosition());
+        };
+        //clear all current markers
+        MapStorage.prototype.resetMarkers = function () {
+            if (this.markersArray.length) {
+                for (var i = 0; i < this.markersArray.length; i++) {
+                    this.markersArray[i].setMap(null);
+                }
+                this.markersArray.length = 0;
+            }
+        };
+        MapStorage.$inject = [
+            'poleData'
+        ];
+        return MapStorage;
+    })();
+    map.MapStorage = MapStorage;
 })(map || (map = {}));
 /// <reference path='../_all.ts' />
 var map;
@@ -360,194 +503,21 @@ var map;
 (function (map) {
     'use strict';
     var HomeController = (function () {
-        function HomeController($scope, $location, $compile, $http) {
+        function HomeController($scope, $location, $compile, $http, mapStorage) {
             this.$scope = $scope;
             this.$location = $location;
             this.$compile = $compile;
             this.$http = $http;
-            $("#outageInfo").hide();
-            var mySettings = {
-                defaultLati: -33.867487,
-                defaultLongi: 151.20699,
-                NSW_NE_lat: -27.664069,
-                NSW_NE_lng: 154.35791,
-                NSW_SW_lat: -44.197959,
-                NSW_SW_lng: 137.175293,
-            };
-            $scope.chosenPlace = '';
-            $scope.isLoading = false;
+            this.mapStorage = mapStorage;
             $scope.homeVm = this;
-            $scope.marker = {};
-            $scope.markerAddress = '';
-            $scope.markerStatue = '';
-            this.infoWindowArray = [];
-            this.infoBoxArray = [];
-            this.markersArray = [];
-            this.geocoder = new google.maps.Geocoder();
-            this.content = '<div id="infowindow_content" ng-include src="\'/views/infobox.html\'"></div>';
-            this.compiled = $compile(this.content)($scope);
-            var mapOptions = {
-                center: new google.maps.LatLng(mySettings.defaultLati, mySettings.defaultLongi),
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                disableDoubleClickZoom: true,
-                zoomControlOptions: { style: google.maps.ZoomControlStyle.SMALL },
-                streetViewControl: false,
-                mapTypeControl: false,
-                bounds: new google.maps.LatLngBounds(new google.maps.LatLng(mySettings.NSW_SW_lat, mySettings.NSW_SW_lng), new google.maps.LatLng(mySettings.NSW_NE_lat, mySettings.NSW_NE_lng))
-            };
-            $scope.map = new google.maps.Map(document.getElementById('myMap'), mapOptions);
-            $scope.map.setZoom(14);
+            this.mapStorage.initializeMap($scope, $compile);
         }
         HomeController.prototype.searchAddress = function () {
-            var $scope = this.$scope;
-            var thisScope = this;
-            var geocodeRequest = {
-                'address': $scope.chosenPlace,
-                'bounds': new google.maps.LatLngBounds(new google.maps.LatLng(-27.664069, 154.35791), new google.maps.LatLng(-44.197959, 137.175293)),
-                'location': $scope.map.getCenter(),
-                'region': 'aus'
-            };
-            //this.geocoder.geocode(
-            //    geocodeRequest,
-            //    function (results, status) {
-            //        if (status == google.maps.GeocoderStatus.OK) {
-            //            var loc = results[0].geometry.location;        
-            //            $scope.map.setCenter(loc);
-            //        } else {
-            //            alert("No result Found");
-            //        }
-            //    });
-            $scope.map.setZoom(18);
-            thisScope.showMarkers();
+            this.$scope.map.setZoom(18);
+            this.showMarkers();
         };
         HomeController.prototype.showMarkers = function () {
-            var thisScope = this;
-            var poleData = new map.PoleData(this.$http);
-            var zoom = this.$scope.map.getZoom();
-            if (zoom > 17) {
-                var bounds = this.$scope.map.getBounds();
-                var ne = bounds.getNorthEast();
-                var sw = bounds.getSouthWest();
-                var viewbox = {
-                    "bottomleft": { "lat": sw.lat(), "lng": sw.lng() },
-                    "topright": { "lat": ne.lat(), "lng": ne.lng() }
-                };
-                // retrieve poles from Ausgrid service
-                poleData.getPoles({ box: viewbox }).then(function (result) {
-                    if (result.d) {
-                        thisScope.setMarkers(result.d);
-                        thisScope.$scope.isLoading = false;
-                    }
-                }, function (error) {
-                });
-            }
-            else {
-                thisScope.resetMarkers();
-                thisScope.resetInfoBoxes();
-            }
-        };
-        HomeController.prototype.setMarkers = function (assets) {
-            var thisScope = this;
-            var imageURL = '/images/Status_Sprites.png';
-            var workingImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(1, 1));
-            var reportedImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(23, 1));
-            var heldImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(45, 1));
-            var nonausgridImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(67, 1));
-            var workingHoverImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(1, 23));
-            var reportedHoverImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(23, 23));
-            var heldHoverImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(45, 23));
-            var nonausgridHoverImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(67, 23));
-            var count = 0;
-            for (var index in assets) {
-                if (assets[index].lat) {
-                    var location = new google.maps.LatLng(assets[index].lat, assets[index].lng);
-                    var image = workingImage;
-                    var hoverImage = workingHoverImage;
-                    if (assets[index].Status == 'reported') {
-                        image = reportedImage;
-                        hoverImage = reportedHoverImage;
-                    }
-                    else if (assets[index].Status == 'held') {
-                        image = heldImage;
-                        hoverImage = heldHoverImage;
-                    }
-                    else if (assets[index].Status == 'nonausgrid') {
-                        image = nonausgridImage;
-                        hoverImage = nonausgridHoverImage;
-                    }
-                    var marker = new google.maps.Marker({
-                        position: location,
-                        map: thisScope.$scope.map,
-                        icon: image,
-                        title: assets[index].AssetNo,
-                        customStatus: assets[index].Status,
-                        webID: assets[index].WebID,
-                    });
-                    this.markersArray.push(marker);
-                    this.attachInfoBox(marker);
-                }
-            }
-        };
-        HomeController.prototype.attachInfoBox = function (marker) {
-            var thisScope = this;
-            var myOptions = {
-                disableAutoPan: false,
-                pixelOffset: new google.maps.Size(-140, 0),
-                zIndex: null,
-                closeBoxMargin: "10px 2px 2px 2px",
-                closeBoxURL: "/images/close.png",
-                infoBoxClearance: new google.maps.Size(1, 1),
-                isHidden: false,
-                pane: "floatPane",
-                enableEventPropagation: false
-            };
-            var ib = new google.maps.InfoWindow(myOptions);
-            this.infoBoxArray.push(ib);
-            //add click handler
-            google.maps.event.addListener(marker, 'click', function () {
-                thisScope.clickMarker(marker, ib);
-            });
-        };
-        HomeController.prototype.ToggleItem = function (item) {
-            item.toggle("slow");
-        };
-        HomeController.prototype.clickMarker = function (marker, infobox) {
-            $("#outageInfo").slideToggle("slow");
-            this.resetInfoBoxes();
-            this.$scope.map.setCenter(marker.getPosition());
-            var thisScope = this;
-            //this.geocoder.geocode({ 'LatLng': marker.getPosition() }, function (results, status) {
-            //    if (status == google.maps.GeocoderStatus.OK) {
-            //        if (results[0]) {
-            //            // hacking: sometime ng-include is not working for second time
-            //            if (!thisScope.compiled[0].nextsibling) {
-            //                thisScope.compiled = thisScope.$compile(thisScope.content)(thisScope.$scope);
-            //            }
-            //            thisScope.$scope.marker = marker;
-            //            thisScope.$scope.markerAddress = results[0].formatted_address;
-            //            thisScope.$scope.$apply();
-            //            infobox.setcontent(thisScope.compiled[0].nextsibling.innerhtml);
-            //            //resetinfoboxes();
-            //            infobox.open(thisScope.$scope.map, marker);
-            //        }
-            //    }
-            //});
-        };
-        //clear all current markers
-        HomeController.prototype.resetMarkers = function () {
-            if (this.markersArray.length) {
-                for (var i = 0; i < this.markersArray.length; i++) {
-                    this.markersArray[i].setMap(null);
-                }
-                this.markersArray.length = 0;
-            }
-        };
-        HomeController.prototype.resetInfoBoxes = function () {
-            if (this.infoBoxArray.length) {
-                for (var i = 0; i < this.infoBoxArray.length; i++) {
-                    this.infoBoxArray[i].close();
-                }
-            }
+            this.mapStorage.showMarkers(this.$scope);
         };
         HomeController.prototype.closeWindow = function () {
             $("#outageInfo").slideToggle("slow");
@@ -559,7 +529,8 @@ var map;
             '$scope',
             '$location',
             '$compile',
-            '$http'
+            '$http',
+            'mapStorage'
         ];
         return HomeController;
     })();
@@ -617,21 +588,62 @@ var map;
 })(map || (map = {}));
 /// <reference path='_all.ts' />
 var map;
-(function (_map) {
+(function (map_1) {
     'use strict';
-    var map = angular.module('map', ['ngRoute', 'uiGmapgoogle-maps']).controller('rootController', _map.RootController).controller('introController', _map.IntroController).controller('homeController', _map.HomeController).controller('formController', _map.FormController).directive('googleplace', _map.GooglePlace).directive('customradio', _map.CustomRadio.Factory()).directive('customselectbox', _map.CustomSelectBox.Factory()).directive('icheck', _map.ICheck.Factory()).directive('placeholderforall', _map.PlaceholderForAll.Factory()).directive('notallowedcharacters', _map.NotAllowedCharacters.Factory());
+    var map = angular.module('map', ['ngRoute'])
+        .controller('rootController', map_1.RootController)
+        .controller('introController', map_1.IntroController)
+        .controller('homeController', map_1.HomeController)
+        .controller('formController', map_1.FormController)
+        .directive('googleplace', map_1.GooglePlace)
+        .directive('customradio', map_1.CustomRadio.Factory())
+        .directive('customselectbox', map_1.CustomSelectBox.Factory())
+        .directive('icheck', map_1.ICheck.Factory())
+        .directive('placeholderforall', map_1.PlaceholderForAll.Factory())
+        .directive('notallowedcharacters', map_1.NotAllowedCharacters.Factory())
+        .service('poleData', map_1.PoleData)
+        .service('mapStorage', map_1.MapStorage);
     map.config(['$routeProvider', function routes($routeProvider) {
-        $routeProvider.when('/map', {
-            templateUrl: '../views/home.html',
-            controller: 'homeController'
-        }).when('/report', {
-            templateUrl: '../views/form.html',
-            controller: 'formController',
-            controllerAs: "vm"
-        }).otherwise({ redirectTo: '/' });
-    }]);
-    map.provider("sharedData", _map.SharedData).config(function (sharedDataProvider) {
-        sharedDataProvider.$get();
-    });
+            $routeProvider.when('/map', {
+                templateUrl: '../views/home.html',
+                controller: 'homeController'
+            }).
+                when('/report', {
+                templateUrl: '../views/form.html',
+                controller: 'formController',
+                controllerAs: "vm"
+            }).
+                otherwise({ redirectTo: '/' });
+        }]);
+    map.provider("sharedData", map_1.SharedData).config(['sharedDataProvider', function shared(sharedDataProvider) {
+            sharedDataProvider.$get();
+        }]);
 })(map || (map = {}));
+/// <reference path='../scripts/typings/jquery/jquery.d.ts' />
+/// <reference path='../scripts/typings/jquery/jquery.selectbox.d.ts' />
+/// <reference path='../scripts/typings/jquery/jquery.radiobutton.d.ts' />
+/// <reference path='../scripts/typings/icheck/icheck.d.ts' />
+/// <reference path='../scripts/typings/angularjs/angular.d.ts' />
+/// <reference path='../scripts/typings/angularjs/angular-route.d.ts' />
+/// <reference path='../scripts/typings/google.maps.d.ts' />
+/// <reference path='directives/custom-radio.ts' />
+/// <reference path='directives/custom-selectbox.ts' />
+/// <reference path='directives/google-place.ts' />
+/// <reference path='directives/icheck.ts' />
+/// <reference path='directives/placeholder-for-all.ts' />
+/// <reference path='directives/validate-not-allowed-characters.ts' />
+/// <reference path='interfaces/IHomeScope.ts' />
+/// <reference path='interfaces/IRootScope.ts' />
+/// <reference path='interfaces/IPoleData.ts' />
+/// <reference path='interfaces/ISharedData.ts' />
+/// <reference path='interfaces/IMapStorage.ts' />
+/// <reference path='services/poleData.ts' />
+/// <reference path='services/sharedData.ts' />
+/// <reference path='services/MapStorage.ts' />
+/// <reference path='controllers/RootController.ts' />
+/// <reference path='controllers/IntroController.ts' />
+/// <reference path='controllers/HomeController.ts' />
+/// <reference path='controllers/FormController.ts' />
+/// <reference path='app.ts' /> 
+/// <reference path='../_all.ts' />
 //# sourceMappingURL=app.js.map

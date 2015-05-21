@@ -15,7 +15,7 @@ module map {
         ];
 
         constructor(
-            private $scope: IMapScope,
+            private $scope: IRootScope,
             private $location: ng.ILocationService
             ) {
             $scope.introVm = this;
