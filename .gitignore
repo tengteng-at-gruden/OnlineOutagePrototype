@@ -1,6 +1,4 @@
 *.suo
-packages.config
 Local.pubxml
-/packages/
 /OnlineOutagePrototype/obj/
 /OnlineOutagePrototype/bin/
