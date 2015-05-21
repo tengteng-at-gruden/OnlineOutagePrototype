@@ -62,9 +62,11 @@ var map;
     /**
      * Directive that executes an expression when the element it is applied to loses focus.
      */
-    function GooglePlace() {
-        return {
-            link: function (scope, element, attributes) {
+    var GooglePlace = (function () {
+        function GooglePlace() {
+            this.restrict = 'A';
+            this.require = 'ngModel';
+            this.link = function (scope, element, attrs, model) {
                 var options = {
                     types: ['geocode'],
                     componentRestrictions: { country: 'au' }
@@ -86,9 +88,16 @@ var map;
                     //    homeVM.showMarkers();
                     //}            
                 });
-            }
+            };
+        }
+        GooglePlace.Factory = function () {
+            var directive = function () {
+                return new GooglePlace();
+            };
+            return directive;
         };
-    }
+        return GooglePlace;
+    })();
     map.GooglePlace = GooglePlace;
 })(map || (map = {}));
 var map;
@@ -219,7 +228,6 @@ var map;
     })();
     map.NotAllowedCharacters = NotAllowedCharacters;
 })(map || (map = {}));
-/// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
@@ -587,6 +595,39 @@ var map;
     })();
     map.FormController = FormController;
 })(map || (map = {}));
+/// <reference path='_all.ts' />
+var map;
+(function (map_1) {
+    'use strict';
+    var map = angular.module('map', ['ngRoute'])
+        .controller('rootController', map_1.RootController)
+        .controller('introController', map_1.IntroController)
+        .controller('homeController', map_1.HomeController)
+        .controller('formController', map_1.FormController)
+        .directive('googleplace', map_1.GooglePlace.Factory())
+        .directive('customradio', map_1.CustomRadio.Factory())
+        .directive('customselectbox', map_1.CustomSelectBox.Factory())
+        .directive('icheck', map_1.ICheck.Factory())
+        .directive('placeholderforall', map_1.PlaceholderForAll.Factory())
+        .directive('notallowedcharacters', map_1.NotAllowedCharacters.Factory())
+        .service('poleData', map_1.PoleData)
+        .service('mapStorage', map_1.MapStorage);
+    map.config(['$routeProvider', function routes($routeProvider) {
+            $routeProvider.when('/map', {
+                templateUrl: '../views/home.html',
+                controller: 'homeController'
+            }).
+                when('/report', {
+                templateUrl: '../views/form.html',
+                controller: 'formController',
+                controllerAs: "vm"
+            }).
+                otherwise({ redirectTo: '/' });
+        }]);
+    map.provider("sharedData", map_1.SharedData).config(['sharedDataProvider', function shared(sharedDataProvider) {
+            sharedDataProvider.$get();
+        }]);
+})(map || (map = {}));
 /// <reference path='../scripts/typings/jquery/jquery.d.ts' />
 /// <reference path='../scripts/typings/jquery/jquery.selectbox.d.ts' />
 /// <reference path='../scripts/typings/jquery/jquery.radiobutton.d.ts' />
@@ -613,37 +654,5 @@ var map;
 /// <reference path='controllers/HomeController.ts' />
 /// <reference path='controllers/FormController.ts' />
 /// <reference path='app.ts' /> 
-/// <reference path='_all.ts' />
-var map;
-(function (map_1) {
-    'use strict';
-    var map = angular.module('map', ['ngRoute'])
-        .controller('rootController', map_1.RootController)
-        .controller('introController', map_1.IntroController)
-        .controller('homeController', map_1.HomeController)
-        .controller('formController', map_1.FormController)
-        .directive('googleplace', map_1.GooglePlace)
-        .directive('customradio', map_1.CustomRadio.Factory())
-        .directive('customselectbox', map_1.CustomSelectBox.Factory())
-        .directive('icheck', map_1.ICheck.Factory())
-        .directive('placeholderforall', map_1.PlaceholderForAll.Factory())
-        .directive('notallowedcharacters', map_1.NotAllowedCharacters.Factory())
-        .service('poleData', map_1.PoleData)
-        .service('mapStorage', map_1.MapStorage);
-    map.config(['$routeProvider', function routes($routeProvider) {
-            $routeProvider.when('/map', {
-                templateUrl: '../views/home.html',
-                controller: 'homeController'
-            }).
-                when('/report', {
-                templateUrl: '../views/form.html',
-                controller: 'formController',
-                controllerAs: "vm"
-            }).
-                otherwise({ redirectTo: '/' });
-        }]);
-    map.provider("sharedData", map_1.SharedData).config(['sharedDataProvider', function shared(sharedDataProvider) {
-            sharedDataProvider.$get();
-        }]);
-})(map || (map = {}));
+/// <reference path='../_all.ts' />
 //# sourceMappingURL=app.js.map
