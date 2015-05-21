@@ -30,6 +30,7 @@
     <Content Include="images\red.png" />
     <Content Include="images\Status_Sprites.png" />
     <Content Include="images\switches.png" />
+    <Content Include="js\app.js" />
     <Content Include="js\_all.js" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
@@ -85,6 +86,7 @@
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="data\poles.json" />
+    <Content Include="js\app.js.map" />
     <None Include="Local.pubxml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
@@ -144,7 +146,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1746</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
