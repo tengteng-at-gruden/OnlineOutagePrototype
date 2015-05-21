@@ -8,7 +8,7 @@ module map {
         .controller('introController', IntroController)
         .controller('homeController', HomeController)
         .controller('formController', FormController)
-        .directive('googleplace', GooglePlace)
+        .directive('googleplace', GooglePlace.Factory())
         .directive('customradio', CustomRadio.Factory())
         .directive('customselectbox', CustomSelectBox.Factory())
         .directive('icheck', ICheck.Factory())

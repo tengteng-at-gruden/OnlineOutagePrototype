@@ -62,9 +62,11 @@ var map;
     /**
      * Directive that executes an expression when the element it is applied to loses focus.
      */
-    function GooglePlace() {
-        return {
-            link: function (scope, element, attributes) {
+    var GooglePlace = (function () {
+        function GooglePlace() {
+            this.restrict = 'A';
+            this.require = 'ngModel';
+            this.link = function (scope, element, attrs, model) {
                 var options = {
                     types: ['geocode'],
                     componentRestrictions: { country: 'au' }
@@ -86,9 +88,16 @@ var map;
                     //    homeVM.showMarkers();
                     //}            
                 });
-            }
+            };
+        }
+        GooglePlace.Factory = function () {
+            var directive = function () {
+                return new GooglePlace();
+            };
+            return directive;
         };
-    }
+        return GooglePlace;
+    })();
     map.GooglePlace = GooglePlace;
 })(map || (map = {}));
 var map;
@@ -110,7 +119,7 @@ var map;
                     hoverClass: 'none'
                 }).on('ifChanged', function (event) {
                     if ($(element).attr('type') === 'checkbox' && attrs['ngModel']) {
-                        scope.$apply(function () { return model.$setViewValue((event.target)[0].checked); });
+                        scope.$apply(function () { return model.$setViewValue(event.target.checked); });
                     }
                     if ($(element).attr('type') === 'radio' && attrs['ngModel']) {
                         return scope.$apply(function () { return model.$setViewValue(value); });
@@ -595,7 +604,7 @@ var map;
         .controller('introController', map_1.IntroController)
         .controller('homeController', map_1.HomeController)
         .controller('formController', map_1.FormController)
-        .directive('googleplace', map_1.GooglePlace)
+        .directive('googleplace', map_1.GooglePlace.Factory())
         .directive('customradio', map_1.CustomRadio.Factory())
         .directive('customselectbox', map_1.CustomSelectBox.Factory())
         .directive('icheck', map_1.ICheck.Factory())
