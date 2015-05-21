@@ -43,7 +43,7 @@ var map;
             this.restrict = 'A';
             this.require = 'ngModel';
             this.link = function (scope, element, attrs, model) {
-                $(element).selectbox();
+                $(element).selectbox({});
             };
         }
         CustomSelectBox.Factory = function () {
