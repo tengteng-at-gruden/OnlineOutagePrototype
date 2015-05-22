@@ -13,5 +13,9 @@ module map {
         markers: {};
         markerAddress: string;
         markerStatue: string;
+
+        response;
+        widgetId;
+        model;
 	}
 }

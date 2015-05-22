@@ -3,11 +3,6 @@
 module map {
     'use strict';
 
-    /**
-     * The main controller for the app. The controller:
-     * - retrieves and persists the model via the todoStorage service
-     * - exposes the model to the template and provides event handlers
-     */
     export class FormController {
 
         // $inject annotation.
@@ -27,9 +22,16 @@ module map {
             private $location: ng.ILocationService,
             private $anchorScroll: ng.IAnchorScrollService,
             private $rootScope: ng.IRootScopeService,
-            private sharedData: ISharedData
+            private sharedData: ISharedData,
+            private vcRecaptcha: IVcRecaptha
             ) {
             $scope.formVm = this;
+            $scope.response = null;
+            $scope.widgetId = null;
+            $scope.model = {
+                //Recaptha key for domain: localhost
+                key: '6LcMLAcTAAAAAEtKsIfH9lfykpVkeO8gKby76JT1'
+            };
         }
 
         marker = this.sharedData.currentMarker;
@@ -42,10 +44,20 @@ module map {
         email: string = '';
         mRadValue: boolean = true;
         acceptValue: boolean = false;
+        captchaValue: boolean = false;
 
+        setResponse (response) {
+            console.info('Captcha response verified.');
+            this.$scope.response = response;
+            this.captchaValue = true;
+        }
+
+        setWidgetId (widgetId) {
+            this.$scope.widgetId = widgetId;
+        }
 
         submitForm() {
-            console.log(this.$scope.testform.$valid);
+            console.log("Form validation: " + this.$scope.testform.$valid);
 
             var old = this.$location.hash();
             this.$location.hash('emailField');

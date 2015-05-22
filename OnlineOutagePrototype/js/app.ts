@@ -3,7 +3,7 @@
 module map {
     'use strict';
 
-    var map = angular.module('map', ['ngRoute'])
+    var map = angular.module('map', ['ngRoute','vcRecaptcha'])
         .controller('rootController', RootController)
         .controller('introController', IntroController)
         .controller('homeController', HomeController)
@@ -14,8 +14,10 @@ module map {
         .directive('icheck', ICheck.Factory())
         .directive('placeholderforall', PlaceholderForAll.Factory())
         .directive('notallowedcharacters', NotAllowedCharacters.Factory())
+        .directive('vcRecaptcha', ['$document', '$timeout', 'vcRecaptchaService', VcRecaptcha.Factory('$document', '$timeout', 'vcRecaptcha')])
         .service('poleData', PoleData)
         .service('mapStorage', MapStorage)
+        .service('vcRecaptha', ['$window', '$q', VcRecaptha])
     ;
 
     map.config(['$routeProvider', function routes($routeProvider: ng.route.IRouteProvider) {

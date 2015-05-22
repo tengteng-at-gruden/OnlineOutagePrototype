@@ -61,6 +61,12 @@
 <label>Accept our terms of service:</label><input type="checkbox" name="demo2" ng-model="vm.acceptValue" icheck>
 checked: {{vm.acceptValue}}<br>
 
-<input type="button" value="Submit Data" ng-click="vm.submitForm()" ng-disabled="!vm.acceptValue" />
+<div vc-recaptcha
+     theme="'light'"
+     key="model.key"
+     on-create="vm.setWidgetId(widgetId)"
+     on-success="vm.setResponse(response)"></div>
+
+<input type="button" value="Submit Data" ng-click="vm.submitForm()" ng-disabled="!vm.acceptValue || !vm.captchaValue" />
 <br>
 <br>

@@ -32,6 +32,8 @@
     <Content Include="images\switches.png" />
     <Content Include="js\app.js" />
     <Content Include="js\_all.js" />
+    <Content Include="Scripts\angular-recaptcha.js" />
+    <Content Include="Scripts\angular-recaptcha.min.js" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
     <Content Include="Scripts\angular.js" />
@@ -61,16 +63,19 @@
     <TypeScriptCompile Include="js\directives\custom-radio.ts" />
     <TypeScriptCompile Include="js\directives\custom-selectbox.ts" />
     <TypeScriptCompile Include="js\directives\google-place.ts" />
+    <TypeScriptCompile Include="js\directives\vc-recaptcha.ts" />
     <TypeScriptCompile Include="js\directives\icheck.ts" />
     <TypeScriptCompile Include="js\directives\placeholder-for-all.ts" />
     <TypeScriptCompile Include="js\directives\validate-not-allowed-characters.ts" />
     <TypeScriptCompile Include="js\interfaces\IHomeScope.ts" />
     <TypeScriptCompile Include="js\interfaces\IMapStorage.ts" />
+    <TypeScriptCompile Include="js\interfaces\IVcRecaptha.ts" />
     <TypeScriptCompile Include="js\interfaces\IPoleData.ts" />
     <TypeScriptCompile Include="js\interfaces\IRootScope.ts" />
     <TypeScriptCompile Include="js\interfaces\ISharedData.ts" />
     <TypeScriptCompile Include="js\services\MapStorage.ts" />
     <TypeScriptCompile Include="js\services\PoleData.ts" />
+    <TypeScriptCompile Include="js\services\VcRecaptha.ts" />
     <TypeScriptCompile Include="js\services\sharedData.ts" />
     <TypeScriptCompile Include="js\_all.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
@@ -88,6 +93,9 @@
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="data\poles.json" />
     <Content Include="js\app.js.map" />
+    <Content Include="Scripts\angular-recaptcha.min.js.map">
+      <DependentUpon>angular-recaptcha.min.js</DependentUpon>
+    </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
