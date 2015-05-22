@@ -45,7 +45,7 @@ module map {
         }
 
         closeWindow() {
-            $("#outageInfo").slideToggle("slow");
+            $("#outageInfo").toggle("slide");
         }
         reportAsset() {
             this.$location.path('/report');

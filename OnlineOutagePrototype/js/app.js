@@ -78,15 +78,12 @@ var map;
                     if (!place.geometry) {
                         return;
                     }
-                    //if (place.geometry.viewport) {
-                    //    scope.map.fitBounds(place.geometry.viewport);
-                    //    scope.map.setZoom(18);
-                    //    homeVM.showMarkers();
-                    //} else {
-                    //    scope.map.setCenter(place.geometry.location);
-                    //    scope.map.setZoom(18);
-                    //    homeVM.showMarkers();
-                    //}            
+                    if (place.geometry.viewport) {
+                        scope.map.fitBounds(place.geometry.viewport);
+                    }
+                    else {
+                        scope.map.setCenter(place.geometry.location);
+                    }
                 });
             };
         }
@@ -420,7 +417,7 @@ var map;
             });
         };
         MapStorage.prototype.clickMarker = function (marker, $scope) {
-            $("#outageInfo").slideToggle("slow");
+            $("#outageInfo").toggle("slide");
             $scope.map.setCenter(marker.getPosition());
         };
         //clear all current markers
@@ -571,7 +568,7 @@ var map;
             this.mapStorage.showMarkers(this.$scope, this.$scope.radOutageTime);
         };
         HomeController.prototype.closeWindow = function () {
-            $("#outageInfo").slideToggle("slow");
+            $("#outageInfo").toggle("slide");
         };
         HomeController.prototype.reportAsset = function () {
             this.$location.path('/report');

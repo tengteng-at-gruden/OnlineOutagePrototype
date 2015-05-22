@@ -166,8 +166,8 @@ module map {
         }
 
         clickMarker(marker: google.maps.Marker, $scope:any) {
-            $("#outageInfo").slideToggle("slow");
-            
+            $("#outageInfo").toggle("slide");
+
             $scope.map.setCenter(marker.getPosition());
         }
 
