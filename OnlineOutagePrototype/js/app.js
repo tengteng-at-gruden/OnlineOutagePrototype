@@ -236,25 +236,26 @@ var map;
 var map;
 (function (map) {
     'use strict';
-    var PoleData = (function () {
-        function PoleData($http) {
+    var OutageData = (function () {
+        function OutageData($http) {
             this.$http = $http;
             this.baseUrl = '/data/';
         }
-        PoleData.prototype.getPoles = function (container) {
+        OutageData.prototype.getOutages = function (container, timeStatus) {
+            var status = timeStatus == "future" ? '2' : '';
             var promise = this.$http
-                .get(this.baseUrl + 'poles.json', container)
+                .get(this.baseUrl + 'poles' + status + '.json', container)
                 .then(function (response) {
                 return response.data;
             });
             return promise;
         };
-        PoleData.$inject = [
+        OutageData.$inject = [
             '$http'
         ];
-        return PoleData;
+        return OutageData;
     })();
-    map.PoleData = PoleData;
+    map.OutageData = OutageData;
 })(map || (map = {}));
 /// <reference path='../_all.ts' />
 var map;
@@ -298,8 +299,8 @@ var map;
 (function (map) {
     'use strict';
     var MapStorage = (function () {
-        function MapStorage(poleData) {
-            this.poleData = poleData;
+        function MapStorage(outageData) {
+            this.outageData = outageData;
             this.infoBoxArray = [];
             this.markersArray = [];
         }
@@ -314,6 +315,7 @@ var map;
                 NSW_SW_lng: 137.175293,
             };
             $scope.chosenPlace = '';
+            $scope.radOutageTime = 'now';
             $scope.isLoading = false;
             $scope.marker = {};
             $scope.markerAddress = '';
@@ -333,7 +335,7 @@ var map;
             $scope.map = new google.maps.Map(document.getElementById('myMap'), opts);
             $scope.map.setZoom(14);
         };
-        MapStorage.prototype.showMarkers = function ($scope) {
+        MapStorage.prototype.showMarkers = function ($scope, timeStatus) {
             var thisScope = this;
             var zoom = $scope.map.getZoom();
             if (zoom > 17) {
@@ -345,7 +347,7 @@ var map;
                     "topright": { "lat": ne.lat(), "lng": ne.lng() }
                 };
                 // retrieve poles from Ausgrid service
-                this.poleData.getPoles({ box: viewbox }).then(function (result) {
+                this.outageData.getOutages({ box: viewbox }, timeStatus).then(function (result) {
                     if (result.d) {
                         thisScope.setMarkers(result.d, $scope);
                         $scope.isLoading = false;
@@ -556,13 +558,17 @@ var map;
             //this.mapLazyLoad.asynGoogleMap().then(function () {
             this.mapStorage.initializeMap($scope, $compile);
             //});
+            $scope.$watch('radOutageTime', function (newVal, oldVal) {
+                $scope.homeVm.showMarkers();
+            });
         }
         HomeController.prototype.searchAddress = function () {
             this.$scope.map.setZoom(18);
             this.showMarkers();
         };
         HomeController.prototype.showMarkers = function () {
-            this.mapStorage.showMarkers(this.$scope);
+            this.mapStorage.resetMarkers();
+            this.mapStorage.showMarkers(this.$scope, this.$scope.radOutageTime);
         };
         HomeController.prototype.closeWindow = function () {
             $("#outageInfo").slideToggle("slow");
@@ -648,7 +654,7 @@ var map;
         .directive('icheck', map_1.ICheck.Factory())
         .directive('placeholderforall', map_1.PlaceholderForAll.Factory())
         .directive('notallowedcharacters', map_1.NotAllowedCharacters.Factory())
-        .service('poleData', map_1.PoleData)
+        .service('poleData', map_1.OutageData)
         .service('mapStorage', map_1.MapStorage)
         .service('mapLazyLoad', map_1.MapLazyLoad);
     map.config(['$routeProvider', function routes($routeProvider) {
@@ -682,11 +688,11 @@ var map;
 /// <reference path='directives/validate-not-allowed-characters.ts' />
 /// <reference path='interfaces/IHomeScope.ts' />
 /// <reference path='interfaces/IRootScope.ts' />
-/// <reference path='interfaces/IPoleData.ts' />
+/// <reference path='interfaces/IOutageData.ts' />
 /// <reference path='interfaces/ISharedData.ts' />
 /// <reference path='interfaces/IMapStorage.ts' />
 /// <reference path='interfaces/IMapLazyLoad.ts' />
-/// <reference path='services/poleData.ts' />
+/// <reference path='services/OutageData.ts' />
 /// <reference path='services/sharedData.ts' />
 /// <reference path='services/MapStorage.ts' />
 /// <reference path='services/MapLazyLoad.ts' />

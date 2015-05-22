@@ -3,7 +3,7 @@
 module map {
     'use strict';
 
-    export class PoleData implements IPoleData {
+    export class OutageData implements IOutageData {
 
         private baseUrl;
 
@@ -15,9 +15,10 @@ module map {
             ) {
             this.baseUrl = '/data/';
         }
-        getPoles(container: any) {
+        getOutages(container: any, timeStatus) {
+            var status = timeStatus == "future" ? '2' : '';
             var promise = this.$http
-                .get(this.baseUrl + 'poles.json', container)
+                .get(this.baseUrl + 'poles' + status + '.json', container)
                 .then(function (response) {
                     return response.data;
                 }

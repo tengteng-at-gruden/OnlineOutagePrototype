@@ -67,12 +67,12 @@
     <TypeScriptCompile Include="js\interfaces\IHomeScope.ts" />
     <TypeScriptCompile Include="js\interfaces\IMapLazyLoad.ts" />
     <TypeScriptCompile Include="js\interfaces\IMapStorage.ts" />
-    <TypeScriptCompile Include="js\interfaces\IPoleData.ts" />
+    <TypeScriptCompile Include="js\interfaces\IOutageData.ts" />
     <TypeScriptCompile Include="js\interfaces\IRootScope.ts" />
     <TypeScriptCompile Include="js\interfaces\ISharedData.ts" />
     <TypeScriptCompile Include="js\services\MapLazyLoad.ts" />
     <TypeScriptCompile Include="js\services\MapStorage.ts" />
-    <TypeScriptCompile Include="js\services\PoleData.ts" />
+    <TypeScriptCompile Include="js\services\OutageData.ts" />
     <TypeScriptCompile Include="js\services\sharedData.ts" />
     <TypeScriptCompile Include="js\_all.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
@@ -90,6 +90,7 @@
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="data\poles.json" />
     <Content Include="js\app.js.map" />
+    <Content Include="data\poles2.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

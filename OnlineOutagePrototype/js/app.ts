@@ -14,7 +14,7 @@ module map {
         .directive('icheck', ICheck.Factory())
         .directive('placeholderforall', PlaceholderForAll.Factory())
         .directive('notallowedcharacters', NotAllowedCharacters.Factory())
-        .service('poleData', PoleData)
+        .service('poleData', OutageData)
         .service('mapStorage', MapStorage)
         .service('mapLazyLoad', MapLazyLoad)
     ;

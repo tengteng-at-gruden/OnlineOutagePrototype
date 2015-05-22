@@ -28,7 +28,10 @@ module map {
             //this.mapLazyLoad.asynGoogleMap().then(function () {
                 this.mapStorage.initializeMap($scope, $compile);
             //});
-            
+
+            $scope.$watch('radOutageTime', function (newVal, oldVal) {
+                $scope.homeVm.showMarkers();
+            });
         }
 
         searchAddress() {
@@ -37,7 +40,8 @@ module map {
         }
 
         showMarkers() {
-            this.mapStorage.showMarkers(this.$scope);
+            this.mapStorage.resetMarkers();
+            this.mapStorage.showMarkers(this.$scope, this.$scope.radOutageTime);
         }
 
         closeWindow() {

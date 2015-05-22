@@ -1,6 +1,7 @@
 ﻿module map {
     export interface IHomeScope extends ng.IScope {
         chosenPlace: string;
+        radOutageTime: string;
         isLoading: boolean;
         marker: any;
         markerAddress: string;
