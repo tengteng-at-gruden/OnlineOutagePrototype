@@ -69,13 +69,13 @@
     <TypeScriptCompile Include="js\directives\validate-not-allowed-characters.ts" />
     <TypeScriptCompile Include="js\interfaces\IHomeScope.ts" />
     <TypeScriptCompile Include="js\interfaces\IMapStorage.ts" />
-    <TypeScriptCompile Include="js\interfaces\IVcRecaptha.ts" />
+    <TypeScriptCompile Include="js\interfaces\IRecaptcha.ts" />
     <TypeScriptCompile Include="js\interfaces\IPoleData.ts" />
     <TypeScriptCompile Include="js\interfaces\IRootScope.ts" />
     <TypeScriptCompile Include="js\interfaces\ISharedData.ts" />
     <TypeScriptCompile Include="js\services\MapStorage.ts" />
     <TypeScriptCompile Include="js\services\PoleData.ts" />
-    <TypeScriptCompile Include="js\services\VcRecaptha.ts" />
+    <TypeScriptCompile Include="js\services\Recaptcha.ts" />
     <TypeScriptCompile Include="js\services\sharedData.ts" />
     <TypeScriptCompile Include="js\_all.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />

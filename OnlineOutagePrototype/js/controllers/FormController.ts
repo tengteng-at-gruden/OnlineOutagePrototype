@@ -14,7 +14,8 @@ module map {
             '$location',
             '$anchorScroll',
             '$rootScope',
-            'sharedData'
+            'sharedData',
+            'recaptcha'
         ];
 
         constructor(
@@ -23,7 +24,7 @@ module map {
             private $anchorScroll: ng.IAnchorScrollService,
             private $rootScope: ng.IRootScopeService,
             private sharedData: ISharedData,
-            private vcRecaptcha: IVcRecaptha
+            private recaptcha: IRecaptcha
             ) {
             $scope.formVm = this;
             $scope.response = null;
@@ -47,7 +48,7 @@ module map {
         captchaValue: boolean = false;
 
         setResponse (response) {
-            console.info('Captcha response verified.');
+            console.info('Captcha verified.');
             this.$scope.response = response;
             this.captchaValue = true;
         }

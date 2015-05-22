@@ -3,7 +3,7 @@
 module map {
     'use strict';
 
-    export class VcRecaptha implements IVcRecaptha {
+    export class Recaptcha implements IRecaptcha {
 
         private deferred;
         private promise;

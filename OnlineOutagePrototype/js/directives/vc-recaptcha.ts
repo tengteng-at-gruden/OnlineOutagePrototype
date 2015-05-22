@@ -5,29 +5,29 @@
         public link: (scope, element, attrs, model) => void;
         public restrict: string;
         public require: string;
-        public scope: {
-        //response: '=?ngModel',
-        //key: '=',
-        //theme: '=?',
-        //tabindex: '=?',
-        //onCreate: '&',
-        //onSuccess: '&',
-        //onExpire: '&'
-    }
+        public scope: {}
 
         public static $inject = [
             '$document',
             '$timeout',
-            'vcRecaptchaService'
+            'Recaptcha'
         ];
 
         constructor(
             private $document: any,
             private $timeout: any,
-            private vcRecaptchaService : IVcRecaptha
+            private Recaptcha: IRecaptcha
             ) {
             this.restrict = 'A';
             this.require = '?^^form';
+            this.scope = {
+                respons: '=?ngModel',
+                key: '=', theme: '=?',
+                tabindex: '=?',
+                onCreate: '&',
+                onSuccess: '&',
+                onExpire: '&'
+            };
 
             this.link = (scope, elm, attrs, ctrl) => {
                 if (!attrs.hasOwnProperty('key')) {
@@ -68,7 +68,7 @@
                         }, 2 * 60 * 1000);
                     };
 
-                    vcRecaptchaService.create(elm[0], key, callback, {
+                    Recaptcha.create(elm[0], key, callback, {
 
                         theme: scope.theme || attrs.theme || null,
                         tabindex: scope.tabindex || attrs.tabindex || null

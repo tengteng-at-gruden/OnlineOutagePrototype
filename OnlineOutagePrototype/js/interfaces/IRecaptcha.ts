@@ -1,8 +1,7 @@
 ﻿/// <reference path='../_all.ts' />
 
 module map {
-    export interface IVcRecaptha {
-
+    export interface IRecaptcha {
         getRecaptcha();
         validateRecaptchaInstance();
         create(elm, key, fn, conf);

@@ -14,10 +14,10 @@ module map {
         .directive('icheck', ICheck.Factory())
         .directive('placeholderforall', PlaceholderForAll.Factory())
         .directive('notallowedcharacters', NotAllowedCharacters.Factory())
-        .directive('vcRecaptcha', ['$document', '$timeout', 'vcRecaptchaService', VcRecaptcha.Factory('$document', '$timeout', 'vcRecaptcha')])
+        .directive('vcRecaptcha', ['$document', '$timeout', 'Recaptcha', VcRecaptcha.Factory('$document', '$timeout', 'Recaptcha')])
         .service('poleData', PoleData)
         .service('mapStorage', MapStorage)
-        .service('vcRecaptha', ['$window', '$q', VcRecaptha])
+        .service('recaptha', ['$window', '$q', Recaptcha])
     ;
 
     map.config(['$routeProvider', function routes($routeProvider: ng.route.IRouteProvider) {
