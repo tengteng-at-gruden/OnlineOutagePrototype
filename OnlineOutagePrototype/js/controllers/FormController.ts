@@ -41,6 +41,7 @@ module map {
         refInfo: string = '';
         email: string = '';
         mRadValue: boolean = true;
+        acceptValue: boolean = false;
 
 
         submitForm() {
