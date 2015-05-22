@@ -90,7 +90,6 @@
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="data\poles.json" />
     <Content Include="js\app.js.map" />
-    <None Include="Local.pubxml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

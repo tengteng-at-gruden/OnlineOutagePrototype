@@ -607,6 +607,7 @@ var map;
             this.refInfo = '';
             this.email = '';
             this.mRadValue = true;
+            this.acceptValue = false;
             $scope.formVm = this;
         }
         FormController.prototype.submitForm = function () {
