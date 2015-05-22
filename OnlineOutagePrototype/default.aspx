@@ -39,8 +39,8 @@
 
       <div class="row-fluid" ng-cloak ng-show="showHomeComponent">
         <div class="span4">
-          <input type="radio" id="unplaned" /><label>Unplaned</label>
-          <input type="radio" id="planed" /><label>Planed</label>
+          <span class="reported-box"></span><label>Unplaned</label>
+          <span class="working-box"></span><label>Planed</label>
         </div>
       </div>
     </div>
