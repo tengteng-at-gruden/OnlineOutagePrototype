@@ -232,78 +232,76 @@ var map;
 (function (map) {
     'use strict';
     var VcRecaptcha = (function () {
-        function VcRecaptcha($document, $timeout, Recaptcha) {
-            var _this = this;
+        function VcRecaptcha($document, $timeout) {
+            //this.restrict = 'A';
+            //this.require = '?^^form';
+            //this.scope = {
+            //    respons: '=?ngModel',
+            //    key: '=', theme: '=?',
+            //    tabindex: '=?',
+            //    onCreate: '&',
+            //    onSuccess: '&',
+            //    onExpire: '&'
+            //};
             this.$document = $document;
             this.$timeout = $timeout;
-            this.Recaptcha = Recaptcha;
-            this.restrict = 'A';
-            this.require = '?^^form';
-            this.scope = {
-                respons: '=?ngModel',
-                key: '=', theme: '=?',
-                tabindex: '=?',
-                onCreate: '&',
-                onSuccess: '&',
-                onExpire: '&'
-            };
-            this.link = function (scope, elm, attrs, ctrl) {
-                if (!attrs.hasOwnProperty('key')) {
-                    _this.throwNoKeyException();
-                }
-                scope.widgetId = null;
-                var removeCreationListener = scope.$watch('key', function (key) {
-                    if (!key) {
-                        return;
-                    }
-                    if (key.length !== 40) {
-                        this.throwNoKeyException();
-                    }
-                    var callback = function (gRecaptchaResponse) {
-                        // Safe $apply
-                        $timeout(function () {
-                            if (ctrl) {
-                                ctrl.$setValidity('recaptcha', true);
-                            }
-                            scope.response = gRecaptchaResponse;
-                            // Notify about the response availability
-                            scope.onSuccess({ response: gRecaptchaResponse, widgetId: scope.widgetId });
-                            cleanup();
-                        });
-                        // captcha session lasts 2 mins after set.
-                        $timeout(function () {
-                            if (ctrl) {
-                                ctrl.$setValidity('recaptcha', false);
-                            }
-                            scope.response = "";
-                            // Notify about the response availability
-                            scope.onExpire({ widgetId: scope.widgetId });
-                        }, 2 * 60 * 1000);
-                    };
-                    Recaptcha.create(elm[0], key, callback, {
-                        theme: scope.theme || attrs.theme || null,
-                        tabindex: scope.tabindex || attrs.tabindex || null
-                    }).then(function (widgetId) {
-                        // The widget has been created
-                        if (ctrl) {
-                            ctrl.$setValidity('recaptcha', false);
-                        }
-                        scope.widgetId = widgetId;
-                        scope.onCreate({ widgetId: widgetId });
-                        scope.$on('$destroy', cleanup);
-                    });
-                    // Remove this listener to avoid creating the widget more than once.
-                    removeCreationListener();
-                });
-                function cleanup() {
-                    // removes elements reCaptcha added.
-                    angular.element($document[0].querySelectorAll('.pls-container')).parent().remove();
-                }
-            };
+            //this.link = (scope, elm, attrs, ctrl) => {
+            //    if (!attrs.hasOwnProperty('key')) {
+            //        this.throwNoKeyException();
+            //    }
+            //    scope.widgetId = null;
+            //    var removeCreationListener = scope.$watch('key', function (key) {
+            //        if (!key) {
+            //            return;
+            //        }
+            //        if (key.length !== 40) {
+            //            this.throwNoKeyException();
+            //        }
+            //        var callback = function (gRecaptchaResponse) {
+            //            // Safe $apply
+            //            $timeout(function () {
+            //                if (ctrl) {
+            //                    ctrl.$setValidity('recaptcha', true);
+            //                }
+            //                scope.response = gRecaptchaResponse;
+            //                // Notify about the response availability
+            //                scope.onSuccess({ response: gRecaptchaResponse, widgetId: scope.widgetId });
+            //                cleanup();
+            //            });
+            //            // captcha session lasts 2 mins after set.
+            //            $timeout(function () {
+            //                if (ctrl) {
+            //                    ctrl.$setValidity('recaptcha', false);
+            //                }
+            //                scope.response = "";
+            //                // Notify about the response availability
+            //                scope.onExpire({ widgetId: scope.widgetId });
+            //            }, 2 * 60 * 1000);
+            //        };
+            //        Recaptcha.create(elm[0], key, callback, {
+            //            theme: scope.theme || attrs.theme || null,
+            //            tabindex: scope.tabindex || attrs.tabindex || null
+            //        }).then(function (widgetId) {
+            //            // The widget has been created
+            //            if (ctrl) {
+            //                ctrl.$setValidity('recaptcha', false);
+            //            }
+            //            scope.widgetId = widgetId;
+            //            scope.onCreate({ widgetId: widgetId });
+            //            scope.$on('$destroy', cleanup);
+            //        });
+            //        // Remove this listener to avoid creating the widget more than once.
+            //        removeCreationListener();
+            //    });
+            //    function cleanup() {
+            //        // removes elements reCaptcha added.
+            //        angular.element($document[0].querySelectorAll('.pls-container')).parent().remove();
+            //    }
+            //};
         }
         VcRecaptcha.Factory = function ($document, $timeout, vcRecaptcha) {
             var directive = function () {
-                return new VcRecaptcha($document, $timeout, vcRecaptcha);
+                //return new VcRecaptcha($document, $timeout, vcRecaptcha);
             };
             return directive;
         };
@@ -312,8 +310,7 @@ var map;
         };
         VcRecaptcha.$inject = [
             '$document',
-            '$timeout',
-            'Recaptcha'
+            '$timeout'
         ];
         return VcRecaptcha;
     })();
@@ -716,13 +713,12 @@ var map;
 (function (map) {
     'use strict';
     var FormController = (function () {
-        function FormController($scope, $location, $anchorScroll, $rootScope, sharedData, recaptcha) {
+        function FormController($scope, $location, $anchorScroll, $rootScope, sharedData) {
             this.$scope = $scope;
             this.$location = $location;
             this.$anchorScroll = $anchorScroll;
             this.$rootScope = $rootScope;
             this.sharedData = sharedData;
-            this.recaptcha = recaptcha;
             this.marker = this.sharedData.currentMarker;
             this.markerAddress = this.sharedData.currentAddress;
             this.chosenPlace = '';
@@ -767,8 +763,7 @@ var map;
             '$location',
             '$anchorScroll',
             '$rootScope',
-            'sharedData',
-            'recaptcha'
+            'sharedData'
         ];
         return FormController;
     })();
@@ -789,10 +784,8 @@ var map;
         .directive('icheck', map_1.ICheck.Factory())
         .directive('placeholderforall', map_1.PlaceholderForAll.Factory())
         .directive('notallowedcharacters', map_1.NotAllowedCharacters.Factory())
-        .directive('vcRecaptcha', ['$document', '$timeout', 'Recaptcha', map_1.VcRecaptcha.Factory('$document', '$timeout', 'Recaptcha')])
         .service('poleData', map_1.PoleData)
-        .service('mapStorage', map_1.MapStorage)
-        .service('recaptha', ['$window', '$q', map_1.Recaptcha]);
+        .service('mapStorage', map_1.MapStorage);
     map.config(['$routeProvider', function routes($routeProvider) {
             $routeProvider.when('/map', {
                 templateUrl: '../views/home.html',
@@ -828,7 +821,7 @@ var map;
 /// <reference path='interfaces/IPoleData.ts' />
 /// <reference path='interfaces/ISharedData.ts' />
 /// <reference path='interfaces/IMapStorage.ts' />
-/// <reference path='interfaces/IReCaptcha.ts' />
+/// <reference path='interfaces/IRecaptcha.ts' />
 /// <reference path='services/poleData.ts' />
 /// <reference path='services/sharedData.ts' />
 /// <reference path='services/MapStorage.ts' />

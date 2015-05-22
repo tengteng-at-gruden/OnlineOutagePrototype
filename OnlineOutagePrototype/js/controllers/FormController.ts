@@ -14,8 +14,8 @@ module map {
             '$location',
             '$anchorScroll',
             '$rootScope',
-            'sharedData',
-            'recaptcha'
+            'sharedData'
+            //'recaptcha'
         ];
 
         constructor(
@@ -23,8 +23,8 @@ module map {
             private $location: ng.ILocationService,
             private $anchorScroll: ng.IAnchorScrollService,
             private $rootScope: ng.IRootScopeService,
-            private sharedData: ISharedData,
-            private recaptcha: IRecaptcha
+            private sharedData: ISharedData
+            //private recaptcha: IRecaptcha
             ) {
             $scope.formVm = this;
             $scope.response = null;
