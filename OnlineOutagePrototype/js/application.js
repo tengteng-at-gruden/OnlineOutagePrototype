@@ -699,4 +699,4 @@ var map;
             sharedDataProvider.$get();
         }]);
 })(map || (map = {}));
-//# sourceMappingURL=app.js.map
+//# sourceMappingURL=application.js.map

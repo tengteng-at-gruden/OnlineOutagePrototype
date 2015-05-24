@@ -23,7 +23,7 @@ namespace OnlineOutagePrototype
 
             bundles.Add(
                 new ScriptBundle("~/bundles/app")
-                    .Include("~/js/app.js"));
+                    .Include("~/js/application.js"));
 
             bundles.Add(
                 new StyleBundle("~/styles/app")
