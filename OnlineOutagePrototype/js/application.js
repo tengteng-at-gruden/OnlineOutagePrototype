@@ -225,7 +225,7 @@ var map;
     })();
     map.NotAllowedCharacters = NotAllowedCharacters;
 })(map || (map = {}));
-/// <reference path='../_all.ts' />
+/// <reference path="../_all.ts" /> 
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
@@ -486,11 +486,11 @@ var map;
             $scope.showHomeComponent = false;
             $scope.$on('$routeChangeSuccess', function () {
                 var path = $location.path();
-                if (path == '/') {
+                if (path === '/') {
                     $scope.showIntro = true;
                     $scope.showHomeComponent = false;
                 }
-                else if (path == '/map') {
+                else if (path === '/map') {
                     $scope.showHomeComponent = true;
                     $scope.showIntro = false;
                 }
@@ -517,19 +517,13 @@ var map;
 var map;
 (function (map) {
     'use strict';
-    /**
-     * The main controller for the app. The controller:
-     * - retrieves and persists the model via the todoStorage service
-     * - exposes the model to the template and provides event handlers
-     */
     var IntroController = (function () {
         function IntroController($scope, $location) {
             this.$scope = $scope;
             this.$location = $location;
             $scope.introVm = this;
-            $scope.location = $location;
         }
-        IntroController.prototype.LoadMap = function () {
+        IntroController.prototype.loadMap = function () {
             this.$location.path('/map');
         };
         IntroController.$inject = [
@@ -637,34 +631,6 @@ var map;
     })();
     map.FormController = FormController;
 })(map || (map = {}));
-/// <reference path='../scripts/typings/jquery/jquery.d.ts' />
-/// <reference path='../scripts/typings/jquery/jquery.selectbox.d.ts' />
-/// <reference path='../scripts/typings/jquery/jquery.radiobutton.d.ts' />
-/// <reference path='../scripts/typings/icheck/icheck.d.ts' />
-/// <reference path='../scripts/typings/angularjs/angular.d.ts' />
-/// <reference path='../scripts/typings/angularjs/angular-route.d.ts' />
-/// <reference path='../scripts/typings/google.maps.d.ts' />
-/// <reference path='directives/custom-radio.ts' />
-/// <reference path='directives/custom-selectbox.ts' />
-/// <reference path='directives/google-place.ts' />
-/// <reference path='directives/icheck.ts' />
-/// <reference path='directives/placeholder-for-all.ts' />
-/// <reference path='directives/validate-not-allowed-characters.ts' />
-/// <reference path='interfaces/IHomeScope.ts' />
-/// <reference path='interfaces/IRootScope.ts' />
-/// <reference path='interfaces/IOutageData.ts' />
-/// <reference path='interfaces/ISharedData.ts' />
-/// <reference path='interfaces/IMapStorage.ts' />
-/// <reference path='interfaces/IMapLazyLoad.ts' />
-/// <reference path='services/OutageData.ts' />
-/// <reference path='services/sharedData.ts' />
-/// <reference path='services/MapStorage.ts' />
-/// <reference path='services/MapLazyLoad.ts' />
-/// <reference path='controllers/RootController.ts' />
-/// <reference path='controllers/IntroController.ts' />
-/// <reference path='controllers/HomeController.ts' />
-/// <reference path='controllers/FormController.ts' />
-/// <reference path='app.ts' /> 
 /// <reference path='_all.ts' />
 var map;
 (function (map_1) {
@@ -683,7 +649,7 @@ var map;
         .service('poleData', map_1.OutageData)
         .service('mapStorage', map_1.MapStorage)
         .service('mapLazyLoad', map_1.MapLazyLoad);
-    map.config(['$routeProvider', function routes($routeProvider) {
+    map.config(['$routeProvider', function ($routeProvider) {
             $routeProvider.when('/map', {
                 templateUrl: '../views/home.html',
                 controller: 'homeController'
@@ -695,8 +661,38 @@ var map;
             }).
                 otherwise({ redirectTo: '/' });
         }]);
-    map.provider("sharedData", map_1.SharedData).config(['sharedDataProvider', function shared(sharedDataProvider) {
+    map.provider("sharedData", map_1.SharedData).config(['sharedDataProvider', function (sharedDataProvider) {
             sharedDataProvider.$get();
         }]);
 })(map || (map = {}));
+/// <reference path='../scripts/typings/jquery/jquery.d.ts' />
+/// <reference path='../scripts/typings/jquery/jquery.selectbox.d.ts' />
+/// <reference path='../scripts/typings/jquery/jquery.radiobutton.d.ts' />
+/// <reference path='../scripts/typings/icheck/icheck.d.ts' />
+/// <reference path='../scripts/typings/angularjs/angular.d.ts' />
+/// <reference path='../scripts/typings/angularjs/angular-route.d.ts' />
+/// <reference path='../scripts/typings/google.maps.d.ts' />
+/// <reference path='directives/custom-radio.ts' />
+/// <reference path='directives/custom-selectbox.ts' />
+/// <reference path='directives/google-place.ts' />
+/// <reference path='directives/icheck.ts' />
+/// <reference path='directives/placeholder-for-all.ts' />
+/// <reference path='directives/validate-not-allowed-characters.ts' />
+/// <reference path='interfaces/IHomeScope.ts' />
+/// <reference path='interfaces/IRootScope.ts' />
+/// <reference path='interfaces/IIntroScope.ts' />
+/// <reference path='interfaces/IOutageData.ts' />
+/// <reference path='interfaces/ISharedData.ts' />
+/// <reference path='interfaces/IMapStorage.ts' />
+/// <reference path='interfaces/IMapLazyLoad.ts' />
+/// <reference path='services/OutageData.ts' />
+/// <reference path='services/sharedData.ts' />
+/// <reference path='services/MapStorage.ts' />
+/// <reference path='services/MapLazyLoad.ts' />
+/// <reference path='controllers/RootController.ts' />
+/// <reference path='controllers/IntroController.ts' />
+/// <reference path='controllers/HomeController.ts' />
+/// <reference path='controllers/FormController.ts' />
+/// <reference path='app.ts' /> 
+/// <reference path='../_all.ts' />
 //# sourceMappingURL=application.js.map

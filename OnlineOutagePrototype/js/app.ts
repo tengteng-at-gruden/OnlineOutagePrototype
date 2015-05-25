@@ -19,24 +19,24 @@ module map {
         .service('mapLazyLoad', MapLazyLoad)
     ;
 
-    map.config(['$routeProvider', function routes($routeProvider: ng.route.IRouteProvider) {
+    map.config(['$routeProvider', ($routeProvider: ng.route.IRouteProvider) => {
         $routeProvider.when('/map',
-            {
-                templateUrl: '../views/home.html',
-                controller: 'homeController'
-            }
+                {
+                    templateUrl: '../views/home.html',
+                    controller: 'homeController'
+                }
             ).
             when('/report',
-            {
-                templateUrl: '../views/form.html',
-                controller: 'formController',
-                controllerAs: "vm"
-            }
+                {
+                    templateUrl: '../views/form.html',
+                    controller: 'formController',
+                    controllerAs: "vm"
+                }
             ).
             otherwise({ redirectTo: '/' });
     }]);
 
-    map.provider("sharedData", SharedData).config(['sharedDataProvider', function shared(sharedDataProvider: SharedData){
+    map.provider("sharedData", SharedData).config(['sharedDataProvider', (sharedDataProvider: SharedData) => {
         sharedDataProvider.$get();
     }]);
 }

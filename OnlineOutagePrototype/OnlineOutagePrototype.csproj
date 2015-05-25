@@ -66,6 +66,7 @@
     <TypeScriptCompile Include="js\directives\placeholder-for-all.ts" />
     <TypeScriptCompile Include="js\directives\validate-not-allowed-characters.ts" />
     <TypeScriptCompile Include="js\interfaces\IHomeScope.ts" />
+    <TypeScriptCompile Include="js\interfaces\IIntroScope.ts" />
     <TypeScriptCompile Include="js\interfaces\IMapLazyLoad.ts" />
     <TypeScriptCompile Include="js\interfaces\IMapStorage.ts" />
     <TypeScriptCompile Include="js\interfaces\IOutageData.ts" />
@@ -76,7 +77,12 @@
     <TypeScriptCompile Include="js\services\OutageData.ts" />
     <TypeScriptCompile Include="js\services\sharedData.ts" />
     <TypeScriptCompile Include="js\_all.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-resource.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\google.maps.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\icheck\icheck.d.ts" />

@@ -13,6 +13,7 @@
 /// <reference path='directives/validate-not-allowed-characters.ts' />
 /// <reference path='interfaces/IHomeScope.ts' />
 /// <reference path='interfaces/IRootScope.ts' />
+/// <reference path='interfaces/IIntroScope.ts' />
 /// <reference path='interfaces/IOutageData.ts' />
 /// <reference path='interfaces/ISharedData.ts' />
 /// <reference path='interfaces/IMapStorage.ts' />

@@ -28,13 +28,13 @@ module map {
 
             $scope.showHomeComponent = false;
 
-            $scope.$on('$routeChangeSuccess', function () {
+            $scope.$on('$routeChangeSuccess', () => {
                 var path = $location.path();
 
-                if (path == '/') {
+                if (path === '/') {
                     $scope.showIntro = true;
                     $scope.showHomeComponent = false;
-                } else if (path == '/map') {
+                } else if (path === '/map') {
                     $scope.showHomeComponent = true;
                     $scope.showIntro = false;
                 } else {

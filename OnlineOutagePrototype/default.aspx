@@ -33,7 +33,7 @@
         <h1>Intro</h1>
         <div class="container">
           <p>Blah blah blah</p>
-          <button class="btn btn-small btn-primary" type="button" ng-click="introVm.LoadMap()">Load Map</button>
+          <button class="btn btn-small btn-primary" type="button" ng-click="introVm.loadMap()">Load Map</button>
         </div>
       </div>
 
