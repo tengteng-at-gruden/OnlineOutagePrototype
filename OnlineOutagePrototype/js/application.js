@@ -508,7 +508,7 @@ var map;
             var pixelOffset = new google.maps.Point((offsetx / scale) || 0, 0);
             var worldCoordinateNewCenter = new google.maps.Point(worldCoordinateCenter.x - pixelOffset.x, worldCoordinateCenter.y);
             var newCenter = $scope.map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
-            $scope.map.setCenter(newCenter);
+            $scope.map.panTo(newCenter);
         };
         //clear all current markers
         MapStorage.prototype.resetMarkers = function () {

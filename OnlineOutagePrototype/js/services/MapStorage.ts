@@ -174,7 +174,7 @@ module map {
 
             var newCenter = $scope.map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
 
-            $scope.map.setCenter(newCenter);
+            $scope.map.panTo(newCenter);
         }
         //clear all current markers
         resetMarkers() {
