@@ -225,7 +225,99 @@ var map;
     })();
     map.NotAllowedCharacters = NotAllowedCharacters;
 })(map || (map = {}));
+var map;
+(function (map) {
+    'use strict';
+    var VcRecaptcha = (function () {
+        function VcRecaptcha($document, $timeout, recaptcha) {
+            var _this = this;
+            this.$document = $document;
+            this.$timeout = $timeout;
+            this.recaptcha = recaptcha;
+            this.restrict = 'A';
+            this.require = '?^^form';
+            this.scope = {
+                respons: '=?ngModel',
+                key: '=', theme: '=?',
+                tabindex: '=?',
+                onCreate: '&',
+                onSuccess: '&',
+                onExpire: '&'
+            };
+            this.link = function (scope, elm, attrs, ctrl) {
+                if (!attrs.hasOwnProperty('key')) {
+                    _this.throwNoKeyException();
+                }
+                scope.widgetId = null;
+                var removeCreationListener = scope.$watch('key', function (key) {
+                    if (!key) {
+                        return;
+                    }
+                    if (key.length !== 40) {
+                        this.throwNoKeyException();
+                    }
+                    var callback = function (gRecaptchaResponse) {
+                        // Safe $apply
+                        $timeout(function () {
+                            if (ctrl) {
+                                ctrl.$setValidity('recaptcha', true);
+                            }
+                            scope.response = gRecaptchaResponse;
+                            // Notify about the response availability
+                            scope.onSuccess({ response: gRecaptchaResponse, widgetId: scope.widgetId });
+                            cleanup();
+                        });
+                        // captcha session lasts 2 mins after set.
+                        $timeout(function () {
+                            if (ctrl) {
+                                ctrl.$setValidity('recaptcha', false);
+                            }
+                            scope.response = "";
+                            // Notify about the response availability
+                            scope.onExpire({ widgetId: scope.widgetId });
+                        }, 2 * 60 * 1000);
+                    };
+                    recaptcha.create(elm[0], key, callback, {
+                        theme: scope.theme || attrs.theme || null,
+                        tabindex: scope.tabindex || attrs.tabindex || null
+                    }).then(function (widgetId) {
+                        // The widget has been created
+                        if (ctrl) {
+                            ctrl.$setValidity('recaptcha', false);
+                        }
+                        scope.widgetId = widgetId;
+                        scope.onCreate({ widgetId: widgetId });
+                        scope.$on('$destroy', cleanup);
+                    });
+                    // Remove this listener to avoid creating the widget more than once.
+                    removeCreationListener();
+                });
+                function cleanup() {
+                    // removes elements reCaptcha added.
+                    angular.element($document[0].querySelectorAll('.pls-container')).parent().remove();
+                }
+            };
+        }
+        VcRecaptcha.Factory = function () {
+            var directive = function ($document, $timeout, recaptcha) {
+                return new VcRecaptcha($document, $timeout, recaptcha);
+            };
+            return directive;
+        };
+        VcRecaptcha.prototype.throwNoKeyException = function () {
+            throw new Error('You need to set the "key" attribute to your public reCaptcha key. If you don\'t have a key, please get one from https://www.google.com/recaptcha/admin/create');
+        };
+        VcRecaptcha.$inject = [
+            '$document',
+            '$timeout',
+            'recaptcha'
+        ];
+        return VcRecaptcha;
+    })();
+    map.VcRecaptcha = VcRecaptcha;
+})(map || (map = {}));
 /// <reference path="../_all.ts" /> 
+/// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
@@ -482,6 +574,83 @@ var map;
 var map;
 (function (map) {
     'use strict';
+    var Recaptcha = (function () {
+        function Recaptcha($window, $q) {
+            this.$window = $window;
+            this.$q = $q;
+            this.deferred = $q.defer();
+            this.promise = this.deferred.promise;
+            $window.vcRecaptchaApiLoaded = this.getLoaded($window);
+            if (angular.isDefined($window.grecaptcha)) {
+                $window.vcRecaptchaApiLoaded();
+            }
+        }
+        Recaptcha.prototype.getLoaded = function ($window) {
+            var _this = this;
+            return function () {
+                _this.recaptcha = $window.grecaptcha;
+                _this.deferred.resolve(_this.recaptcha);
+            };
+        };
+        Recaptcha.prototype.getRecaptcha = function () {
+            if (!!this.recaptcha) {
+                return this.$q.when(this.recaptcha);
+            }
+            return this.promise;
+        };
+        Recaptcha.prototype.validateRecaptchaInstance = function () {
+            if (!this.recaptcha) {
+                throw new Error('reCaptcha has not been loaded yet.');
+            }
+        };
+        /**
+         * Creates a new reCaptcha object
+         *
+         * @param elm  the DOM element where to put the captcha
+         * @param key  the recaptcha public key (refer to the README file if you don't know what this is)
+         * @param fn   a callback function to call when the captcha is resolved
+         * @param conf the captcha object configuration
+         */
+        Recaptcha.prototype.create = function (elm, key, fn, conf) {
+            conf.callback = fn;
+            conf.sitekey = key;
+            return this.getRecaptcha().then(function (recaptcha) {
+                return recaptcha.render(elm, conf);
+            });
+        };
+        /**
+         * Reloads the reCaptcha
+         */
+        Recaptcha.prototype.reload = function (widgetId) {
+            this.validateRecaptchaInstance();
+            // $log.info('Reloading captcha');
+            this.recaptcha.reset(widgetId);
+            // reCaptcha will call the same callback provided to the
+            // create function once this new captcha is resolved.
+        };
+        /**
+         * Gets the response from the reCaptcha widget.
+         *
+         * @see https://developers.google.com/recaptcha/docs/display#js_api
+         *
+         * @returns {String}
+         */
+        Recaptcha.prototype.getResponse = function (widgetId) {
+            this.validateRecaptchaInstance();
+            return this.recaptcha.getResponse(widgetId);
+        };
+        Recaptcha.$inject = [
+            '$window',
+            '$q'
+        ];
+        return Recaptcha;
+    })();
+    map.Recaptcha = Recaptcha;
+})(map || (map = {}));
+/// <reference path='../_all.ts' />
+var map;
+(function (map) {
+    'use strict';
     var RootController = (function () {
         function RootController($scope, $location) {
             this.$scope = $scope;
@@ -598,18 +767,14 @@ var map;
 var map;
 (function (map) {
     'use strict';
-    /**
-     * The main controller for the app. The controller:
-     * - retrieves and persists the model via the todoStorage service
-     * - exposes the model to the template and provides event handlers
-     */
     var FormController = (function () {
-        function FormController($scope, $location, $anchorScroll, $rootScope, sharedData) {
+        function FormController($scope, $location, $anchorScroll, $rootScope, sharedData, recaptcha) {
             this.$scope = $scope;
             this.$location = $location;
             this.$anchorScroll = $anchorScroll;
             this.$rootScope = $rootScope;
             this.sharedData = sharedData;
+            this.recaptcha = recaptcha;
             this.marker = this.sharedData.currentMarker;
             this.markerAddress = this.sharedData.currentAddress;
             this.chosenPlace = '';
@@ -620,10 +785,25 @@ var map;
             this.email = '';
             this.mRadValue = true;
             this.acceptValue = false;
+            this.captchaValue = false;
             $scope.formVm = this;
+            $scope.response = null;
+            $scope.widgetId = null;
+            $scope.model = {
+                //Recaptha key for domain: localhost
+                key: '6LcMLAcTAAAAAEtKsIfH9lfykpVkeO8gKby76JT1'
+            };
         }
+        FormController.prototype.setResponse = function (response) {
+            console.info('Captcha verified.');
+            this.$scope.response = response;
+            this.captchaValue = true;
+        };
+        FormController.prototype.setWidgetId = function (widgetId) {
+            this.$scope.widgetId = widgetId;
+        };
         FormController.prototype.submitForm = function () {
-            console.log(this.$scope.testform.$valid);
+            console.log("Form validation: " + this.$scope.testform.$valid);
             var old = this.$location.hash();
             this.$location.hash('emailField');
             this.$anchorScroll();
@@ -639,7 +819,8 @@ var map;
             '$location',
             '$anchorScroll',
             '$rootScope',
-            'sharedData'
+            'sharedData',
+            'recaptcha'
         ];
         return FormController;
     })();
@@ -660,8 +841,10 @@ var map;
         .directive('icheck', map_1.ICheck.Factory())
         .directive('placeholderforall', map_1.PlaceholderForAll.Factory())
         .directive('notallowedcharacters', map_1.NotAllowedCharacters.Factory())
+        .directive('vcRecaptcha', ['$document', '$timeout', 'recaptcha', map_1.VcRecaptcha.Factory()])
         .service('poleData', map_1.OutageData)
         .service('mapStorage', map_1.MapStorage)
+        .service('recaptcha', ['$window', '$q', map_1.Recaptcha])
         .service('mapLazyLoad', map_1.MapLazyLoad);
     map.config(['$routeProvider', function ($routeProvider) {
             $routeProvider.when('/map', {
@@ -692,6 +875,7 @@ var map;
 /// <reference path='directives/icheck.ts' />
 /// <reference path='directives/placeholder-for-all.ts' />
 /// <reference path='directives/validate-not-allowed-characters.ts' />
+/// <reference path='directives/vc-recaptcha.ts' />
 /// <reference path='interfaces/IHomeScope.ts' />
 /// <reference path='interfaces/IRootScope.ts' />
 /// <reference path='interfaces/IIntroScope.ts' />
@@ -699,10 +883,12 @@ var map;
 /// <reference path='interfaces/ISharedData.ts' />
 /// <reference path='interfaces/IMapStorage.ts' />
 /// <reference path='interfaces/IMapLazyLoad.ts' />
+/// <reference path='interfaces/IRecaptcha.ts' />
 /// <reference path='services/OutageData.ts' />
 /// <reference path='services/sharedData.ts' />
 /// <reference path='services/MapStorage.ts' />
 /// <reference path='services/MapLazyLoad.ts' />
+/// <reference path='services/Recaptcha.ts' />
 /// <reference path='controllers/RootController.ts' />
 /// <reference path='controllers/IntroController.ts' />
 /// <reference path='controllers/HomeController.ts' />

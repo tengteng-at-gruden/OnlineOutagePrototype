@@ -14,8 +14,10 @@ module map {
         .directive('icheck', ICheck.Factory())
         .directive('placeholderforall', PlaceholderForAll.Factory())
         .directive('notallowedcharacters', NotAllowedCharacters.Factory())
+        .directive('vcRecaptcha', ['$document', '$timeout', 'recaptcha', VcRecaptcha.Factory()])
         .service('poleData', OutageData)
         .service('mapStorage', MapStorage)
+        .service('recaptcha', ['$window', '$q', Recaptcha])
         .service('mapLazyLoad', MapLazyLoad)
     ;
 
