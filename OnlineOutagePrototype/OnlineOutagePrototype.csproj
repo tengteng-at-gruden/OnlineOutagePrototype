@@ -3,7 +3,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <ProjectGuid>{B40D09DC-01BD-4222-8075-68ECE4419FF5}</ProjectGuid>
+    <ProjectGuid>{841D7DD6-9E79-498B-8ADE-C411C256EDC1}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <OutputPath>bin</OutputPath>
@@ -17,6 +17,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="default.aspx" />
@@ -30,8 +32,7 @@
     <Content Include="images\red.png" />
     <Content Include="images\Status_Sprites.png" />
     <Content Include="images\switches.png" />
-    <Content Include="js\app.js" />
-    <Content Include="js\_all.js" />
+    <Content Include="js\application.js" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
     <Content Include="Scripts\angular.js" />
@@ -61,22 +62,30 @@
     <TypeScriptCompile Include="js\directives\custom-radio.ts" />
     <TypeScriptCompile Include="js\directives\custom-selectbox.ts" />
     <TypeScriptCompile Include="js\directives\google-place.ts" />
-    <TypeScriptCompile Include="js\directives\vc-recaptcha.ts" />
     <TypeScriptCompile Include="js\directives\icheck.ts" />
     <TypeScriptCompile Include="js\directives\placeholder-for-all.ts" />
     <TypeScriptCompile Include="js\directives\validate-not-allowed-characters.ts" />
+    <TypeScriptCompile Include="js\directives\vc-recaptcha.ts" />
     <TypeScriptCompile Include="js\interfaces\IHomeScope.ts" />
+    <TypeScriptCompile Include="js\interfaces\IIntroScope.ts" />
+    <TypeScriptCompile Include="js\interfaces\IMapLazyLoad.ts" />
     <TypeScriptCompile Include="js\interfaces\IMapStorage.ts" />
+    <TypeScriptCompile Include="js\interfaces\IOutageData.ts" />
     <TypeScriptCompile Include="js\interfaces\IRecaptcha.ts" />
-    <TypeScriptCompile Include="js\interfaces\IPoleData.ts" />
     <TypeScriptCompile Include="js\interfaces\IRootScope.ts" />
     <TypeScriptCompile Include="js\interfaces\ISharedData.ts" />
+    <TypeScriptCompile Include="js\services\MapLazyLoad.ts" />
     <TypeScriptCompile Include="js\services\MapStorage.ts" />
-    <TypeScriptCompile Include="js\services\PoleData.ts" />
+    <TypeScriptCompile Include="js\services\OutageData.ts" />
     <TypeScriptCompile Include="js\services\Recaptcha.ts" />
     <TypeScriptCompile Include="js\services\sharedData.ts" />
     <TypeScriptCompile Include="js\_all.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-resource.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\google.maps.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\icheck\icheck.d.ts" />
@@ -85,18 +94,13 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.selectbox.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="js\_all.js.map" />
     <Content Include="packages.config" />
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\angular.min.js.map" />
-    <Content Include="data\poles.json" />
-    <Content Include="js\app.js.map" />
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
+    <Content Include="data\poles.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\poles2.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="js\models\" />
@@ -137,6 +141,9 @@
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="js\application.js.map" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
   </PropertyGroup>
@@ -166,11 +173,18 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
-    <TypeScriptOutFile>$(ProjectDir)js\app.js</TypeScriptOutFile>
+    <TypeScriptOutFile>$(ProjectDir)js\application.js</TypeScriptOutFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
 </Project>

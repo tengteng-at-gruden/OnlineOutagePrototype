@@ -5,9 +5,11 @@ module map {
         showIntro: boolean;
         showHomeComponent: boolean;
         location: ng.ILocationService;
-        introVm: IntroController;
         formVm: FormController;
         testform: ng.IFormController;
+
+        defaultLati: number;
+        defaultLongi: number;
 
         marker: {};
         markers: {};

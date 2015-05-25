@@ -4,8 +4,8 @@
   <!-- Somehow placeholder is working for google autocomplete in IE8 -->
   <input id="addressSearchBox" type="text" class="input-block-level" placeholder="e.g. 500 George Street Sydney NSW 2000" ng-model="chosenPlace" googleplace>
   <button class="btn btn-small btn-primary" type="button" ng-click="homeVm.searchAddress()">Address Search</button><br/>
-  <input type="radio" name="status" id="now" /><label for="now">Now</label>
-  <input type="radio" name="status" id="future" /><label for="future">Future</label>
+  <input type="radio" name="iCheck" ng-model="radOutageTime" value="now" icheck><label for="now">Now</label>
+  <input type="radio" name="iCheck" ng-model="radOutageTime" value="future" icheck><label for="future">Future</label>
 </div>
 <section id="map">
   <!--div id="myMap" ui-options="mapOptions" class="map-canvas" ui-event="{'map-zoom_changed': 'zoomChanged(myMap.getZoom())'}"></div-->

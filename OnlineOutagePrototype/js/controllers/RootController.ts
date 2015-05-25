@@ -3,17 +3,7 @@
 module map {
     'use strict';
 
-    /**
-     * The main controller for the app. The controller:
-     * - retrieves and persists the model via the todoStorage service
-     * - exposes the model to the template and provides event handlers
-     */
     export class RootController {
-
-        // $inject annotation.
-        // It provides $injector with information about dependencies to be injected into constructor
-        // it is better to have it close to the constructor, because the parameters must match in count and type.
-        // See http://docs.angularjs.org/guide/di
         public static $inject = [
             '$scope',
             '$location'
@@ -28,13 +18,13 @@ module map {
 
             $scope.showHomeComponent = false;
 
-            $scope.$on('$routeChangeSuccess', function () {
+            $scope.$on('$routeChangeSuccess', () => {
                 var path = $location.path();
 
-                if (path == '/') {
+                if (path === '/') {
                     $scope.showIntro = true;
                     $scope.showHomeComponent = false;
-                } else if (path == '/map') {
+                } else if (path === '/map') {
                     $scope.showHomeComponent = true;
                     $scope.showIntro = false;
                 } else {
@@ -44,6 +34,25 @@ module map {
 
                 console.log('URL change success to: ' + path);
             });
+
+            if (navigator.geolocation) {
+                console.log('browser supports geo location');
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        console.log('use geo location, lati:' + position.coords.latitude);
+                        console.log('use geo location, longi:' + position.coords.longitude);
+
+                        $scope.defaultLati = position.coords.latitude;
+                        $scope.defaultLongi = position.coords.longitude;
+                    },
+                    () => {
+                        console.log('wait for 0.5 sec for retrieving geo location but failed');
+                    },
+                    { timeout: 500 }
+                    );
+            } else {
+                window.console.log('browser does not support geo location');
+            }
         }
 
     }

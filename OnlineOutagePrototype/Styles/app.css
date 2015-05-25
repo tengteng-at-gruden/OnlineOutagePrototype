@@ -188,8 +188,12 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 #outageInfo {
     position: absolute;
     bottom: 0;
-    background-color: #fff;
-    width: 100%;
+    background-color: black;
+    /* width: 100%; */
+    right: 0;
+    top: 0;
+    opacity: .8;
+    color: white;
 }
 .close-tag {
     display: inline-block;

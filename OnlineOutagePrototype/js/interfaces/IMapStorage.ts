@@ -3,6 +3,7 @@ module map {
 
     export interface IMapStorage {
         initializeMap($scope: any, $compile: any): void;
-        showMarkers($scope: any): void;
+        showMarkers($scope: any, timeStatus: string): void;
+        resetMarkers(): void;
     }
 }

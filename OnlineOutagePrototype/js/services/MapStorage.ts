@@ -16,7 +16,7 @@ module map {
         ];
 
         constructor(
-            private poleData: IPoleData
+            private outageData: IOutageData
             ) {
             this.infoBoxArray = [];
             this.markersArray = [];
@@ -36,6 +36,7 @@ module map {
             };
 
             $scope.chosenPlace = '';
+            $scope.radOutageTime = 'now';
             $scope.isLoading = false;
 
             $scope.marker = {};
@@ -64,7 +65,7 @@ module map {
             $scope.map.setZoom(14);
         }
 
-        showMarkers($scope: any): void {
+        showMarkers($scope: any, timeStatus: string): void {
             var thisScope = this;
             var zoom = $scope.map.getZoom();
 
@@ -79,7 +80,7 @@ module map {
                 };
 
                 // retrieve poles from Ausgrid service
-                this.poleData.getPoles({ box: viewbox }).then(function (result) {
+                this.outageData.getOutages({ box: viewbox },timeStatus).then(function (result) {
                     if (result.d) {
                         thisScope.setMarkers(result.d, $scope);
                         $scope.isLoading = false;
@@ -165,8 +166,8 @@ module map {
         }
 
         clickMarker(marker: google.maps.Marker, $scope:any) {
-            $("#outageInfo").slideToggle("slow");
-            
+            $("#outageInfo").toggle("slide");
+
             $scope.map.setCenter(marker.getPosition());
         }
 

@@ -33,14 +33,14 @@
         <h1>Intro</h1>
         <div class="container">
           <p>Blah blah blah</p>
-          <button class="btn btn-small btn-primary" type="button" ng-click="introVm.LoadMap()">Load Map</button>
+          <button class="btn btn-small btn-primary" type="button" ng-click="introVm.loadMap()">Load Map</button>
         </div>
       </div>
 
       <div class="row-fluid" ng-cloak ng-show="showHomeComponent">
         <div class="span4">
-          <input type="radio" id="unplaned" /><label>Unplaned</label>
-          <input type="radio" id="planed" /><label>Planed</label>
+          <span class="reported-box"></span><label>Unplaned</label>
+          <span class="working-box"></span><label>Planed</label>
         </div>
       </div>
     </div>

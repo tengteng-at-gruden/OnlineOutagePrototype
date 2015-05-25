@@ -30,15 +30,12 @@
                     if (!place.geometry) {
                         return;
                     }
-                    //if (place.geometry.viewport) {
-                    //    scope.map.fitBounds(place.geometry.viewport);
-                    //    scope.map.setZoom(18);
-                    //    homeVM.showMarkers();
-                    //} else {
-                    //    scope.map.setCenter(place.geometry.location);
-                    //    scope.map.setZoom(18);
-                    //    homeVM.showMarkers();
-                    //}            
+                    if (place.geometry.viewport) {
+                        scope.map.fitBounds(place.geometry.viewport);
+
+                    } else {
+                        scope.map.setCenter(place.geometry.location);
+                    }            
                     
                 });
             };
