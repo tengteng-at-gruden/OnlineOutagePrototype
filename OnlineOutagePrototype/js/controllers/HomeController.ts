@@ -11,7 +11,8 @@ module map {
             '$compile',
             '$http',
             'mapStorage',
-            'mapLazyLoad'
+            'mapLazyLoad',
+            'sharedData'
         ];
 
         constructor(
@@ -20,7 +21,8 @@ module map {
             private $compile: ng.ICompileService,
             private $http: ng.IHttpService,
             private mapStorage: IMapStorage,
-            private mapLazyLoad: IMapLazyLoad
+            private mapLazyLoad: IMapLazyLoad,
+            private sharedData:ISharedData
             ) {
              
             $scope.homeVm = this;
@@ -48,6 +50,8 @@ module map {
             $("#outageInfo").toggle('slide', { direction: 'right' });   
         }
         reportAsset() {
+            this.sharedData.currentMarker = this.$scope.marker;
+            this.sharedData.currentAddress = this.$scope.markerAddress;
             this.$location.path('/report');
         }
     }

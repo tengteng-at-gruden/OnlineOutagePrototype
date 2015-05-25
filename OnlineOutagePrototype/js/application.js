@@ -498,6 +498,8 @@ var map;
         };
         MapStorage.prototype.clickMarker = function (marker, $scope) {
             $("#outageInfo").toggle('slide', { direction: 'right' });
+            $scope.marker = marker;
+            //$scope.markerAddress = marker;
             this.offsetCenter(marker.getPosition(), $scope);
         };
         MapStorage.prototype.offsetCenter = function (latlng, $scope) {
@@ -710,13 +712,14 @@ var map;
 (function (map) {
     'use strict';
     var HomeController = (function () {
-        function HomeController($scope, $location, $compile, $http, mapStorage, mapLazyLoad) {
+        function HomeController($scope, $location, $compile, $http, mapStorage, mapLazyLoad, sharedData) {
             this.$scope = $scope;
             this.$location = $location;
             this.$compile = $compile;
             this.$http = $http;
             this.mapStorage = mapStorage;
             this.mapLazyLoad = mapLazyLoad;
+            this.sharedData = sharedData;
             $scope.homeVm = this;
             //this.mapLazyLoad.asynGoogleMap().then(function () {
             this.mapStorage.initializeMap($scope, $compile);
@@ -737,6 +740,8 @@ var map;
             $("#outageInfo").toggle('slide', { direction: 'right' });
         };
         HomeController.prototype.reportAsset = function () {
+            this.sharedData.currentMarker = this.$scope.marker;
+            this.sharedData.currentAddress = this.$scope.markerAddress;
             this.$location.path('/report');
         };
         HomeController.$inject = [
@@ -745,7 +750,8 @@ var map;
             '$compile',
             '$http',
             'mapStorage',
-            'mapLazyLoad'
+            'mapLazyLoad',
+            'sharedData'
         ];
         return HomeController;
     })();

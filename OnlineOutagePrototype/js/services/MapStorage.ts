@@ -155,6 +155,9 @@ module map {
 
             $("#outageInfo").toggle('slide', {direction: 'right'});   
 
+
+            $scope.marker = marker;
+            //$scope.markerAddress = marker;
             this.offsetCenter(marker.getPosition(), $scope);
         }
 
