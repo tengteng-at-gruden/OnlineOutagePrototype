@@ -165,11 +165,11 @@ module map {
 
             var worldCoordinateCenter = $scope.map.getProjection().fromLatLngToPoint(latlng);
 
-            var pixelOffset = new google.maps.Point((offsetx / scale) || 0, (offsety / scale) || 0);
+            var pixelOffset = new google.maps.Point((offsetx / scale) || 0, 0);
 
             var worldCoordinateNewCenter = new google.maps.Point(
                 worldCoordinateCenter.x - pixelOffset.x,
-                worldCoordinateCenter.y + pixelOffset.y
+                worldCoordinateCenter.y
                 );
 
             var newCenter = $scope.map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
