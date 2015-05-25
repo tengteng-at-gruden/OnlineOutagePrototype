@@ -155,32 +155,27 @@ module map {
 
             $("#outageInfo").toggle('slide', {direction: 'right'});   
 
-            this.offsetCenter(marker.getPosition(), -278/2, 0, $scope);
+            this.offsetCenter(marker.getPosition(), $scope);
         }
 
-        offsetCenter(latlng, offsetx, offsety, $scope: any) {
-
+        offsetCenter(latlng, $scope: any) {
             var scale = Math.pow(2, $scope.map.getZoom());
+            var offsetx = -($('#outageInfo').width() / 2);
+            var offsety = 0;
 
-        var nw = new google.maps.LatLng(
-            $scope.map.getBounds().getNorthEast().lat(),
-            $scope.map.getBounds().getSouthWest().lng()
-            );
+            var worldCoordinateCenter = $scope.map.getProjection().fromLatLngToPoint(latlng);
 
-        var worldCoordinateCenter = $scope.map.getProjection().fromLatLngToPoint(latlng);
+            var pixelOffset = new google.maps.Point((offsetx / scale) || 0, (offsety / scale) || 0);
 
-        var pixelOffset = new google.maps.Point((offsetx / scale) || 0, (offsety / scale) || 0)
+            var worldCoordinateNewCenter = new google.maps.Point(
+                worldCoordinateCenter.x - pixelOffset.x,
+                worldCoordinateCenter.y + pixelOffset.y
+                );
 
-        var worldCoordinateNewCenter = new google.maps.Point(
-            worldCoordinateCenter.x - pixelOffset.x,
-            worldCoordinateCenter.y + pixelOffset.y
-            );
+            var newCenter = $scope.map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
 
-        var newCenter = $scope.map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
-
-        $scope.map.setCenter(newCenter);
-
-    }
+            $scope.map.setCenter(newCenter);
+        }
         //clear all current markers
         resetMarkers() {
             if (this.markersArray.length) {

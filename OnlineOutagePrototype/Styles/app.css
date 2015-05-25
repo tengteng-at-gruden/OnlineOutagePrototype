@@ -192,7 +192,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
     position: absolute;
     bottom: 0;
     background-color: black;
-    /* width: 100%; */
+    width: 278px;
     right: 0;
     top: 0;
     opacity: .8;
