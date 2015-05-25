@@ -45,7 +45,7 @@ module map {
         }
 
         closeWindow() {
-            $("#outageInfo").animate({ width: 'toggle' }, 800); 
+            $("#outageInfo").toggle('slide', { direction: 'right' });   
         }
         reportAsset() {
             this.$location.path('/report');

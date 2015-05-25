@@ -316,6 +316,7 @@ var map;
     })();
     map.VcRecaptcha = VcRecaptcha;
 })(map || (map = {}));
+/// <reference path='../_all.ts' />
 /// <reference path="../_all.ts" /> 
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
@@ -491,26 +492,13 @@ var map;
         };
         MapStorage.prototype.attachInfoBox = function (marker, $scope) {
             var thisScope = this;
-            var myOptions = {
-                disableAutoPan: false,
-                pixelOffset: new google.maps.Size(-140, 0),
-                zIndex: null,
-                closeBoxMargin: "10px 2px 2px 2px",
-                closeBoxURL: "/images/close.png",
-                infoBoxClearance: new google.maps.Size(1, 1),
-                isHidden: false,
-                pane: "floatPane",
-                enableEventPropagation: false
-            };
-            var ib = new google.maps.InfoWindow(myOptions);
-            this.infoBoxArray.push(ib);
             //add click handler
             google.maps.event.addListener(marker, 'click', function () {
                 thisScope.clickMarker(marker, $scope);
             });
         };
         MapStorage.prototype.clickMarker = function (marker, $scope) {
-            $("#outageInfo").animate({ width: 'toggle' }, 800);
+            $("#outageInfo").toggle('slide', { direction: 'right' });
             this.offsetCenter(marker.getPosition(), -278 / 2, 0, $scope);
         };
         MapStorage.prototype.offsetCenter = function (latlng, offsetx, offsety, $scope) {
@@ -746,7 +734,7 @@ var map;
             this.mapStorage.showMarkers(this.$scope, this.$scope.radOutageTime);
         };
         HomeController.prototype.closeWindow = function () {
-            $("#outageInfo").animate({ width: 'toggle' }, 800);
+            $("#outageInfo").toggle('slide', { direction: 'right' });
         };
         HomeController.prototype.reportAsset = function () {
             this.$location.path('/report');
@@ -826,6 +814,39 @@ var map;
     })();
     map.FormController = FormController;
 })(map || (map = {}));
+/// <reference path='../scripts/typings/jquery/jquery.d.ts' />
+/// <reference path='../scripts/typings/jquery/jquery.selectbox.d.ts' />
+/// <reference path='../scripts/typings/jquery/jquery.radiobutton.d.ts' />
+/// <reference path='../scripts/typings/jquery/jqueryui.d.ts' />
+/// <reference path='../scripts/typings/icheck/icheck.d.ts' />
+/// <reference path='../scripts/typings/angularjs/angular.d.ts' />
+/// <reference path='../scripts/typings/angularjs/angular-route.d.ts' />
+/// <reference path='../scripts/typings/google.maps.d.ts' />
+/// <reference path='directives/custom-radio.ts' />
+/// <reference path='directives/custom-selectbox.ts' />
+/// <reference path='directives/google-place.ts' />
+/// <reference path='directives/icheck.ts' />
+/// <reference path='directives/placeholder-for-all.ts' />
+/// <reference path='directives/validate-not-allowed-characters.ts' />
+/// <reference path='directives/vc-recaptcha.ts' />
+/// <reference path='interfaces/IHomeScope.ts' />
+/// <reference path='interfaces/IRootScope.ts' />
+/// <reference path='interfaces/IIntroScope.ts' />
+/// <reference path='interfaces/IOutageData.ts' />
+/// <reference path='interfaces/ISharedData.ts' />
+/// <reference path='interfaces/IMapStorage.ts' />
+/// <reference path='interfaces/IMapLazyLoad.ts' />
+/// <reference path='interfaces/IRecaptcha.ts' />
+/// <reference path='services/OutageData.ts' />
+/// <reference path='services/sharedData.ts' />
+/// <reference path='services/MapStorage.ts' />
+/// <reference path='services/MapLazyLoad.ts' />
+/// <reference path='services/Recaptcha.ts' />
+/// <reference path='controllers/RootController.ts' />
+/// <reference path='controllers/IntroController.ts' />
+/// <reference path='controllers/HomeController.ts' />
+/// <reference path='controllers/FormController.ts' />
+/// <reference path='app.ts' /> 
 /// <reference path='_all.ts' />
 var map;
 (function (map_1) {
@@ -862,37 +883,4 @@ var map;
             sharedDataProvider.$get();
         }]);
 })(map || (map = {}));
-/// <reference path='../scripts/typings/jquery/jquery.d.ts' />
-/// <reference path='../scripts/typings/jquery/jquery.selectbox.d.ts' />
-/// <reference path='../scripts/typings/jquery/jquery.radiobutton.d.ts' />
-/// <reference path='../scripts/typings/icheck/icheck.d.ts' />
-/// <reference path='../scripts/typings/angularjs/angular.d.ts' />
-/// <reference path='../scripts/typings/angularjs/angular-route.d.ts' />
-/// <reference path='../scripts/typings/google.maps.d.ts' />
-/// <reference path='directives/custom-radio.ts' />
-/// <reference path='directives/custom-selectbox.ts' />
-/// <reference path='directives/google-place.ts' />
-/// <reference path='directives/icheck.ts' />
-/// <reference path='directives/placeholder-for-all.ts' />
-/// <reference path='directives/validate-not-allowed-characters.ts' />
-/// <reference path='directives/vc-recaptcha.ts' />
-/// <reference path='interfaces/IHomeScope.ts' />
-/// <reference path='interfaces/IRootScope.ts' />
-/// <reference path='interfaces/IIntroScope.ts' />
-/// <reference path='interfaces/IOutageData.ts' />
-/// <reference path='interfaces/ISharedData.ts' />
-/// <reference path='interfaces/IMapStorage.ts' />
-/// <reference path='interfaces/IMapLazyLoad.ts' />
-/// <reference path='interfaces/IRecaptcha.ts' />
-/// <reference path='services/OutageData.ts' />
-/// <reference path='services/sharedData.ts' />
-/// <reference path='services/MapStorage.ts' />
-/// <reference path='services/MapLazyLoad.ts' />
-/// <reference path='services/Recaptcha.ts' />
-/// <reference path='controllers/RootController.ts' />
-/// <reference path='controllers/IntroController.ts' />
-/// <reference path='controllers/HomeController.ts' />
-/// <reference path='controllers/FormController.ts' />
-/// <reference path='app.ts' /> 
-/// <reference path='../_all.ts' />
 //# sourceMappingURL=application.js.map

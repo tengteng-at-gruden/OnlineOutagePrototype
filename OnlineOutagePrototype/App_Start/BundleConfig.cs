@@ -19,7 +19,8 @@ namespace OnlineOutagePrototype
                     "~/Scripts/jquery-1.7.2.min.js", 
                     "~/Scripts/jquery.radiobutton.2.0.js", 
                     "~/Scripts/jquery.selectbox.0.2.min.js", 
-                    "~/Scripts/icheck/jquery.icheck.min.js"));
+                    "~/Scripts/icheck/jquery.icheck.min.js",
+                    "~/Scripts/jquery-ui-1.11.4.min.js"));
 
             bundles.Add(
                 new ScriptBundle("~/bundles/angular")

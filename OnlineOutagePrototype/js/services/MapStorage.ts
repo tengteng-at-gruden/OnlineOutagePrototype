@@ -144,30 +144,16 @@ module map {
 
         attachInfoBox(marker, $scope : any) {
             var thisScope = this;
-            var myOptions = {
-                disableAutoPan: false
-                , pixelOffset: new google.maps.Size(-140, 0)
-                , zIndex: null
-                , closeBoxMargin: "10px 2px 2px 2px"
-                , closeBoxURL: "/images/close.png"
-                , infoBoxClearance: new google.maps.Size(1, 1)
-                , isHidden: false
-                , pane: "floatPane"
-                , enableEventPropagation: false
-            };
 
-            var ib = new google.maps.InfoWindow(myOptions);
-
-            this.infoBoxArray.push(ib);
             //add click handler
-            google.maps.event.addListener(marker, 'click', function () {
+            google.maps.event.addListener(marker, 'click', () => {
                 thisScope.clickMarker(marker, $scope);
             });
         }
 
         clickMarker(marker: google.maps.Marker, $scope:any) {
 
-            $("#outageInfo").animate({ width: 'toggle' }, 800);   
+            $("#outageInfo").toggle('slide', {direction: 'right'});   
 
             this.offsetCenter(marker.getPosition(), -278/2, 0, $scope);
         }
