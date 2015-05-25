@@ -45,9 +45,9 @@
                         this.throwNoKeyException();
                     }
 
-                    var callback = function (gRecaptchaResponse) {
+                    var callback = gRecaptchaResponse => {
                         // Safe $apply
-                        $timeout(function () {
+                        $timeout(() => {
                             if (ctrl) {
                                 ctrl.$setValidity('recaptcha', true);
                             }
@@ -58,7 +58,7 @@
                         });
 
                         // captcha session lasts 2 mins after set.
-                        $timeout(function () {
+                        $timeout(() => {
                             if (ctrl) {
                                 ctrl.$setValidity('recaptcha', false);
                             }
@@ -73,7 +73,7 @@
                         theme: scope.theme || attrs.theme || null,
                         tabindex: scope.tabindex || attrs.tabindex || null
 
-                    }).then(function (widgetId) {
+                    }).then(widgetId => {
                         // The widget has been created
                         if (ctrl) {
                             ctrl.$setValidity('recaptcha', false);
