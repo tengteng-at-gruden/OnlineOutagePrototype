@@ -232,76 +232,78 @@ var map;
 (function (map) {
     'use strict';
     var VcRecaptcha = (function () {
-        function VcRecaptcha($document, $timeout) {
-            //this.restrict = 'A';
-            //this.require = '?^^form';
-            //this.scope = {
-            //    respons: '=?ngModel',
-            //    key: '=', theme: '=?',
-            //    tabindex: '=?',
-            //    onCreate: '&',
-            //    onSuccess: '&',
-            //    onExpire: '&'
-            //};
+        function VcRecaptcha($document, $timeout, recaptcha) {
+            var _this = this;
             this.$document = $document;
             this.$timeout = $timeout;
-            //this.link = (scope, elm, attrs, ctrl) => {
-            //    if (!attrs.hasOwnProperty('key')) {
-            //        this.throwNoKeyException();
-            //    }
-            //    scope.widgetId = null;
-            //    var removeCreationListener = scope.$watch('key', function (key) {
-            //        if (!key) {
-            //            return;
-            //        }
-            //        if (key.length !== 40) {
-            //            this.throwNoKeyException();
-            //        }
-            //        var callback = function (gRecaptchaResponse) {
-            //            // Safe $apply
-            //            $timeout(function () {
-            //                if (ctrl) {
-            //                    ctrl.$setValidity('recaptcha', true);
-            //                }
-            //                scope.response = gRecaptchaResponse;
-            //                // Notify about the response availability
-            //                scope.onSuccess({ response: gRecaptchaResponse, widgetId: scope.widgetId });
-            //                cleanup();
-            //            });
-            //            // captcha session lasts 2 mins after set.
-            //            $timeout(function () {
-            //                if (ctrl) {
-            //                    ctrl.$setValidity('recaptcha', false);
-            //                }
-            //                scope.response = "";
-            //                // Notify about the response availability
-            //                scope.onExpire({ widgetId: scope.widgetId });
-            //            }, 2 * 60 * 1000);
-            //        };
-            //        Recaptcha.create(elm[0], key, callback, {
-            //            theme: scope.theme || attrs.theme || null,
-            //            tabindex: scope.tabindex || attrs.tabindex || null
-            //        }).then(function (widgetId) {
-            //            // The widget has been created
-            //            if (ctrl) {
-            //                ctrl.$setValidity('recaptcha', false);
-            //            }
-            //            scope.widgetId = widgetId;
-            //            scope.onCreate({ widgetId: widgetId });
-            //            scope.$on('$destroy', cleanup);
-            //        });
-            //        // Remove this listener to avoid creating the widget more than once.
-            //        removeCreationListener();
-            //    });
-            //    function cleanup() {
-            //        // removes elements reCaptcha added.
-            //        angular.element($document[0].querySelectorAll('.pls-container')).parent().remove();
-            //    }
-            //};
+            this.recaptcha = recaptcha;
+            this.restrict = 'A';
+            this.require = '?^^form';
+            this.scope = {
+                respons: '=?ngModel',
+                key: '=', theme: '=?',
+                tabindex: '=?',
+                onCreate: '&',
+                onSuccess: '&',
+                onExpire: '&'
+            };
+            this.link = function (scope, elm, attrs, ctrl) {
+                if (!attrs.hasOwnProperty('key')) {
+                    _this.throwNoKeyException();
+                }
+                scope.widgetId = null;
+                var removeCreationListener = scope.$watch('key', function (key) {
+                    if (!key) {
+                        return;
+                    }
+                    if (key.length !== 40) {
+                        this.throwNoKeyException();
+                    }
+                    var callback = function (gRecaptchaResponse) {
+                        // Safe $apply
+                        $timeout(function () {
+                            if (ctrl) {
+                                ctrl.$setValidity('recaptcha', true);
+                            }
+                            scope.response = gRecaptchaResponse;
+                            // Notify about the response availability
+                            scope.onSuccess({ response: gRecaptchaResponse, widgetId: scope.widgetId });
+                            cleanup();
+                        });
+                        // captcha session lasts 2 mins after set.
+                        $timeout(function () {
+                            if (ctrl) {
+                                ctrl.$setValidity('recaptcha', false);
+                            }
+                            scope.response = "";
+                            // Notify about the response availability
+                            scope.onExpire({ widgetId: scope.widgetId });
+                        }, 2 * 60 * 1000);
+                    };
+                    recaptcha.create(elm[0], key, callback, {
+                        theme: scope.theme || attrs.theme || null,
+                        tabindex: scope.tabindex || attrs.tabindex || null
+                    }).then(function (widgetId) {
+                        // The widget has been created
+                        if (ctrl) {
+                            ctrl.$setValidity('recaptcha', false);
+                        }
+                        scope.widgetId = widgetId;
+                        scope.onCreate({ widgetId: widgetId });
+                        scope.$on('$destroy', cleanup);
+                    });
+                    // Remove this listener to avoid creating the widget more than once.
+                    removeCreationListener();
+                });
+                function cleanup() {
+                    // removes elements reCaptcha added.
+                    angular.element($document[0].querySelectorAll('.pls-container')).parent().remove();
+                }
+            };
         }
-        VcRecaptcha.Factory = function ($document, $timeout, vcRecaptcha) {
-            var directive = function () {
-                //return new VcRecaptcha($document, $timeout, vcRecaptcha);
+        VcRecaptcha.Factory = function () {
+            var directive = function ($document, $timeout, recaptcha) {
+                return new VcRecaptcha($document, $timeout, recaptcha);
             };
             return directive;
         };
@@ -310,7 +312,8 @@ var map;
         };
         VcRecaptcha.$inject = [
             '$document',
-            '$timeout'
+            '$timeout',
+            'recaptcha'
         ];
         return VcRecaptcha;
     })();
@@ -535,15 +538,18 @@ var map;
             this.$q = $q;
             this.deferred = $q.defer();
             this.promise = this.deferred.promise;
-            $window.vcRecaptchaApiLoaded = function () {
-                this.recaptcha = $window.grecaptcha;
-                this.deferred.resolve(this.recaptcha);
-            };
-            // Check if grecaptcha is not defined already.
+            $window.vcRecaptchaApiLoaded = this.getLoaded($window);
             if (angular.isDefined($window.grecaptcha)) {
                 $window.vcRecaptchaApiLoaded();
             }
         }
+        Recaptcha.prototype.getLoaded = function ($window) {
+            var _this = this;
+            return function () {
+                _this.recaptcha = $window.grecaptcha;
+                _this.deferred.resolve(_this.recaptcha);
+            };
+        };
         Recaptcha.prototype.getRecaptcha = function () {
             if (!!this.recaptcha) {
                 return this.$q.when(this.recaptcha);
@@ -713,12 +719,13 @@ var map;
 (function (map) {
     'use strict';
     var FormController = (function () {
-        function FormController($scope, $location, $anchorScroll, $rootScope, sharedData) {
+        function FormController($scope, $location, $anchorScroll, $rootScope, sharedData, recaptcha) {
             this.$scope = $scope;
             this.$location = $location;
             this.$anchorScroll = $anchorScroll;
             this.$rootScope = $rootScope;
             this.sharedData = sharedData;
+            this.recaptcha = recaptcha;
             this.marker = this.sharedData.currentMarker;
             this.markerAddress = this.sharedData.currentAddress;
             this.chosenPlace = '';
@@ -763,7 +770,8 @@ var map;
             '$location',
             '$anchorScroll',
             '$rootScope',
-            'sharedData'
+            'sharedData',
+            'recaptcha'
         ];
         return FormController;
     })();
@@ -773,7 +781,7 @@ var map;
 var map;
 (function (map_1) {
     'use strict';
-    var map = angular.module('map', ['ngRoute', 'vcRecaptcha'])
+    var map = angular.module('map', ['ngRoute'])
         .controller('rootController', map_1.RootController)
         .controller('introController', map_1.IntroController)
         .controller('homeController', map_1.HomeController)
@@ -784,8 +792,10 @@ var map;
         .directive('icheck', map_1.ICheck.Factory())
         .directive('placeholderforall', map_1.PlaceholderForAll.Factory())
         .directive('notallowedcharacters', map_1.NotAllowedCharacters.Factory())
+        .directive('vcRecaptcha', ['$document', '$timeout', 'recaptcha', map_1.VcRecaptcha.Factory()])
         .service('poleData', map_1.PoleData)
-        .service('mapStorage', map_1.MapStorage);
+        .service('mapStorage', map_1.MapStorage)
+        .service('recaptcha', ['$window', '$q', map_1.Recaptcha]);
     map.config(['$routeProvider', function routes($routeProvider) {
             $routeProvider.when('/map', {
                 templateUrl: '../views/home.html',

@@ -19,7 +19,7 @@ namespace OnlineOutagePrototype
 
             bundles.Add(
                 new ScriptBundle("~/bundles/angular")
-                    .Include("~/Scripts/angular.js", "~/Scripts/angular-route.js", "~/Scripts/angular-recaptcha.js"));
+                    .Include("~/Scripts/angular.js", "~/Scripts/angular-route.js"));
 
             bundles.Add(
                 new ScriptBundle("~/bundles/app")

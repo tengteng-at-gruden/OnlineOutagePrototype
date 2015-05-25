@@ -9,96 +9,96 @@
 
         public static $inject = [
             '$document',
-            '$timeout'
-            //'Recaptcha'
+            '$timeout',
+            'recaptcha'
         ];
 
         constructor(
             private $document: any,
-            private $timeout: any
-            //private Recaptcha: IRecaptcha
+            private $timeout: any,
+            private recaptcha
             ) {
-            //this.restrict = 'A';
-            //this.require = '?^^form';
-            //this.scope = {
-            //    respons: '=?ngModel',
-            //    key: '=', theme: '=?',
-            //    tabindex: '=?',
-            //    onCreate: '&',
-            //    onSuccess: '&',
-            //    onExpire: '&'
-            //};
+            this.restrict = 'A';
+            this.require = '?^^form';
+            this.scope = {
+                respons: '=?ngModel',
+                key: '=', theme: '=?',
+                tabindex: '=?',
+                onCreate: '&',
+                onSuccess: '&',
+                onExpire: '&'
+            };
 
-            //this.link = (scope, elm, attrs, ctrl) => {
-            //    if (!attrs.hasOwnProperty('key')) {
-            //        this.throwNoKeyException();
-            //    }
+            this.link = (scope, elm, attrs, ctrl) => {
+                if (!attrs.hasOwnProperty('key')) {
+                    this.throwNoKeyException();
+                }
 
-            //    scope.widgetId = null;
+                scope.widgetId = null;
 
-            //    var removeCreationListener = scope.$watch('key', function (key) {
-            //        if (!key) {
-            //            return;
-            //        }
+                var removeCreationListener = scope.$watch('key', function (key) {
+                    if (!key) {
+                        return;
+                    }
 
-            //        if (key.length !== 40) {
-            //            this.throwNoKeyException();
-            //        }
+                    if (key.length !== 40) {
+                        this.throwNoKeyException();
+                    }
 
-            //        var callback = function (gRecaptchaResponse) {
-            //            // Safe $apply
-            //            $timeout(function () {
-            //                if (ctrl) {
-            //                    ctrl.$setValidity('recaptcha', true);
-            //                }
-            //                scope.response = gRecaptchaResponse;
-            //                // Notify about the response availability
-            //                scope.onSuccess({ response: gRecaptchaResponse, widgetId: scope.widgetId });
-            //                cleanup();
-            //            });
+                    var callback = function (gRecaptchaResponse) {
+                        // Safe $apply
+                        $timeout(function () {
+                            if (ctrl) {
+                                ctrl.$setValidity('recaptcha', true);
+                            }
+                            scope.response = gRecaptchaResponse;
+                            // Notify about the response availability
+                            scope.onSuccess({ response: gRecaptchaResponse, widgetId: scope.widgetId });
+                            cleanup();
+                        });
 
-            //            // captcha session lasts 2 mins after set.
-            //            $timeout(function () {
-            //                if (ctrl) {
-            //                    ctrl.$setValidity('recaptcha', false);
-            //                }
-            //                scope.response = "";
-            //                // Notify about the response availability
-            //                scope.onExpire({ widgetId: scope.widgetId });
-            //            }, 2 * 60 * 1000);
-            //        };
+                        // captcha session lasts 2 mins after set.
+                        $timeout(function () {
+                            if (ctrl) {
+                                ctrl.$setValidity('recaptcha', false);
+                            }
+                            scope.response = "";
+                            // Notify about the response availability
+                            scope.onExpire({ widgetId: scope.widgetId });
+                        }, 2 * 60 * 1000);
+                    };
 
-            //        Recaptcha.create(elm[0], key, callback, {
+                    recaptcha.create(elm[0], key, callback, {
 
-            //            theme: scope.theme || attrs.theme || null,
-            //            tabindex: scope.tabindex || attrs.tabindex || null
+                        theme: scope.theme || attrs.theme || null,
+                        tabindex: scope.tabindex || attrs.tabindex || null
 
-            //        }).then(function (widgetId) {
-            //            // The widget has been created
-            //            if (ctrl) {
-            //                ctrl.$setValidity('recaptcha', false);
-            //            }
-            //            scope.widgetId = widgetId;
-            //            scope.onCreate({ widgetId: widgetId });
+                    }).then(function (widgetId) {
+                        // The widget has been created
+                        if (ctrl) {
+                            ctrl.$setValidity('recaptcha', false);
+                        }
+                        scope.widgetId = widgetId;
+                        scope.onCreate({ widgetId: widgetId });
 
-            //            scope.$on('$destroy', cleanup);
+                        scope.$on('$destroy', cleanup);
 
-            //        });
+                    });
 
-            //        // Remove this listener to avoid creating the widget more than once.
-            //        removeCreationListener();
-            //    });
+                    // Remove this listener to avoid creating the widget more than once.
+                    removeCreationListener();
+                });
 
-            //    function cleanup() {
-            //        // removes elements reCaptcha added.
-            //        angular.element($document[0].querySelectorAll('.pls-container')).parent().remove();
-            //    }
-            //};
+                function cleanup() {
+                    // removes elements reCaptcha added.
+                    angular.element($document[0].querySelectorAll('.pls-container')).parent().remove();
+                }
+            };
         }
 
-        public static Factory($document, $timeout, vcRecaptcha) {
-            var directive = () => {
-                //return new VcRecaptcha($document, $timeout, vcRecaptcha);
+        public static Factory() {
+            var directive = ($document, $timeout, recaptcha) => {
+                return new VcRecaptcha($document, $timeout, recaptcha);
             };
 
             return directive;

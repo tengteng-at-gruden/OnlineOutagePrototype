@@ -20,14 +20,17 @@ module map {
             ) {
             this.deferred = $q.defer();
             this.promise = this.deferred.promise;
-            $window.vcRecaptchaApiLoaded = function () {
-                this.recaptcha = $window.grecaptcha;
-                this.deferred.resolve(this.recaptcha);
-            };
-            // Check if grecaptcha is not defined already.
+            $window.vcRecaptchaApiLoaded = this.getLoaded($window);
             if (angular.isDefined($window.grecaptcha)) {
                 $window.vcRecaptchaApiLoaded();
             }
+        }
+
+        getLoaded($window) {
+            return ()=> {
+                this.recaptcha = $window.grecaptcha;
+                this.deferred.resolve(this.recaptcha);
+            };
         }
 
         getRecaptcha() {
