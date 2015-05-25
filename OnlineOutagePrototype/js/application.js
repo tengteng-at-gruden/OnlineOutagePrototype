@@ -503,7 +503,6 @@ var map;
         MapStorage.prototype.offsetCenter = function (latlng, $scope) {
             var scale = Math.pow(2, $scope.map.getZoom());
             var offsetx = -($('#outageInfo').width() / 2);
-            var offsety = 0;
             var worldCoordinateCenter = $scope.map.getProjection().fromLatLngToPoint(latlng);
             var pixelOffset = new google.maps.Point((offsetx / scale) || 0, 0);
             var worldCoordinateNewCenter = new google.maps.Point(worldCoordinateCenter.x - pixelOffset.x, worldCoordinateCenter.y);
