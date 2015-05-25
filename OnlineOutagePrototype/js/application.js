@@ -501,6 +501,18 @@ var map;
             $scope.marker = marker;
             //$scope.markerAddress = marker;
             this.offsetCenter(marker.getPosition(), $scope);
+            var circleOptions = {
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35,
+                map: $scope.map,
+                radius: 100
+            };
+            // Add the circle for this city to the map.
+            var markerCircle = new google.maps.Circle(circleOptions);
+            markerCircle.bindTo("center", marker, "position");
         };
         MapStorage.prototype.offsetCenter = function (latlng, $scope) {
             var scale = Math.pow(2, $scope.map.getZoom());
