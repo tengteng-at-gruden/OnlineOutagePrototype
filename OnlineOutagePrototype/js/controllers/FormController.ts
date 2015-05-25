@@ -48,7 +48,7 @@ module map {
         captchaValue: boolean = false;
 
         setResponse (response) {
-            console.info('Captcha verified.');
+            console.info('Captcha verified: ' + response);
             this.$scope.response = response;
             this.captchaValue = true;
         }
