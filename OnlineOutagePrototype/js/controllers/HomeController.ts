@@ -31,7 +31,7 @@ module map {
 
             $scope.$watch('radOutageTime', function (newVal, oldVal) {
                 $scope.homeVm.showMarkers();
-            });
+                });
         }
 
         searchAddress() {
@@ -45,7 +45,7 @@ module map {
         }
 
         closeWindow() {
-            $("#outageInfo").toggle("slide");
+            $("#outageInfo").animate({ width: 'toggle' }, 800); 
         }
         reportAsset() {
             this.$location.path('/report');

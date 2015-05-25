@@ -418,8 +418,17 @@ var map;
             });
         };
         MapStorage.prototype.clickMarker = function (marker, $scope) {
-            $("#outageInfo").toggle("slide");
-            $scope.map.setCenter(marker.getPosition());
+            $("#outageInfo").animate({ width: 'toggle' }, 800);
+            this.offsetCenter(marker.getPosition(), -278 / 2, 0, $scope);
+        };
+        MapStorage.prototype.offsetCenter = function (latlng, offsetx, offsety, $scope) {
+            var scale = Math.pow(2, $scope.map.getZoom());
+            var nw = new google.maps.LatLng($scope.map.getBounds().getNorthEast().lat(), $scope.map.getBounds().getSouthWest().lng());
+            var worldCoordinateCenter = $scope.map.getProjection().fromLatLngToPoint(latlng);
+            var pixelOffset = new google.maps.Point((offsetx / scale) || 0, (offsety / scale) || 0);
+            var worldCoordinateNewCenter = new google.maps.Point(worldCoordinateCenter.x - pixelOffset.x, worldCoordinateCenter.y + pixelOffset.y);
+            var newCenter = $scope.map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
+            $scope.map.setCenter(newCenter);
         };
         //clear all current markers
         MapStorage.prototype.resetMarkers = function () {
@@ -568,7 +577,7 @@ var map;
             this.mapStorage.showMarkers(this.$scope, this.$scope.radOutageTime);
         };
         HomeController.prototype.closeWindow = function () {
-            $("#outageInfo").toggle("slide");
+            $("#outageInfo").animate({ width: 'toggle' }, 800);
         };
         HomeController.prototype.reportAsset = function () {
             this.$location.path('/report');

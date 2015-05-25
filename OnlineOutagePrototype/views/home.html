@@ -12,7 +12,7 @@
   <div id="myMap" class="map-canvas"></div>
   <div id="outageInfo">
     <div class="left">
-      <p>start time: 12:30</p>
+      <p>start time: 12:30 <a class="close-tag" ng-click="homeVm.closeWindow()">close</a></p>
       <p>Estimated Restore Time:14:30</p>
       <p>Status: Reported</p>
       <p>Areas Affected: Stanmore</p>
@@ -20,11 +20,7 @@
 
       <button class="btn btn-small btn-primary" type="button" ng-click="homeVm.reportAsset()">Report Outage</button><br />
     </div>
-    <div class="right">
-      <a class="close-tag" ng-click="homeVm.closeWindow()">close</a>
-      <p>facebook <a href="#">my facebook home page</a></p>
-      <p>twitter <a href="#">my twitter home page</a></p>
-    </div>
+
   </div>
 </section>
 

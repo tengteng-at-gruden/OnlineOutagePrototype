@@ -185,6 +185,9 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 #map {
     position: relative;
 }
+.close-tag{
+    margin-left: 120px;
+}
 #outageInfo {
     position: absolute;
     bottom: 0;
@@ -195,12 +198,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
     opacity: .8;
     color: white;
 }
-.close-tag {
-    display: inline-block;
-    text-align: right;
-    width: 100%;
-    margin-bottom: 50px;
-}
+
 .right {
     float: right;
 }
