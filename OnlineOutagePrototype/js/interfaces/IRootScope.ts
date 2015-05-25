@@ -8,6 +8,9 @@ module map {
         formVm: FormController;
         testform: ng.IFormController;
 
+        defaultLati: number;
+        defaultLongi: number;
+
         marker: {};
         markers: {};
         markerAddress: string;
