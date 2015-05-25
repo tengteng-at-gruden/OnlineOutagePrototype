@@ -164,7 +164,6 @@ module map {
         offsetCenter(latlng, $scope: any) {
             var scale = Math.pow(2, $scope.map.getZoom());
             var offsetx = -($('#outageInfo').width() / 2);
-            var offsety = 0;
 
             var worldCoordinateCenter = $scope.map.getProjection().fromLatLngToPoint(latlng);
 
@@ -177,7 +176,7 @@ module map {
 
             var newCenter = $scope.map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
 
-            $scope.map.setCenter(newCenter);
+            $scope.map.panTo(newCenter);
         }
         //clear all current markers
         resetMarkers() {

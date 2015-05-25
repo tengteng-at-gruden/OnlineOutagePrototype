@@ -505,12 +505,11 @@ var map;
         MapStorage.prototype.offsetCenter = function (latlng, $scope) {
             var scale = Math.pow(2, $scope.map.getZoom());
             var offsetx = -($('#outageInfo').width() / 2);
-            var offsety = 0;
             var worldCoordinateCenter = $scope.map.getProjection().fromLatLngToPoint(latlng);
             var pixelOffset = new google.maps.Point((offsetx / scale) || 0, 0);
             var worldCoordinateNewCenter = new google.maps.Point(worldCoordinateCenter.x - pixelOffset.x, worldCoordinateCenter.y);
             var newCenter = $scope.map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
-            $scope.map.setCenter(newCenter);
+            $scope.map.panTo(newCenter);
         };
         //clear all current markers
         MapStorage.prototype.resetMarkers = function () {
@@ -789,7 +788,7 @@ var map;
             };
         }
         FormController.prototype.setResponse = function (response) {
-            console.info('Captcha verified.');
+            console.info('Captcha verified: ' + response);
             this.$scope.response = response;
             this.captchaValue = true;
         };
