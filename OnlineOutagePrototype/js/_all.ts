@@ -19,7 +19,6 @@
 /// <reference path='interfaces/IOutageData.ts' />
 /// <reference path='interfaces/ISharedData.ts' />
 /// <reference path='interfaces/IMapStorage.ts' />
-/// <reference path='interfaces/IMapLazyLoad.ts' />
 /// <reference path='interfaces/IRecaptcha.ts' />
 /// <reference path='services/OutageData.ts' />
 /// <reference path='services/sharedData.ts' />
