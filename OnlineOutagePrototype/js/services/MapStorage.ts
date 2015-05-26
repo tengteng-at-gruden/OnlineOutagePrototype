@@ -155,9 +155,24 @@ module map {
 
             $("#outageInfo").toggle('slide', {direction: 'right'});   
 
+            var geocoder = new google.maps.Geocoder();
 
-            $scope.marker = marker;
-            //$scope.markerAddress = marker;
+            var geocoderRequest = {
+                address: '',
+                location: marker.getPosition()
+            }
+
+            geocoder.geocode(geocoderRequest, (results, status) => {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[0]) {
+                        // hacking: sometime ng-include is not working for second time
+                        $scope.marker = marker;
+                        $scope.markerAddress = results[0].formatted_address;
+                        $scope.$apply();
+                    }
+                }
+            });
+
             this.offsetCenter(marker.getPosition(), $scope);
 
             var circleOptions = {

@@ -498,8 +498,21 @@ var map;
         };
         MapStorage.prototype.clickMarker = function (marker, $scope) {
             $("#outageInfo").toggle('slide', { direction: 'right' });
-            $scope.marker = marker;
-            //$scope.markerAddress = marker;
+            var geocoder = new google.maps.Geocoder();
+            var geocoderRequest = {
+                address: '',
+                location: marker.getPosition()
+            };
+            geocoder.geocode(geocoderRequest, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[0]) {
+                        // hacking: sometime ng-include is not working for second time
+                        $scope.marker = marker;
+                        $scope.markerAddress = results[0].formatted_address;
+                        $scope.$apply();
+                    }
+                }
+            });
             this.offsetCenter(marker.getPosition(), $scope);
             var circleOptions = {
                 strokeColor: '#FF0000',
