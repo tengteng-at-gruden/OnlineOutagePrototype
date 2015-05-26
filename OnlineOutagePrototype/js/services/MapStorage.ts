@@ -1,4 +1,4 @@
-﻿ /// <reference path='../_all.ts' />
+﻿/// <reference path='../_all.ts' />
 
 module map {
     'use strict';
@@ -80,7 +80,7 @@ module map {
                 };
 
                 // retrieve poles from Ausgrid service
-                this.outageData.getOutages({ box: viewbox },timeStatus).then(function (result) {
+                this.outageData.getOutages({ box: viewbox }, timeStatus).then(function (result) {
                     if (result.d) {
                         thisScope.setMarkers(result.d, $scope);
                         $scope.isLoading = false;
@@ -90,7 +90,7 @@ module map {
                     });
             } else {
                 this.resetMarkers();
-            }   
+            }
         }
 
         setMarkers(assets: any, $scope: any) {
@@ -106,43 +106,73 @@ module map {
             var heldHoverImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(45, 23));
             var nonausgridHoverImage = new google.maps.MarkerImage(imageURL, new google.maps.Size(21, 21), new google.maps.Point(67, 23));
 
+            var redCircle = {
+                path: google.maps.SymbolPath.CIRCLE,
+                fillOpacity: 1.0,
+                fillColor: "red",
+                strokeOpacity: 1.0,
+                strokeColor: "red",
+                strokeWeight: 1.0,
+                scale: 8.0
+            };
+
+            var blueCircle = {
+                path: google.maps.SymbolPath.CIRCLE,
+                fillOpacity: 1.0,
+                fillColor: "blue",
+                strokeOpacity: 1.0,
+                strokeColor: "blue",
+                strokeWeight: 1.0,
+                scale: 8.0
+            };
+
+            var greenCircle = {
+                path: google.maps.SymbolPath.CIRCLE,
+                fillOpacity: 1.0,
+                fillColor: "green",
+                strokeOpacity: 1.0,
+                strokeColor: "green",
+                strokeWeight: 1.0,
+                scale: 8.0
+            };
+
             for (var index in assets) {
                 if (assets[index].lat) {
 
                     var location = new google.maps.LatLng(assets[index].lat, assets[index].lng);
 
-                    var image = workingImage;
-                    var hoverImage = workingHoverImage;
-                    if (assets[index].Status == 'reported') {
-                        image = reportedImage;
-                        hoverImage = reportedHoverImage;
+                    var icon;
+
+                    if (assets[index].Status == 'planned') {
+                        icon = redCircle;
                     }
-                    else if (assets[index].Status == 'held') {
-                        image = heldImage;
-                        hoverImage = heldHoverImage;
+                    else if (assets[index].Status == 'confirmed') {
+                        icon = blueCircle;
                     }
-                    else if (assets[index].Status == 'nonausgrid') {
-                        image = nonausgridImage;
-                        hoverImage = nonausgridHoverImage;
+                    else if (assets[index].Status == 'predicted') {
+                        icon = greenCircle;
                     }
 
                     var marker = new google.maps.Marker({
                         position: location,
                         map: $scope.map,
-                        icon: image,
+                        icon: icon,
                         title: assets[index].AssetNo,
                         customStatus: assets[index].Status,
-                        webID: assets[index].WebID,
+                        customAffected: assets[index].Affected,
+                        webID: assets[index].WebID
                     });
 
                     this.markersArray.push(marker);
 
                     this.attachInfoBox(marker, $scope);
+
+                    this.generateCircles(marker, $scope);
                 }
             }
         }
 
-        attachInfoBox(marker, $scope : any) {
+        attachInfoBox(marker, $scope: any) {
             var thisScope = this;
 
             //add click handler
@@ -151,9 +181,9 @@ module map {
             });
         }
 
-        clickMarker(marker: google.maps.Marker, $scope:any) {
+        clickMarker(marker: google.maps.Marker, $scope: any) {
 
-            $("#outageInfo").toggle('slide', {direction: 'right'});   
+            $("#outageInfo").toggle('slide', { direction: 'right' });
 
             var geocoder = new google.maps.Geocoder();
 
@@ -174,20 +204,28 @@ module map {
             });
 
             this.offsetCenter(marker.getPosition(), $scope);
+        }
 
+        generateCircles(marker: any, $scope: any) {
+            var radius = Math.pow(1.67, (21 - $scope.map.getZoom())) * (marker.customAffected / 100);
             var circleOptions = {
-                strokeColor: '#FF0000',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: '#FF0000',
-                fillOpacity: 0.35,
+                strokeColor: marker.customStatus == 'planned' ? 'red' : (marker.customStatus == 'confirmed' ? 'blue' : 'green'),
+                strokeOpacity: 0.6,
+                strokeWeight: 1,
+                fillColor: marker.customStatus == 'planned' ? 'red' : (marker.customStatus == 'confirmed' ? 'blue' : 'green') ,
+                fillOpacity: 0.3,
                 map: $scope.map,
-                radius: 100
+                radius: radius
             };
             // Add the circle for this city to the map.
             var markerCircle = new google.maps.Circle(circleOptions);
 
             markerCircle.bindTo("center", marker, "position");
+
+            google.maps.event.addListener($scope.map, 'zoom_changed', () => {
+                var p = Math.pow(1.67, (21 - $scope.map.getZoom())) * (marker.customAffected / 100);
+                markerCircle.setRadius(p);
+            });
         }
 
         offsetCenter(latlng, $scope: any) {

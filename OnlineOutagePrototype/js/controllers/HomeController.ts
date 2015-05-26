@@ -29,7 +29,7 @@ module map {
 
             $scope.$watch('radOutageTime', function (newVal, oldVal) {
                 $scope.homeVm.showMarkers();
-                });
+            });
         }
 
         searchAddress() {
