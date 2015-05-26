@@ -461,27 +461,27 @@ var map;
             var redCircle = {
                 path: google.maps.SymbolPath.CIRCLE,
                 fillOpacity: 1.0,
-                fillColor: "red",
+                fillColor: "#00ACE9",
                 strokeOpacity: 1.0,
-                strokeColor: "red",
+                strokeColor: "#00ACE9",
                 strokeWeight: 1.0,
                 scale: 8.0
             };
             var blueCircle = {
                 path: google.maps.SymbolPath.CIRCLE,
                 fillOpacity: 1.0,
-                fillColor: "blue",
+                fillColor: "#E15E20",
                 strokeOpacity: 1.0,
-                strokeColor: "blue",
+                strokeColor: "#E15E20",
                 strokeWeight: 1.0,
                 scale: 8.0
             };
             var greenCircle = {
                 path: google.maps.SymbolPath.CIRCLE,
                 fillOpacity: 1.0,
-                fillColor: "green",
+                fillColor: "#711EA7",
                 strokeOpacity: 1.0,
-                strokeColor: "green",
+                strokeColor: "#711EA7",
                 strokeWeight: 1.0,
                 scale: 8.0
             };
@@ -542,10 +542,10 @@ var map;
         MapStorage.prototype.generateCircles = function (marker, $scope) {
             var radius = Math.pow(1.67, (21 - $scope.map.getZoom())) * (marker.customAffected / 100);
             var circleOptions = {
-                strokeColor: marker.customStatus == 'planned' ? 'red' : (marker.customStatus == 'confirmed' ? 'blue' : 'green'),
+                strokeColor: marker.customStatus == 'planned' ? '#00ACE9' : (marker.customStatus == 'confirmed' ? '#E15E20' : '#711EA7'),
                 strokeOpacity: 0.6,
                 strokeWeight: 1,
-                fillColor: marker.customStatus == 'planned' ? 'red' : (marker.customStatus == 'confirmed' ? 'blue' : 'green'),
+                fillColor: marker.customStatus == 'planned' ? '#00ACE9' : (marker.customStatus == 'confirmed' ? '#E15E20' : '#711EA7'),
                 fillOpacity: 0.3,
                 map: $scope.map,
                 radius: radius
