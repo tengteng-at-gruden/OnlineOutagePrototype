@@ -38,7 +38,7 @@ module map {
         }
 
         showMarkers() {
-            this.mapStorage.resetMarkers();
+            
             this.mapStorage.showMarkers(this.$scope, this.$scope.radOutageTime);
         }
 

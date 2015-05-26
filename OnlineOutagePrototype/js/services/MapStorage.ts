@@ -5,8 +5,9 @@ module map {
 
     export class MapStorage implements IMapStorage {
 
-        private infoBoxArray: any;
         private markersArray: any;
+        private circlesArray: any;
+        private polygonsArray: any;
         private geocoder: google.maps.Geocoder;
         private content: string;
         private compiled: any;
@@ -18,8 +19,9 @@ module map {
         constructor(
             private outageData: IOutageData
             ) {
-            this.infoBoxArray = [];
             this.markersArray = [];
+            this.circlesArray = [];
+            this.polygonsArray = [];
         }
 
         initializeMap($scope: any, $compile: any) {
@@ -66,6 +68,7 @@ module map {
         }
 
         showMarkers($scope: any, timeStatus: string): void {
+            this.resetAll();
             var thisScope = this;
             var zoom = $scope.map.getZoom();
 
@@ -89,7 +92,7 @@ module map {
 
                     });
             } else {
-                this.resetMarkers();
+                this.resetAll();
             }   
         }
 
@@ -196,6 +199,8 @@ module map {
 
                 poly.bindTo("center", marker, "position");
 
+                this.polygonsArray.push(poly);
+
             } else {
 
                 var circleOptions = {
@@ -211,6 +216,8 @@ module map {
                 var markerCircle = new google.maps.Circle(circleOptions);
 
                 markerCircle.bindTo("center", marker, "position");
+
+                this.circlesArray.push(markerCircle);
             }
             
         }
@@ -233,12 +240,20 @@ module map {
             $scope.map.panTo(newCenter);
         }
         //clear all current markers
-        resetMarkers() {
-            if (this.markersArray.length) {
-                for (var i = 0; i < this.markersArray.length; i++) {
-                    this.markersArray[i].setMap(null);
+
+        resetAll() {
+            this.resetItems(this.markersArray);
+            this.resetItems(this.circlesArray);
+            this.resetItems(this.polygonsArray);
+        }
+
+        resetItems(items: any) {
+
+            if (items.length) {
+                for (var i = 0; i < items.length; i++) {
+                    items[i].setMap(null);
                 }
-                this.markersArray.length = 0;
+                items.length = 0;
             }
         }
     }

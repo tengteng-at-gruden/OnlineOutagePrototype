@@ -390,8 +390,9 @@ var map;
     var MapStorage = (function () {
         function MapStorage(outageData) {
             this.outageData = outageData;
-            this.infoBoxArray = [];
             this.markersArray = [];
+            this.circlesArray = [];
+            this.polygonsArray = [];
         }
         MapStorage.prototype.initializeMap = function ($scope, $compile) {
             $("#outageInfo").hide();
@@ -425,6 +426,7 @@ var map;
             $scope.map.setZoom(14);
         };
         MapStorage.prototype.showMarkers = function ($scope, timeStatus) {
+            this.resetAll();
             var thisScope = this;
             var zoom = $scope.map.getZoom();
             if (zoom > 17) {
@@ -445,7 +447,7 @@ var map;
                 });
             }
             else {
-                this.resetMarkers();
+                this.resetAll();
             }
         };
         MapStorage.prototype.setMarkers = function (assets, $scope) {
@@ -530,6 +532,7 @@ var map;
                     map: $scope.map
                 });
                 poly.bindTo("center", marker, "position");
+                this.polygonsArray.push(poly);
             }
             else {
                 var circleOptions = {
@@ -544,6 +547,7 @@ var map;
                 // Add the circle for this city to the map.
                 var markerCircle = new google.maps.Circle(circleOptions);
                 markerCircle.bindTo("center", marker, "position");
+                this.circlesArray.push(markerCircle);
             }
         };
         MapStorage.prototype.offsetCenter = function (latlng, $scope) {
@@ -556,12 +560,17 @@ var map;
             $scope.map.panTo(newCenter);
         };
         //clear all current markers
-        MapStorage.prototype.resetMarkers = function () {
-            if (this.markersArray.length) {
-                for (var i = 0; i < this.markersArray.length; i++) {
-                    this.markersArray[i].setMap(null);
+        MapStorage.prototype.resetAll = function () {
+            this.resetItems(this.markersArray);
+            this.resetItems(this.circlesArray);
+            this.resetItems(this.polygonsArray);
+        };
+        MapStorage.prototype.resetItems = function (items) {
+            if (items.length) {
+                for (var i = 0; i < items.length; i++) {
+                    items[i].setMap(null);
                 }
-                this.markersArray.length = 0;
+                items.length = 0;
             }
         };
         MapStorage.$inject = [
@@ -741,7 +750,6 @@ var map;
             this.showMarkers();
         };
         HomeController.prototype.showMarkers = function () {
-            this.mapStorage.resetMarkers();
             this.mapStorage.showMarkers(this.$scope, this.$scope.radOutageTime);
         };
         HomeController.prototype.closeWindow = function () {
