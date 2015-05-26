@@ -549,13 +549,11 @@ var map;
             this.$window = $window;
         }
         MapLazyLoad.prototype.asynGoogleMap = function () {
-            var asyncUrl = 'http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&callback=', mapsDefer = this.$q.defer();
+            var asyncUrl = 'http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&callback=';
             this.$window['googleMapsInitialized'] = function () {
-                mapsDefer.resolve; // removed ()
-                //alert("load success");
+                alert("load success");
             };
             this.asyncLoad(asyncUrl, 'googleMapsInitialized');
-            return mapsDefer.promise;
         };
         MapLazyLoad.prototype.asyncLoad = function (asyncUrl, callbackName) {
             var script = document.createElement('script');
@@ -732,9 +730,7 @@ var map;
             this.mapLazyLoad = mapLazyLoad;
             this.sharedData = sharedData;
             $scope.homeVm = this;
-            //this.mapLazyLoad.asynGoogleMap().then(function () {
             this.mapStorage.initializeMap($scope, $compile);
-            //});
             $scope.$watch('radOutageTime', function (newVal, oldVal) {
                 $scope.homeVm.showMarkers();
             });

@@ -27,9 +27,7 @@ module map {
              
             $scope.homeVm = this;
 
-            //this.mapLazyLoad.asynGoogleMap().then(function () {
-                this.mapStorage.initializeMap($scope, $compile);
-            //});
+            this.mapStorage.initializeMap($scope, $compile);
 
             $scope.$watch('radOutageTime', function (newVal, oldVal) {
                 $scope.homeVm.showMarkers();

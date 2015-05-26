@@ -18,7 +18,6 @@ module map {
         .service('poleData', OutageData)
         .service('mapStorage', MapStorage)
         .service('recaptcha', ['$window', '$q', Recaptcha])
-        .service('mapLazyLoad', MapLazyLoad)
     ;
 
     map.config(['$routeProvider', ($routeProvider: ng.route.IRouteProvider) => {

@@ -24,7 +24,6 @@
 /// <reference path='services/OutageData.ts' />
 /// <reference path='services/sharedData.ts' />
 /// <reference path='services/MapStorage.ts' />
-/// <reference path='services/MapLazyLoad.ts' />
 /// <reference path='services/Recaptcha.ts' />
 /// <reference path='controllers/RootController.ts' />
 /// <reference path='controllers/IntroController.ts' />
