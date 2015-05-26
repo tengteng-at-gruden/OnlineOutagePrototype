@@ -1,7 +1,7 @@
 { "d": [ { "AssetNo": "SY17295", "lat": -33.867244, "lng": 151.209330, "Status": "planned", "Affected": 1000 },
-         { "AssetNo": "SY17305", "lat": -33.867024, "lng": 151.20705, "Status": "confirmed" , "Affected": 800},
-         { "AssetNo": "SY12298", "lat": -33.868338, "lng": 151.20516, "Status": "predicted", "Affected": 500 },
-         { "AssetNo": "SY22223", "lat": -33.872332, "lng": 151.21668, "Status": "planned", "Affected": 1500 },
-         { "AssetNo": "SY22247", "lat": -33.873219, "lng": 151.25554, "Status": "confirmed" , "Affected": 900 },
-         { "AssetNo": "SY22648", "lat": -33.874095, "lng": 151.26535, "Status": "predicted", "Affected": 500 },
-         { "AssetNo": "SY22641", "lat": -33.875579, "lng": 151.21425, "Status": "confirmed" , "Affected": 800 }] }
+         { "AssetNo": "SY17305", "lat": -33.867024, "lng": 151.207051, "Status": "confirmed" , "Affected": 800},
+         { "AssetNo": "SY12298", "lat": -33.868338, "lng": 151.205161, "Status": "predicted", "Affected": 500 },
+         { "AssetNo": "SY22223", "lat": -33.872332, "lng": 151.216681, "Status": "planned", "Affected": 1500 },
+         { "AssetNo": "SY22247", "lat": -33.870972, "lng": 151.211728, "Status": "confirmed" , "Affected": 900 },
+         { "AssetNo": "SY22648", "lat": -33.874095, "lng": 151.265351, "Status": "predicted", "Affected": 500 },
+         { "AssetNo": "SY22641", "lat": -33.875579, "lng": 151.214251, "Status": "confirmed" , "Affected": 800 }] }
