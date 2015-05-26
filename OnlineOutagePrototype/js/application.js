@@ -513,18 +513,38 @@ var map;
                 }
             });
             this.offsetCenter(marker.getPosition(), $scope);
-            var circleOptions = {
-                strokeColor: marker.customStatus == "working" ? '#00D1F4' : '#E76E25',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: marker.customStatus == "working" ? '#00D1F4' : '#E76E25',
-                fillOpacity: 0.35,
-                map: $scope.map,
-                radius: 100
-            };
-            // Add the circle for this city to the map.
-            var markerCircle = new google.maps.Circle(circleOptions);
-            markerCircle.bindTo("center", marker, "position");
+            if (marker.customStatus == "held") {
+                var polygonCoords = [
+                    new google.maps.LatLng(-33.868643, 151.20651),
+                    new google.maps.LatLng(-33.868608, 151.20703),
+                    new google.maps.LatLng(-33.868708, 151.20712),
+                    new google.maps.LatLng(-33.868813, 151.2071),
+                    new google.maps.LatLng(-33.86912, 151.20702)];
+                var poly = new google.maps.Polygon({
+                    strokeColor: '#7422AB',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    paths: polygonCoords,
+                    fillColor: '#7422AB',
+                    fillOpacity: 0.35,
+                    map: $scope.map
+                });
+                poly.bindTo("center", marker, "position");
+            }
+            else {
+                var circleOptions = {
+                    strokeColor: marker.customStatus == "working" ? '#00D1F4' : '#E76E25',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: marker.customStatus == "working" ? '#00D1F4' : '#E76E25',
+                    fillOpacity: 0.35,
+                    map: $scope.map,
+                    radius: 100
+                };
+                // Add the circle for this city to the map.
+                var markerCircle = new google.maps.Circle(circleOptions);
+                markerCircle.bindTo("center", marker, "position");
+            }
         };
         MapStorage.prototype.offsetCenter = function (latlng, $scope) {
             var scale = Math.pow(2, $scope.map.getZoom());
