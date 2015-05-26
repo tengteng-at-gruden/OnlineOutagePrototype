@@ -151,7 +151,7 @@ module map {
             });
         }
 
-        clickMarker(marker: google.maps.Marker, $scope:any) {
+        clickMarker(marker: any, $scope:any) {
 
             $("#outageInfo").toggle('slide', {direction: 'right'});   
 
@@ -176,10 +176,10 @@ module map {
             this.offsetCenter(marker.getPosition(), $scope);
 
             var circleOptions = {
-                strokeColor: '#FF0000',
+                strokeColor: marker.customStatus == "working"?'#00D1F4':'#E76E25',
                 strokeOpacity: 0.8,
                 strokeWeight: 2,
-                fillColor: '#FF0000',
+                fillColor: marker.customStatus == "working" ?'#00D1F4':'#E76E25',
                 fillOpacity: 0.35,
                 map: $scope.map,
                 radius: 100

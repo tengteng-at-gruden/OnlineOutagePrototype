@@ -11,7 +11,6 @@ module map {
             '$compile',
             '$http',
             'mapStorage',
-            'mapLazyLoad',
             'sharedData'
         ];
 
@@ -21,7 +20,6 @@ module map {
             private $compile: ng.ICompileService,
             private $http: ng.IHttpService,
             private mapStorage: IMapStorage,
-            private mapLazyLoad: IMapLazyLoad,
             private sharedData:ISharedData
             ) {
              

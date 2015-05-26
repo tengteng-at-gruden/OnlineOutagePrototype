@@ -322,7 +322,6 @@ var map;
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
 /// <reference path='../_all.ts' />
-/// <reference path='../_all.ts' />
 var map;
 (function (map) {
     'use strict';
@@ -515,10 +514,10 @@ var map;
             });
             this.offsetCenter(marker.getPosition(), $scope);
             var circleOptions = {
-                strokeColor: '#FF0000',
+                strokeColor: marker.customStatus == "working" ? '#00D1F4' : '#E76E25',
                 strokeOpacity: 0.8,
                 strokeWeight: 2,
-                fillColor: '#FF0000',
+                fillColor: marker.customStatus == "working" ? '#00D1F4' : '#E76E25',
                 fillOpacity: 0.35,
                 map: $scope.map,
                 radius: 100
@@ -551,36 +550,6 @@ var map;
         return MapStorage;
     })();
     map.MapStorage = MapStorage;
-})(map || (map = {}));
-/// <reference path='../_all.ts' />
-var map;
-(function (map) {
-    'use strict';
-    var MapLazyLoad = (function () {
-        function MapLazyLoad($q, $window) {
-            this.$q = $q;
-            this.$window = $window;
-        }
-        MapLazyLoad.prototype.asynGoogleMap = function () {
-            var asyncUrl = 'http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&callback=';
-            this.$window['googleMapsInitialized'] = function () {
-                alert("load success");
-            };
-            this.asyncLoad(asyncUrl, 'googleMapsInitialized');
-        };
-        MapLazyLoad.prototype.asyncLoad = function (asyncUrl, callbackName) {
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = asyncUrl + callbackName;
-            document.body.appendChild(script);
-        };
-        MapLazyLoad.$inject = [
-            '$q',
-            '$window'
-        ];
-        return MapLazyLoad;
-    })();
-    map.MapLazyLoad = MapLazyLoad;
 })(map || (map = {}));
 /// <reference path='../_all.ts' />
 var map;
@@ -734,13 +703,12 @@ var map;
 (function (map) {
     'use strict';
     var HomeController = (function () {
-        function HomeController($scope, $location, $compile, $http, mapStorage, mapLazyLoad, sharedData) {
+        function HomeController($scope, $location, $compile, $http, mapStorage, sharedData) {
             this.$scope = $scope;
             this.$location = $location;
             this.$compile = $compile;
             this.$http = $http;
             this.mapStorage = mapStorage;
-            this.mapLazyLoad = mapLazyLoad;
             this.sharedData = sharedData;
             $scope.homeVm = this;
             this.mapStorage.initializeMap($scope, $compile);
@@ -770,7 +738,6 @@ var map;
             '$compile',
             '$http',
             'mapStorage',
-            'mapLazyLoad',
             'sharedData'
         ];
         return HomeController;
@@ -858,8 +825,7 @@ var map;
         .directive('vcRecaptcha', ['$document', '$timeout', 'recaptcha', map_1.VcRecaptcha.Factory()])
         .service('poleData', map_1.OutageData)
         .service('mapStorage', map_1.MapStorage)
-        .service('recaptcha', ['$window', '$q', map_1.Recaptcha])
-        .service('mapLazyLoad', map_1.MapLazyLoad);
+        .service('recaptcha', ['$window', '$q', map_1.Recaptcha]);
     map.config(['$routeProvider', function ($routeProvider) {
             $routeProvider.when('/map', {
                 templateUrl: '../views/home.html',
@@ -897,12 +863,10 @@ var map;
 /// <reference path='interfaces/IOutageData.ts' />
 /// <reference path='interfaces/ISharedData.ts' />
 /// <reference path='interfaces/IMapStorage.ts' />
-/// <reference path='interfaces/IMapLazyLoad.ts' />
 /// <reference path='interfaces/IRecaptcha.ts' />
 /// <reference path='services/OutageData.ts' />
 /// <reference path='services/sharedData.ts' />
 /// <reference path='services/MapStorage.ts' />
-/// <reference path='services/MapLazyLoad.ts' />
 /// <reference path='services/Recaptcha.ts' />
 /// <reference path='controllers/RootController.ts' />
 /// <reference path='controllers/IntroController.ts' />
